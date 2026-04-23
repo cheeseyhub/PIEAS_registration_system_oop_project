@@ -52,9 +52,7 @@ build/
 .vscode/
 
 ### ENV VARIABLE FILE  DO NOT PUSH TO GITHUB ###
-.env.local
 .env
-
 
 # Linux/Fedora Editor Swap Files
 *~
