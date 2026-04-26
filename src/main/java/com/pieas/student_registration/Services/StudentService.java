@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.DuplicateKeyException;
 import com.pieas.student_registration.Entities.SemesterEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Repositories.StudentRepository;
@@ -13,7 +15,10 @@ import com.pieas.student_registration.Repositories.StudentRepository;
 @Service
 public class StudentService {
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public Optional<StudentEntity> getStduentById(String id) {
         return studentRepository.findById(id);
@@ -21,7 +26,13 @@ public class StudentService {
     }
 
     public void addStudent(StudentEntity student) {
-        studentRepository.insert(student);
+        String encodedPassword = passwordEncoder.encode(student.getPassword());
+        student.setPassword(encodedPassword);
+        try {
+            studentRepository.insert(student);
+        } catch (DuplicateKeyException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public ArrayList<StudentEntity> getAllStudents() {
@@ -50,6 +61,15 @@ public class StudentService {
         } else {
             return "Could not find the student with the id " + id;
         }
+
+    }
+
+    public boolean authenticateUser(String registrationNumber, String password) {
+        Optional<StudentEntity> student = studentRepository.findByRegistrationNumber(registrationNumber);
+        if (student.isPresent() && passwordEncoder.matches(password, student.get().getPassword())) {
+            return true;
+        }
+        return false;
 
     }
 
