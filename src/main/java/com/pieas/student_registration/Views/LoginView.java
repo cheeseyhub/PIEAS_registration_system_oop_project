@@ -8,7 +8,6 @@ import com.vaadin.flow.router.Route;
 
 @Route("login")
 public class LoginView extends VerticalLayout {
-
     public LoginView() {
         addClassName("login-view");
         setSizeFull();
