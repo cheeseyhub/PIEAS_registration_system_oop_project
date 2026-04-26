@@ -3,18 +3,23 @@ package com.pieas.student_registration.Entities;
 import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 
 @Document(collection = "students")
 public class StudentEntity {
     @Id
     private String id;
     private String name;
+
+    private String password;
+    @Indexed(unique = true)
     private String registrationNumber;
+    @NotBlank
     private String department;
-    @NotEmpty
+
     private ArrayList<SemesterEntity> semesters;
 
     public ArrayList<SemesterEntity> getSemesters() {
@@ -51,5 +56,13 @@ public class StudentEntity {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
