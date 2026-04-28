@@ -1,0 +1,16 @@
+/*
+ * This file has been created by the Vaadin Theme Editor. Please note that
+ * manual changes to individual CSS properties may be overwritten by the theme editor.
+ */
+
+vaadin-login-form.login-view-login-form-1 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: var(--vaadin-radius-s);
+  border-width: 0px;
+  padding: 1%;
+
+}
+
+vaadin-login-form.login-view-login-form-1 h1 {
+  color: white;
+}

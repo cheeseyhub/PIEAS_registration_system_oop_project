@@ -2,17 +2,18 @@ package com.pieas.student_registration.Views;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Services.StudentService;
 import com.vaadin.flow.component.dependency.StyleSheet;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 
 @Route("login")
-@StyleSheet("context://styles/style.css")
+// @StyleSheet("context://styles/style.css")
 public class LoginView extends VerticalLayout {
     @Autowired
     StudentService studentService;
@@ -24,6 +25,8 @@ public class LoginView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.CENTER);
 
         LoginForm login = new LoginForm();
+        // <theme-editor-local-classname>
+        login.addClassName("login-view-login-form-1");
         LoginI18n i18n = LoginI18n.createDefault();
         LoginI18n.Form i18nForm = i18n.getForm();
 
@@ -39,11 +42,15 @@ public class LoginView extends VerticalLayout {
         login.setI18n(i18n);
 
         login.setForgotPasswordButtonVisible(false);
-        add(new H1("Pieas student login protal"), login);
+
+        add(new H1("Student Login Portal"), login);
 
         login.addLoginListener(e -> {
             boolean isAuthenticated = this.authenticate(e.getUsername(), e.getPassword());
             if (isAuthenticated) {
+
+                // Save the student to the current session
+                // VaadinSession.getCurrent().setAttribute("CurrentUser", );
                 getUI().ifPresent(ui -> ui.navigate("dashboard"));
             } else {
                 login.setError(true);
