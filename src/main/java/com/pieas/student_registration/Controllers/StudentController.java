@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pieas.student_registration.Entities.StudentEntity;
+import com.pieas.student_registration.Entities.SubjectEntity;
 import com.pieas.student_registration.Services.StudentService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -17,14 +19,19 @@ public class StudentController {
 
     @PostMapping("/add")
     public void registerStudent(@RequestBody StudentEntity entity) {
-
         studentService.addStudent(entity);
     }
 
     @PostMapping("/authenticate")
     public boolean authenticateStudent(@RequestBody StudentEntity entity) {
-
         return studentService.authenticateUser(entity.getRegistrationNumber(), entity.getPassword());
     }
 
-}
+    @PostMapping("/{registrationNumber}/{semesterNumber}")
+    public String addSubject(@PathVariable String registrationNumber,
+                             @PathVariable int semesterNumber,
+                             @RequestBody SubjectEntity subject) {
+        return studentService.addSubject(registrationNumber, semesterNumber, subject);
+    }
+
+} 

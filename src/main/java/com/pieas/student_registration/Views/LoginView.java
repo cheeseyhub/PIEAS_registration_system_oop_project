@@ -13,7 +13,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 
 @Route("login")
-// @StyleSheet("context://styles/style.css")
+@StyleSheet("context://styles/style.css")
 public class LoginView extends VerticalLayout {
     @Autowired
     StudentService studentService;
@@ -25,12 +25,10 @@ public class LoginView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.CENTER);
 
         LoginForm login = new LoginForm();
-        // <theme-editor-local-classname>
         login.addClassName("login-view-login-form-1");
         LoginI18n i18n = LoginI18n.createDefault();
         LoginI18n.Form i18nForm = i18n.getForm();
 
-        i18nForm.setTitle("Student Login");
         i18nForm.setUsername("Registration Number");
         i18nForm.setPassword("Password");
         i18nForm.setSubmit("Sign in");
@@ -49,8 +47,10 @@ public class LoginView extends VerticalLayout {
             boolean isAuthenticated = this.authenticate(e.getUsername(), e.getPassword());
             if (isAuthenticated) {
 
+                StudentEntity user = studentService.getStudentByRegistration(e.getUsername()).get();
+
                 // Save the student to the current session
-                // VaadinSession.getCurrent().setAttribute("CurrentUser", );
+                VaadinSession.getCurrent().setAttribute("currentUser", user);
                 getUI().ifPresent(ui -> ui.navigate("dashboard"));
             } else {
                 login.setError(true);
