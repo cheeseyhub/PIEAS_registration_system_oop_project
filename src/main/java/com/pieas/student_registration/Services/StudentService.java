@@ -64,7 +64,7 @@ public class StudentService {
 
     }
 
-    public boolean authenticateUser(String registrationNumber, String password) {
+    public boolean authenticateUser(String department, String registrationNumber, String password) {
         Optional<StudentEntity> student = studentRepository.findByRegistrationNumber(registrationNumber);
         if (student.isPresent() && passwordEncoder.matches(password, student.get().getPassword())) {
             return true;
