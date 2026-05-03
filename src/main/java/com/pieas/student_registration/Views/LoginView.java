@@ -26,6 +26,7 @@ public class LoginView extends VerticalLayout {
         LoginForm login = new LoginForm();
         LoginI18n i18n = LoginI18n.createDefault();
         LoginI18n.Form i18nForm = i18n.getForm();
+        login.addClassName("login");
 
         i18nForm.setTitle("Student Login");
         i18nForm.setUsername("Registration Number");
@@ -39,7 +40,7 @@ public class LoginView extends VerticalLayout {
         login.setI18n(i18n);
 
         login.setForgotPasswordButtonVisible(false);
-        add(new H1("Pieas student login protal"), login);
+        add(new H1("PIEAS Student Management System"), login);
 
         login.addLoginListener(e -> {
             boolean isAuthenticated = this.authenticate(e.getUsername(), e.getPassword());
