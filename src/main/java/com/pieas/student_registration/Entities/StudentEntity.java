@@ -1,6 +1,7 @@
 package com.pieas.student_registration.Entities;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -64,5 +65,10 @@ public class StudentEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Optional<SemesterEntity> getSemster(int semesterNumber) {
+        return Optional.of(this.semesters.get(semesterNumber));
+
     }
 }

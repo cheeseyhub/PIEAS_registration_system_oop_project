@@ -8,8 +8,16 @@ public class SubjectEntity {
     @Id
     private String id;
     @NotBlank
-    private String subjetName;
+    private String subjectName;
     private double gpa;
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
 
     public String getId() {
         return id;
@@ -17,14 +25,6 @@ public class SubjectEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getSubjetName() {
-        return subjetName;
-    }
-
-    public void setSubjetName(String subjetName) {
-        this.subjetName = subjetName;
     }
 
     public double getGpa() {

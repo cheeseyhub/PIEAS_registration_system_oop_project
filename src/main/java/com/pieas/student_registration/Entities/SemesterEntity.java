@@ -47,4 +47,8 @@ public class SemesterEntity {
         this.subjects = subjects;
     }
 
+    public void addSubject(SubjectEntity subject) {
+        this.subjects.add(subject);
+    }
+
 }
