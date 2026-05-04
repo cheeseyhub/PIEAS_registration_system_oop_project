@@ -90,7 +90,7 @@ public class LoginView extends VerticalLayout {
 
             if (authenticate(dep, reg, passwordUser)) {
                 Notification.show("Welcome!");
-                UI.getCurrent().navigate("dashboard");
+                UI.getCurrent().navigate("main");
             } else {
                 Notification.show("Invalid Credentials");
             }
