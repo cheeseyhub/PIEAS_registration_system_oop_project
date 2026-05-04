@@ -7,16 +7,12 @@ import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.login.LoginForm;
-import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
 @Route("login")
@@ -55,7 +51,8 @@ public class LoginView extends VerticalLayout {
         regNo.setPattern("\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}");
         regNo.setMaxLength(16);
         regNo.setPlaceholder("Registration No.");
-        regNo.setHelperText("Format: XX-X-X-XXX-XXXX (e.g., 03-3-1-079-2025)");
+        regNo.setHelperText("Format: XX-X-X-XXX-XXXX (e.g.r 03-3-1-079-2025)");
+        regNo.setErrorMessage("Registration number must match format: XX-X-X-XXX-XXXX");
         regNo.addClassName("regNo");
         regNo.setWidth("400px");
 
@@ -83,14 +80,21 @@ public class LoginView extends VerticalLayout {
                 return;
             }
 
+            if (!reg.matches("\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}")) {
+                Notification.show("Invalid Registration Number Format (XX-X-X-XXX-XXXX)");
+                regNo.setInvalid(true);
+                return;
+            }
+
             if (passwordUser == null || passwordUser.isEmpty()) {
                 Notification.show("Please Enter a Password");
                 return;
             }
 
+            regNo.setInvalid(false);
             if (authenticate(dep, reg, passwordUser)) {
                 Notification.show("Welcome!");
-                UI.getCurrent().navigate("main");
+                UI.getCurrent().navigate("dashboard");
             } else {
                 Notification.show("Invalid Credentials");
             }

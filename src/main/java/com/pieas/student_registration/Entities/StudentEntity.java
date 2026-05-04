@@ -1,12 +1,14 @@
 package com.pieas.student_registration.Entities;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Document(collection = "students")
 public class StudentEntity {
@@ -16,6 +18,7 @@ public class StudentEntity {
 
     private String password;
     @Indexed(unique = true)
+    @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX")
     private String registrationNumber;
     @NotBlank
     private String department;
@@ -64,5 +67,10 @@ public class StudentEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Optional<SemesterEntity> getSemster(int semesterNumber) {
+        return Optional.of(this.semesters.get(semesterNumber));
+
     }
 }

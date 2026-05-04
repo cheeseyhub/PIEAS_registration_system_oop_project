@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.mongodb.DuplicateKeyException;
 import com.pieas.student_registration.Entities.SemesterEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
+import com.pieas.student_registration.Entities.SubjectEntity;
 import com.pieas.student_registration.Repositories.StudentRepository;
 
 @Service
@@ -28,6 +29,9 @@ public class StudentService {
     public void addStudent(StudentEntity student) {
         String encodedPassword = passwordEncoder.encode(student.getPassword());
         student.setPassword(encodedPassword);
+        if (student.getSemesters() == null) {
+            student.setSemesters(new ArrayList<>());
+        }
         try {
             studentRepository.insert(student);
         } catch (DuplicateKeyException e) {
@@ -65,12 +69,57 @@ public class StudentService {
     }
 
     public boolean authenticateUser(String department, String registrationNumber, String password) {
+        // Validate registration number format
+        if (!registrationNumber.matches("\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}")) {
+            return false;
+        }
+
         Optional<StudentEntity> student = studentRepository.findByRegistrationNumber(registrationNumber);
         if (student.isPresent() && passwordEncoder.matches(password, student.get().getPassword())) {
             return true;
         }
         return false;
 
+    }
+
+    public Optional<StudentEntity> getStudentByRegistration(String registrationNo) {
+        return studentRepository.findByRegistrationNumber(registrationNo);
+
+    }
+
+    public String addSubject(String registrationNumber, int semesterNumber, SubjectEntity subject) {
+        Optional<StudentEntity> studentObject = studentRepository.findByRegistrationNumber(registrationNumber);
+
+        if (studentObject.isEmpty()) {
+            return "Student with registration number " + registrationNumber + " not found.";
+        }
+
+        StudentEntity student = studentObject.get();
+        if (student.getSemesters() == null) {
+            student.setSemesters(new ArrayList<>());
+        }
+
+        Optional<SemesterEntity> semester = student.getSemesters().stream()
+                .filter(s -> s.getSemesterNumber() == semesterNumber)
+                .findFirst();
+
+        SemesterEntity semesterEntity;
+        if (semester.isEmpty()) {
+            semesterEntity = new SemesterEntity(new ArrayList<>(), true);
+            semesterEntity.setSemesterNumber(semesterNumber);
+            student.getSemesters().add(semesterEntity);
+        } else {
+            semesterEntity = semester.get();
+        }
+
+        if (semesterEntity.getSubjects() == null) {
+            semesterEntity.setSubjects(new ArrayList<>());
+        }
+
+        semesterEntity.addSubject(subject);
+        studentRepository.save(student);
+
+        return "Subject added to semester " + semesterNumber + " for student " + registrationNumber + ".";
     }
 
 }
