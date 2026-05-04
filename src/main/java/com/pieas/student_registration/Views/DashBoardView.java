@@ -1,62 +1,82 @@
-package com.pieas.student_registration.Views;
-
-import com.pieas.student_registration.Entities.StudentEntity;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
-import com.vaadin.*;
 
 @Route("main")
 
-class sidebar extends VerticalLayout {
-    private void AnchorButton(String text, String url) {
-        Button btn = new Button(text);
-        btn.addClickListener(e -> {
-            UI.getCurrentUI().navigate(url);
-        });
+public class DashBoardView extends VerticalLayout implements BeforeEnterObserver {
 
-        add(btn);
+    public DashBoardView() {
+        setSizeFull();
+        setPadding(false);
+        setSpacing(false);
+
+        add(new HeaderSection());
+        add(new MainContentSection());
+        expand(new MainContentSection());
     }
 
-    public sidebar() {
-        String buttons[][] = {
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        // Check authentication if needed
+    }
+}
+
+class HeaderSection extends HorizontalLayout {
+    public HeaderSection() {
+        setWidthFull();
+        setAlignItems(Alignment.CENTER);
+
+        Image logoImage = new Image("images/logo.png", "PIEAS Logo");
+        logoImage.setHeight("50px");
+
+        H1 header = new H1("Pakistan Institute of Engineering and Applied Sciences");
+        header.getStyle().set("font-size", "1.5rem");
+
+        add(logoImage, header);
+        expand(header);
+    }
+}
+
+class MainContentSection extends HorizontalLayout {
+    public MainContentSection() {
+        setSizeFull();
+
+        Sidebar sidebar = new Sidebar();
+        VerticalLayout contentArea = new VerticalLayout(); // Main content goes here
+
+        sidebar.setWidth("250px");
+        contentArea.setWidthFull();
+
+        add(sidebar, contentArea);
+        expand(contentArea);
+    }
+}
+
+class Sidebar extends VerticalLayout {
+    public Sidebar() {
+        setWidthFull();
+        setPadding(true);
+        setSpacing(true);
+
+        String[][] buttons = {
                 { "Student Registration", "data" },
                 { "Course Enrollment", "course" },
                 { "Semester Result", "result" },
                 { "Log out", "logout" }
         };
 
-        for (String i[] : buttons) {
-            add(AnchorButton(i[0], i[1]));
+        for (String[] button : buttons) {
+            Button btn = new Button(button[0]);
+            btn.addClickListener(e -> UI.getCurrent().navigate(button[1]));
+            btn.setWidthFull();
+            add(btn);
         }
-    }
-}
-
-class HeaderSection extends HorizontalLayout {
-    public HeaderSection() {
-        Image logoImage = new Image(DownlaodHandler.forClassResource(getClass(), "/images/logo.png"), "PIEAS Logo");
-        H1 header = new header("Pakistan Institute of Engineering and Applied Sciences");
-
-        add(image, header);
-    }
-}
-
-class MainView extends HorizontalLayout {
-    public MainView() {
-        sidebar sidebr = new sidebar();
-        add(sidebar);
-    }
-}
-
-public class DashBoardView extends HorizontalLayout {
-    public DashBoardView() {
-        HeaderSection header = new header();
-        MainView main = new MainView();
-
-        add(header, main);
-
     }
 }
