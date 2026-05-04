@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
@@ -18,20 +20,21 @@ public class StudentController {
     StudentService studentService;
 
     @PostMapping("/add")
-    public void registerStudent(@RequestBody StudentEntity entity) {
+    public void registerStudent(@Valid @RequestBody StudentEntity entity) {
         studentService.addStudent(entity);
     }
 
     @PostMapping("/authenticate")
-    public boolean authenticateStudent(@RequestBody StudentEntity entity) {
-        return studentService.authenticateUser(entity.getRegistrationNumber(), entity.getPassword());
+    public boolean authenticateStudent(@Valid @RequestBody StudentEntity entity) {
+        return studentService.authenticateUser(entity.getDepartment(), entity.getRegistrationNumber(),
+                entity.getPassword());
     }
 
     @PostMapping("/{registrationNumber}/{semesterNumber}")
     public String addSubject(@PathVariable String registrationNumber,
-                             @PathVariable int semesterNumber,
-                             @RequestBody SubjectEntity subject) {
+            @PathVariable int semesterNumber,
+            @RequestBody SubjectEntity subject) {
         return studentService.addSubject(registrationNumber, semesterNumber, subject);
     }
 
-} 
+}

@@ -68,7 +68,12 @@ public class StudentService {
 
     }
 
-    public boolean authenticateUser(String registrationNumber, String password) {
+    public boolean authenticateUser(String department, String registrationNumber, String password) {
+        // Validate registration number format
+        if (!registrationNumber.matches("\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}")) {
+            return false;
+        }
+        
         Optional<StudentEntity> student = studentRepository.findByRegistrationNumber(registrationNumber);
         if (student.isPresent() && passwordEncoder.matches(password, student.get().getPassword())) {
             return true;
