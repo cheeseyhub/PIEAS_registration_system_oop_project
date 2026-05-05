@@ -1,84 +1,69 @@
 package com.pieas.student_registration.Views;
 
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.component.button.ButtonVariant;
 
 @Route("main")
 
-public class DashBoardView extends VerticalLayout implements BeforeEnterObserver {
-
-    public DashBoardView() {
+public class DashboardView extends VerticalLayout {
+    public DashboardView() {
+        add(
+                new DashboardHeader(),
+                new DashboardContent(),
+                new DashboardFooter());
+        expand(getContent());
         setSizeFull();
-        setPadding(false);
-        setSpacing(false);
-
-        add(new HeaderSection());
-        add(new MainContentSection());
-        expand(new MainContentSection());
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        // Check authentication if needed
     }
 }
 
-class HeaderSection extends HorizontalLayout {
-    public HeaderSection() {
+class DashboardHeader extends HorizontalLayout{
+    private Logo logo = new Logo();
+    private H1 title = new H1("Dashboard");
+    private UserMenu userMenu = new UserMenu();
+
+    public DashboardHeader() {
+        add(logo, title, userMenu);
         setWidthFull();
+        expand(title);
         setAlignItems(Alignment.CENTER);
 
-        Image logoImage = new Image("images/logo.png", "PIEAS Logo");
-        logoImage.setHeight("50px");
-
-        H1 header = new H1("Pakistan Institute of Engineering and Applied Sciences");
-        header.getStyle().set("font-size", "1.5rem");
-
-        add(logoImage, header);
-        expand(header);
+        // Header-specific logic lives here
+        userMenu.addLogoutListener(e -> handleLogout());
     }
 }
 
-class MainContentSection extends HorizontalLayout {
-    public MainContentSection() {
-        setSizeFull();
+class DashboardContent extends HorizontalLayout {
+    private SidebarMenu sidebar = new SidebarMenu();
+    private MainContentArea mainContent = new MainContentArea();
 
-        Sidebar sidebar = new Sidebar();
-        VerticalLayout contentArea = new VerticalLayout();
-
-        sidebar.setWidth("250px");
-        contentArea.setWidthFull();
-
-        add(sidebar, contentArea);
-        expand(contentArea);
-    }
-}
-
-class Sidebar extends VerticalLayout {
-    public Sidebar() {
+    public DashboardContent() {
+        add(sidebar, mainContent);
         setWidthFull();
-        setPadding(true);
-        setSpacing(true);
+        expand(mainContent);
 
-        String[][] buttons = {
-                { "Student Registration", "data" },
-                { "Course Enrollment", "course" },
-                { "Semester Result", "result" },
-                { "Log out", "logout" }
-        };
+        // Navigation logic stays with the content
+        sidebar.addMenuSelectionListener(menuItem -> mainContent.loadView(menuItem));
+    }
+}
 
-        for (String[] button : buttons) {
-            Button btn = new Button(button[0]);
-            btn.addClickListener(e -> UI.getCurrent().navigate(button[1]));
-            btn.setWidthFull();
-            add(btn);
-        }
+class DashboardFooter extends HorizontalLayout {
+    public DashboardFooter() {
+        add(new Span("Status: Connected"), new Span("© 2026"));
+        setJustifyContentMode(JustifyContentMode.END);
+        setWidthFull();
     }
 }
