@@ -21,20 +21,17 @@ import com.vaadin.flow.component.button.ButtonVariant;
 public class LoginView extends HorizontalLayout {
 
     public LoginView(@Autowired StudentService studentService) {
-        setSizeFull(); // Make the entire view take full screen
+        setSizeFull();
 
-        // Create both panels
         LoginSidebar sidebar = new LoginSidebar();
         LoginForm loginForm = new LoginForm(studentService);
 
-        // Make both panels take equal width and full height
         sidebar.setWidth("50%");
         sidebar.setHeightFull();
 
         loginForm.setWidth("50%");
         loginForm.setHeightFull();
 
-        // Add to the layout
         add(sidebar, loginForm);
     }
 }
@@ -49,7 +46,6 @@ class LoginSidebar extends VerticalLayout {
         setPadding(true);
         setSpacing(true);
 
-        // Add some background styling (optional)
         getStyle().set("background", "linear-gradient(135deg, #667eea 0%, #764ba2 100%)");
         getStyle().set("color", "white");
 
@@ -84,13 +80,7 @@ class LoginForm extends VerticalLayout {
 
     public LoginForm(StudentService studentService) {
         this.studentService = studentService;
-        setupLayout();
-        createComponents();
-        addComponents();
-        setupValidation();
-    }
 
-    private void setupLayout() {
         setWidthFull();
         setHeightFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
@@ -98,12 +88,8 @@ class LoginForm extends VerticalLayout {
         setPadding(true);
         setSpacing(true);
 
-        // Add white background for form side
         getStyle().set("background", "white");
-    }
 
-    private void createComponents() {
-        // Form container to center the form elements
         VerticalLayout formContainer = new VerticalLayout();
         formContainer.setWidth("100%");
         formContainer.setMaxWidth("450px");
@@ -148,57 +134,50 @@ class LoginForm extends VerticalLayout {
 
         formContainer.add(header, instructionText, departmentCombo, regNoField, passwordField, loginButton);
         add(formContainer);
-    }
 
-    private void addComponents() {
-        // Components already added in createComponents
-    }
+        loginButton.addClickListener(event -> {
 
-    private void setupValidation() {
-        loginButton.addClickListener(event -> handleLogin());
-    }
+            String department = departmentCombo.getValue();
+            String registrationNumber = regNoField.getValue();
+            String password = passwordField.getValue();
 
-    private void handleLogin() {
-        String department = departmentCombo.getValue();
-        String registrationNumber = regNoField.getValue();
-        String password = passwordField.getValue();
-
-        if (department == null || department.isEmpty()) {
-            Notification.show("Please select a department", 3000, Notification.Position.MIDDLE);
-            return;
-        }
-
-        if (registrationNumber == null || registrationNumber.isEmpty()) {
-            Notification.show("Please enter registration number", 3000, Notification.Position.MIDDLE);
-            return;
-        }
-
-        if (!registrationNumber.matches("\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}")) {
-            Notification.show("Invalid registration number format", 3000, Notification.Position.MIDDLE);
-            return;
-        }
-
-        if (password == null || password.isEmpty()) {
-            Notification.show("Please enter password", 3000, Notification.Position.MIDDLE);
-            return;
-        }
-
-        loginButton.setEnabled(false);
-        loginButton.setText("Signing in...");
-
-        try {
-            if (studentService.authenticateUser(department, registrationNumber, password)) {
-                Notification.show("Welcome!");
-                UI.getCurrent().navigate("dashboard");
-            } else {
-                Notification.show("Invalid credentials");
-                passwordField.clear();
+            if (department == null || department.isEmpty()) {
+                Notification.show("Please select a department", 3000, Notification.Position.MIDDLE);
+                return;
             }
-        } catch (Exception e) {
-            Notification.show("Login error. Please try again.");
-        } finally {
-            loginButton.setEnabled(true);
-            loginButton.setText("Sign In");
-        }
+
+            if (registrationNumber == null || registrationNumber.isEmpty()) {
+                Notification.show("Please enter registration number", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            if (!registrationNumber.matches("\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}")) {
+                Notification.show("Invalid registration number format", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            if (password == null || password.isEmpty()) {
+                Notification.show("Please enter password", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+
+            loginButton.setEnabled(false);
+            loginButton.setText("Signing in...");
+
+            try {
+                if (studentService.authenticateUser(department, registrationNumber, password)) {
+                    Notification.show("Welcome!");
+                    UI.getCurrent().navigate("dashboard");
+                } else {
+                    Notification.show("Invalid credentials");
+                    passwordField.clear();
+                }
+            } catch (Exception e) {
+                Notification.show("Login error. Please try again.");
+            } finally {
+                loginButton.setEnabled(true);
+                loginButton.setText("Sign In");
+            }
+        });
     }
 }
