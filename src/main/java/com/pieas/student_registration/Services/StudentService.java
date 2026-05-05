@@ -1,6 +1,7 @@
 package com.pieas.student_registration.Services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,6 @@ public class StudentService {
     }
 
     public boolean authenticateUser(String department, String registrationNumber, String password) {
-        // Validate registration number format
         if (!registrationNumber.matches("\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}")) {
             return false;
         }
@@ -82,8 +82,9 @@ public class StudentService {
 
     }
 
-    public Optional<StudentEntity> getStudentByRegistration(String registrationNo) {
-        return studentRepository.findByRegistrationNumber(registrationNo);
+    public StudentEntity getStudentByRegistration(String registrationNo) {
+        StudentEntity student = studentRepository.findByRegistrationNumber(registrationNo).orElseGet(null);
+        return student;
 
     }
 

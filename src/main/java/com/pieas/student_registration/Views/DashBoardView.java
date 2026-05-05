@@ -1,3 +1,5 @@
+package com.pieas.student_registration.Views;
+
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -49,7 +51,7 @@ class MainContentSection extends HorizontalLayout {
         setSizeFull();
 
         Sidebar sidebar = new Sidebar();
-        VerticalLayout contentArea = new VerticalLayout(); // Main content goes here
+        VerticalLayout contentArea = new VerticalLayout();
 
         sidebar.setWidth("250px");
         contentArea.setWidthFull();
