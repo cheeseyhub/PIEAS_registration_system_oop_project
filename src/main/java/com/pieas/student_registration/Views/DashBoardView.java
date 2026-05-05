@@ -10,16 +10,25 @@ import com.vaadin.flow.router.Route;
 
 public class DashboardView extends VerticalLayout {
     public DashboardView() {
-        add(
-                new Main());
+        add(new Header(), new Main());
+
+        this.setWidth("100vw");
+        this.setHeight("100vh");
+        this.getStyle().set("margin", "0");
+        this.getStyle().set("padding", "0");
     }
 }
 
 class Header extends HorizontalLayout {
     public Header() {
+        this.setWidth("100vw");
+        this.setHeight("10vh");
 
+        // CSS Styles
+        this.getStyle().set("background-color", "violet");
+        this.getStyle().setBorderRadius("20px");
+        this.getStyle().setBorder("2px solid red");
     }
-
 }
 
 class Main extends HorizontalLayout {

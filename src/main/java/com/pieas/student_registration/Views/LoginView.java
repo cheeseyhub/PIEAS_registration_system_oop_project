@@ -165,7 +165,7 @@ class LoginForm extends VerticalLayout {
             loginButton.setText("Signing in...");
 
             try {
-                if (studentService.authenticateUser(department, registrationNumber, password)) {
+                if (this.studentService.authenticateUser(department, registrationNumber, password)) {
                     Notification.show("Welcome!");
                     UI.getCurrent().navigate("dashboard");
                 } else {
