@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Entities.SubjectEntity;
 import com.pieas.student_registration.Services.StudentService;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
