@@ -9,7 +9,6 @@ import com.vaadin.flow.router.Route;
 @Route("main")
 @PageTitle("Dashboard")
 @StyleSheet("styles/style.css")
-@StyleSheet("styles/global-style.css")
 
 public class DashboardView extends HorizontalLayout {
     public DashboardView() {

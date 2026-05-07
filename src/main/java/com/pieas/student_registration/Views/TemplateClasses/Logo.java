@@ -3,41 +3,34 @@ package com.pieas.student_registration.Views.TemplateClasses;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class Logo extends HorizontalLayout {
-    Logo() {
-        Image img = new Image(
-                "images/pieas-logo.png",
-                "logo");
-        img.setWidth("35%");
+    public Logo() {
+        this.setAlignItems(FlexComponent.Alignment.CENTER);
+        this.setJustifyContentMode(FlexComponent.JustifyContentMode.START); // LEFT ALIGN
 
-        VerticalLayout name = new VerticalLayout();
-        name.getStyle().set("padding", "0");
-        name.getStyle().set("margin", "0");
+        // Add image/icon
+        Image logoIcon = new Image("images/pieas-logo.png", "PIEAS Logo");
+        logoIcon.setHeight("40px");
+        logoIcon.setWidth("40px");
 
-        H1 heading = new H1("PIEAS");
-        heading.getStyle().set("padding", "0");
-        heading.getStyle().set("margin", "0");
+        Span logoText = new Span("PIEAS");
+        logoText.getStyle().set("font-size", "20px")
+                .set("font-weight", "bold")
+                .set("color", "white");
 
-        Paragraph text = new Paragraph("STUDENT PORTAL");
-        text.getStyle().set("padding", "0");
-        text.getStyle().set("margin", "0");
-        text.getStyle().set("white-space", "nowrap");
-        text.getStyle().set("font-size", "small");
+        Span portalBadge = new Span("Student Portal");
+        portalBadge.getStyle().set("font-size", "12px")
+                .set("color", "#94a3b8");
 
-        name.add(heading, text);
-        name.getStyle().set("display", "flex");
-        name.getStyle().set("flex-direction", "column");
-        name.getStyle().set("gap", "0");
+        VerticalLayout textGroup = new VerticalLayout(logoText, portalBadge);
+        textGroup.setSpacing(false);
+        textGroup.setPadding(false);
 
-        this.add(img, name);
-
-        this.getStyle().set("display", "flex");
-        this.getStyle().set("justify-content", "center");
-        this.getStyle().set("align-items", "center");
-
-        this.getStyle().set("width", "max(200px, 10vw)");
+        this.add(logoIcon, textGroup);
     }
 }

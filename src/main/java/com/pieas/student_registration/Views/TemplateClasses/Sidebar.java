@@ -1,59 +1,88 @@
 package com.pieas.student_registration.Views.TemplateClasses;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.StyleSheet;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.html.Section;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-@StyleSheet("style/global-style.css")
-@StyleSheet("style/sidebar-style.css")
-
 public class Sidebar extends VerticalLayout {
+
     public Sidebar() {
         this.setHeightFull();
-        this.getStyle().set("border", "2px solid red");
+        this.setWidth("max-content");
+        this.setPadding(false);
+        this.setSpacing(false);
+        this.addClassName("sidebar");
 
         Section top = new Section();
-        top.add(new Logo());
-        top.add(addButtons());
+        top.addClassName("sidebar-top-section");
+
+        Logo logo = new Logo();
+        logo.addClassName("logo");
+        top.add(logo);
+
+        VerticalLayout buttonContainer = addButtons();
+        buttonContainer.addClassName("sidebar-button-container");
+        top.add(buttonContainer);
 
         add(top);
-        logoutButton();
-
-        this.addClassName("sidebar");
+        addLogoutButton();
     }
 
     private VerticalLayout addButtons() {
-        VerticalLayout temp = new VerticalLayout();
-        String buttons[][] = {
-                { "Dashboard", "main" },
-                { "Student Registration", "registration" },
-                { "Course Enroll", "courses" },
-                { "View Results", "result" },
-                { "Change Password", "changePassword" }
+        VerticalLayout buttonContainer = new VerticalLayout();
+        buttonContainer.setPadding(false);
+        buttonContainer.setSpacing(false);
+        buttonContainer.setWidthFull();
+
+        Object[][] buttons = {
+                { "Dashboard", "main", VaadinIcon.DASHBOARD },
+                { "Student Registration", "registration", VaadinIcon.USER_STAR },
+                { "Course Enroll", "courses", VaadinIcon.BOOK },
+                { "View Results", "result", VaadinIcon.CHART_LINE },
+                { "Change Password", "changePassword", VaadinIcon.KEY }
         };
 
-        for (String btn[] : buttons) {
-            Button button = new Button(btn[0]);
+        for (Object[] btn : buttons) {
+            Button button = new Button((String) btn[0]);
             button.addClassName("sidebar-button");
+            button.setWidthFull();
+            button.setIcon(new Icon((VaadinIcon) btn[2]));
+
             button.addClickListener(e -> {
-                UI.getCurrent().navigate(btn[1]);
+                UI.getCurrent().navigate((String) btn[1]);
             });
 
-            temp.add(button);
+            button.getStyle().set("text-align", "left");
+            button.getStyle().set("justify-content", "flex-start");
+
+            buttonContainer.add(button);
         }
 
-        return temp;
+        return buttonContainer;
     }
 
-    private void logoutButton() {
+    private void addLogoutButton() {
         Button logoutButton = new Button("Log Out");
-        logoutButton.addClassName("sidebar-button");
+        logoutButton.addClassNames("sidebar-button", "logout-button");
+        logoutButton.setWidthFull();
+        logoutButton.setIcon(new Icon(VaadinIcon.EXIT_O));
         logoutButton.addClickListener(e -> {
             UI.getCurrent().navigate("logout");
         });
 
         add(logoutButton);
+    }
+
+    private Component createIcon(String iconClass) {
+        Span icon = new Span();
+        icon.getElement().setAttribute("class", iconClass);
+        icon.getStyle().set("width", "20px")
+                .set("text-align", "center");
+        return icon;
     }
 }
