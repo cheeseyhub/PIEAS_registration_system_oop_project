@@ -1,6 +1,5 @@
 package com.pieas.student_registration.Views;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import com.pieas.student_registration.Services.StudentService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -20,11 +19,14 @@ import com.vaadin.flow.component.button.ButtonVariant;
 @Route("login")
 public class LoginView extends HorizontalLayout {
 
-    public LoginView(@Autowired StudentService studentService) {
+    private StudentService studentService;
+
+    public LoginView(StudentService studentService) {
+        this.studentService = studentService;
         setSizeFull();
 
         LoginSidebar sidebar = new LoginSidebar();
-        LoginForm loginForm = new LoginForm();
+        LoginForm loginForm = new LoginForm(studentService);
 
         sidebar.setWidth("50%");
         sidebar.setHeightFull();
@@ -72,14 +74,14 @@ class LoginSidebar extends VerticalLayout {
 
 class LoginForm extends VerticalLayout {
 
-    @Autowired
-    StudentService studentService;
     private Button loginButton;
     private ComboBox<String> departmentCombo;
     private TextField regNoField;
     private PasswordField passwordField;
+    private StudentService studentService;
 
-    public LoginForm() {
+    public LoginForm(StudentService studentService) {
+        this.studentService = studentService;
 
         setWidthFull();
         setHeightFull();
@@ -163,27 +165,21 @@ class LoginForm extends VerticalLayout {
 
             loginButton.setEnabled(false);
             loginButton.setText("Signing in...");
-            if (studentService.authenticateUser(department, registrationNumber, password)) {
-                Notification.show("Welcome!");
-
-                // Storing the data in the session when logged in;
-                studentService.storeStudentData(registrationNumber);
-
-                UI.getCurrent().navigate("dashboard");
-            } else {
-                Notification.show("Invalid Credentials");
-            }
 
             try {
                 if (this.studentService.authenticateUser(department, registrationNumber, password)) {
                     Notification.show("Welcome!");
+                    studentService.storeStudentData(registrationNumber);
                     UI.getCurrent().navigate("dashboard");
                 } else {
                     Notification.show("Invalid credentials");
                     passwordField.clear();
                 }
             } catch (Exception e) {
-                Notification.show("Login error. Please try again.");
+                e.printStackTrace();
+                System.err.println("Login Exception: " + e.getMessage());
+                System.err.println("Exception type: " + e.getClass().getName());
+                Notification.show("Login error: " + e.getMessage());
             } finally {
                 loginButton.setEnabled(true);
                 loginButton.setText("Sign In");
