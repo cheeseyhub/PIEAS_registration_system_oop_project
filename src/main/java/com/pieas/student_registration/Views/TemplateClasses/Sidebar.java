@@ -1,18 +1,16 @@
 package com.pieas.student_registration.Views.TemplateClasses;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.html.Section;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class Sidebar extends VerticalLayout {
 
     public Sidebar() {
-        this.setHeightFull();
+        this.setHeight("100vh");
         this.setWidth("max-content");
         this.setPadding(false);
         this.setSpacing(false);
@@ -76,13 +74,5 @@ public class Sidebar extends VerticalLayout {
         });
 
         add(logoutButton);
-    }
-
-    private Component createIcon(String iconClass) {
-        Span icon = new Span();
-        icon.getElement().setAttribute("class", iconClass);
-        icon.getStyle().set("width", "20px")
-                .set("text-align", "center");
-        return icon;
     }
 }

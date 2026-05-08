@@ -4,15 +4,19 @@
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+.dashboard {
+    display: flex;
+}
+
 .sidebar {
+    position: sticky;
+    top: 0%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     color: white;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-    width: 280px;
-    min-height: 100vh;
 }
 
 /* LEFT-ALIGNED LOGO SECTION */
@@ -60,7 +64,7 @@
 }
 
 /* Logout section */
-.sidebar > :last-child {
+.sidebar> :last-child {
     border-top: 2px solid rgba(255, 255, 255, 0.1);
     margin: 0;
     padding: 16px 12px 24px 12px;
@@ -68,4 +72,138 @@
 
 .logout-button {
     width: 100%;
+}
+
+/* HEADER SECTION */
+.headerBar {
+    position: sticky;
+    top: 0;
+    border-bottom: 2px solid rgba(96, 94, 94, 0.671);
+    padding: 10px 20px;
+
+    background-color: rgba(240, 248, 255, 0.579);
+}
+
+.cicleDiv {
+    margin: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-color: gray;
+    color: #e2e8f0;
+
+    text-transform: capitalize;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* MAIN SECTION */
+.main-section {
+    width: 100%;
+
+}
+
+.DashboardMainView {
+    padding: 50px 100px;
+
+    gap: 30px;
+
+}
+
+/* Section 1:INTRO of MAIN */
+.DashboardMainView .dashboard-main-intro-section {
+    border-radius: 10px;
+
+    width: 100%;
+    height: max-content;
+
+    padding: 50px;
+
+    background: linear-gradient(to right, #1e203b 0%, #5b6374 136%);
+
+    color: aliceblue;
+}
+
+/* SECTION 2 */
+.dashobard-course-info-section {
+    width: 100%;
+    height: max-content;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+
+    gap: 20px;
+}
+
+.dashboard-course-info-section-child {
+    border-radius: 30px;
+
+    background-color: rgba(191, 193, 191, 0.318);
+
+    padding: 20px;
+}
+
+/* SECTION 3 */
+.dashboard-displaycourse {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.dashboard-displaycourse-child {
+    background-color: #e2e8f0;
+    border-radius: 30px;
+
+    gap: 20px;
+
+    width: 100%;
+    height: max-content;
+
+    padding: 20px;
+}
+
+.dashboard-displaycourse-child-courseName {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.dashboard-displaycourse-child-instructor {
+    font-weight: lighter;
+    font-size: small;
+}
+
+.dashboard-displaycourse-child-creditHour {
+    border-radius: 20px;
+    width: 50px;
+    padding: 1px;
+
+    text-align: center;
+
+    background-color: rgb(243, 249, 249);
+
+    font-weight: lighter;
+    font-size: small;
+}
+
+.dashboard-displaycourse-child-courseCode {
+    border-radius: 20px;
+    padding: 1px;
+    border: 1px solid rgb(211, 215, 215);
+    width: 50px;
+
+    text-align: center;
+
+    background-color: rgb(243, 249, 249);
+
+    font-size: small;
+}
+
+.temp {
+    border: 2px solid red;
 }

@@ -8,6 +8,7 @@ import com.vaadin.flow.component.page.AppShellConfigurator;
 @SpringBootApplication
 @StyleSheet("styles.css")
 public class StudentRegistrationApplication implements AppShellConfigurator {
+
     public static void main(String[] args) {
         SpringApplication.run(StudentRegistrationApplication.class, args);
     }
