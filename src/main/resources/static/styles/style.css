@@ -391,3 +391,33 @@
     width: 95%;
     align-self: center;
 }
+
+.result-view-main{
+    padding: 50px 10%;
+    background-color: #f2f1f1;
+}
+
+.result-main-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-main-header-right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 20px;
+
+    background-color: rgb(251, 168, 14);
+
+    padding: 10px;
+}
+
+.result-icon{
+    color: #100f0e;
+    width: 50px;
+    height: 32px;
+
+}
