@@ -24,7 +24,7 @@ public class LoginView extends HorizontalLayout {
         setSizeFull();
 
         LoginSidebar sidebar = new LoginSidebar();
-        LoginForm loginForm = new LoginForm(studentService);
+        LoginForm loginForm = new LoginForm();
 
         sidebar.setWidth("50%");
         sidebar.setHeightFull();
@@ -72,14 +72,14 @@ class LoginSidebar extends VerticalLayout {
 
 class LoginForm extends VerticalLayout {
 
-    private final StudentService studentService;
+    @Autowired
+    StudentService studentService;
     private Button loginButton;
     private ComboBox<String> departmentCombo;
     private TextField regNoField;
     private PasswordField passwordField;
 
-    public LoginForm(StudentService studentService) {
-        this.studentService = studentService;
+    public LoginForm() {
 
         setWidthFull();
         setHeightFull();
@@ -161,22 +161,18 @@ class LoginForm extends VerticalLayout {
                 return;
             }
 
-<<<<<<< HEAD
             loginButton.setEnabled(false);
             loginButton.setText("Signing in...");
-=======
-            regNo.setInvalid(false);
-            if (authenticate(dep, reg, passwordUser)) {
+            if (studentService.authenticateUser(department, registrationNumber, password)) {
                 Notification.show("Welcome!");
 
                 // Storing the data in the session when logged in;
-                studentService.storeStudentData(reg);
+                studentService.storeStudentData(registrationNumber);
 
                 UI.getCurrent().navigate("dashboard");
             } else {
                 Notification.show("Invalid Credentials");
             }
->>>>>>> backend
 
             try {
                 if (this.studentService.authenticateUser(department, registrationNumber, password)) {
