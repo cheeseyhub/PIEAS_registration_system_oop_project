@@ -11,6 +11,11 @@ public class SubjectEntity {
     private String subjectName;
     private double gpa;
 
+    public SubjectEntity(@NotBlank String subjectName, double gpa) {
+        this.subjectName = subjectName;
+        this.gpa = gpa;
+    }
+
     public String getSubjectName() {
         return subjectName;
     }
