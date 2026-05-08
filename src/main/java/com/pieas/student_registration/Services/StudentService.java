@@ -1,7 +1,6 @@
 package com.pieas.student_registration.Services;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,9 @@ import com.mongodb.DuplicateKeyException;
 import com.pieas.student_registration.Entities.SemesterEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Entities.SubjectEntity;
+import com.pieas.student_registration.Exceptions.NotLoggedIn;
 import com.pieas.student_registration.Repositories.StudentRepository;
+import com.vaadin.flow.server.VaadinSession;
 
 @Service
 public class StudentService {
@@ -121,6 +122,54 @@ public class StudentService {
         studentRepository.save(student);
 
         return "Subject added to semester " + semesterNumber + " for student " + registrationNumber + ".";
+    }
+
+    public void storeStudentData(String reg) {
+        VaadinSession.getCurrent().setAttribute("student", this.getStudentByRegistration(reg));
+    }
+
+    public boolean checkStudentLoggedIn() {
+
+        StudentEntity student = (StudentEntity) VaadinSession.getCurrent().getAttribute("student");
+
+        if (student != null) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    public String getLoggedStudentId() throws NotLoggedIn {
+        StudentEntity student = (StudentEntity) VaadinSession.getCurrent().getAttribute("student");
+        if (this.checkStudentLoggedIn()) {
+            return student.getId();
+        } else {
+            throw new NotLoggedIn("No Student is logged in ");
+        }
+
+    }
+
+    public String getLoggedStudentName() throws NotLoggedIn {
+        StudentEntity student = (StudentEntity) VaadinSession.getCurrent().getAttribute("student");
+        if (this.checkStudentLoggedIn()) {
+            return student.getName();
+        } else {
+            throw new NotLoggedIn("No Student is logged in ");
+
+        }
+
+    }
+
+    public StudentEntity getStudentData() throws NotLoggedIn {
+        StudentEntity student = (StudentEntity) VaadinSession.getCurrent().getAttribute("student");
+        if (this.checkStudentLoggedIn()) {
+            return student;
+        } else {
+            throw new NotLoggedIn("No Student is logged in");
+
+        }
+
     }
 
 }

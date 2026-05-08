@@ -14,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 
 @Route("login")
 @StyleSheet("context://styles/style.css")
@@ -94,6 +95,10 @@ public class LoginView extends VerticalLayout {
             regNo.setInvalid(false);
             if (authenticate(dep, reg, passwordUser)) {
                 Notification.show("Welcome!");
+
+                // Storing the data in the session when logged in;
+                studentService.storeStudentData(reg);
+
                 UI.getCurrent().navigate("dashboard");
             } else {
                 Notification.show("Invalid Credentials");
