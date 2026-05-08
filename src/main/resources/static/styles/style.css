@@ -4,6 +4,26 @@
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+.iconWrapper {
+    width: 70px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: linear-gradient(135deg, #1e2a5a 0%, #2b3a78 100%);
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.iconWrapper-icon {
+    color: #e8e6e0;
+    width: 50px;
+    height: 32px;
+}
+
 .dashboard {
     display: flex;
 }
@@ -89,7 +109,6 @@
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    background-color: gray;
     color: #e2e8f0;
 
     text-transform: capitalize;
@@ -97,6 +116,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background: linear-gradient(to right, rgb(10, 28, 58), rgb(56, 75, 144));
 }
 
 /* MAIN SECTION */
@@ -121,7 +142,7 @@
 
     padding: 50px;
 
-    background: linear-gradient(to right, #1e203b 0%, #5b6374 136%);
+    background: linear-gradient(to right, rgb(10, 28, 58), rgb(56, 75, 144));
 
     color: aliceblue;
 }
@@ -209,7 +230,7 @@
 
     align-self: center;
 
-    padding: 50px 25% ;
+    padding: 50px 25%;
 
     background-color: aliceblue;
 
@@ -224,7 +245,7 @@
     flex-direction: column;
     gap: 10px;
 
-    background-color:#fdfdfd;
+    background-color: #fdfdfd;
 }
 
 .ChangePasswordView-form-passwordField {
@@ -273,22 +294,100 @@
     color: aliceblue;
 }
 
-.ChangePasswordView-iconWrapper {
-    width: 70px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    border-radius: 15px; 
-    
-    background: linear-gradient(135deg, #1e2a5a 0%, #2b3a78 100%);
-    
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/*COURSE ENROLL SECTION*/
+.course-enrollment-main {
+    background-color: aliceblue;
+
+    padding: 50px;
 }
 
-.ChangePasswordView-icon {
-    color: #e8e6e0;
+.course-enrollment-search {
+    width: 400px;
+    height: max-content;
+
+    grid-column: 1/4;
+}
+
+.course-enrollment-displaycourse {
+    width: 100%;
+
+    margin-top: 25px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+
+
+}
+
+.course-enrollment-displaycourse-child {
+    background-color: #ffffff;
+    border-radius: 30px;
+
+    gap: 20px;
+
+    width: 100%;
+    height: max-content;
+
+    padding: 20px;
+}
+
+.course-enrollment-displaycourse-child-courseName {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.course-enrollment-displaycourse-child-instructor {
+    font-weight: lighter;
+    font-size: small;
+}
+
+.course-enrollment-displaycourse-child-creditHour {
+    border-radius: 20px;
     width: 50px;
-    height: 32px;
+    padding: 1px;
+
+    text-align: center;
+
+    font-weight: lighter;
+    font-size: small;
+}
+
+.course-enrollment-displaycourse-child-courseCode {
+    border-radius: 20px;
+    padding: 1px;
+    border: 1px solid rgb(211, 215, 215);
+    width: 50px;
+
+    text-align: center;
+
+    background-color: rgb(243, 249, 249);
+
+    font-size: small;
+}
+
+.course-enrollment-displacourse-enroll-button-false {
+    border-radius: 10px;
+    align-self: flex-end;
+    color: #e2e8f0;
+    font-weight: bolder;
+    padding: 10px;
+
+    background: linear-gradient(to right, rgb(10, 28, 58), rgb(40, 52, 91));
+}
+
+.course-enrollment-displacourse-enroll-button-true {
+    border-radius: 10px;
+    align-self: flex-end;
+    color: #b6bcc4;
+    padding: 10px;
+
+    background:#efeeee;
+}
+
+.course-enrollment-displacourse-enroll-hr {
+    border: grey 1px solid;
+    width: 95%;
+    align-self: center;
 }

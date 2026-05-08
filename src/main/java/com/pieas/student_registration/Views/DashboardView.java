@@ -5,8 +5,6 @@ import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Section;
@@ -32,139 +30,145 @@ public class DashboardView extends HorizontalLayout {
                 this.setSpacing(false);
                 this.addClassName("dashboard");
         }
-}
 
-class Main extends VerticalLayout {
-        Main() {
-                this.setWidthFull();
-                this.setPadding(false);
-                this.setSpacing(false);
-                this.addClassName("main-section");
+        class Main extends VerticalLayout {
+                Main() {
+                        this.setWidthFull();
+                        this.setPadding(false);
+                        this.setSpacing(false);
+                        this.addClassName("main-section");
 
-                add(
-                                new Header(),
-                                new DashboardMainView());
-        }
-}
-
-class DashboardMainView extends VerticalLayout {
-        public DashboardMainView() {
-                this.addClassName("DashboardMainView");
-
-                add(IntroDashboardSection(), CourseInfoSection(), courseEnrollSection());
+                        add(
+                                        new Header(),
+                                        new DashboardMainView());
+                }
         }
 
-        private VerticalLayout IntroDashboardSection() {
-                VerticalLayout tempLayoutContainer = new VerticalLayout();
-                tempLayoutContainer.addClassName("dashboard-main-intro-section");
+        class DashboardMainView extends VerticalLayout {
+                public DashboardMainView() {
+                        this.addClassName("DashboardMainView");
 
-                H1 heading = new H1("Your Academic Journey");
-                heading.addClassName("heading");
-                Paragraph welcomeParagraph = new Paragraph(
-                                "Track currently enrolled courses, plan upcoming enrollments, and review your performance — all from one place.");
-                welcomeParagraph.addClassName("welcomeParagraph");
+                        add(IntroDashboardSection(), CourseInfoSection(), courseEnrollSection());
+                }
 
-                tempLayoutContainer.add(heading, welcomeParagraph);
+                private VerticalLayout IntroDashboardSection() {
+                        VerticalLayout tempLayoutContainer = new VerticalLayout();
+                        tempLayoutContainer.addClassName("dashboard-main-intro-section");
 
-                return tempLayoutContainer;
-        }
+                        H1 heading = new H1("Your Academic Journey");
+                        heading.addClassName("heading");
+                        Paragraph welcomeParagraph = new Paragraph(
+                                        "Track currently enrolled courses, plan upcoming enrollments, and review your performance — all from one place.");
+                        welcomeParagraph.addClassName("welcomeParagraph");
 
-        private HorizontalLayout CourseInfoSection() {
-                HorizontalLayout tempLayoutContainer = new HorizontalLayout();
-                tempLayoutContainer.addClassName("dashobard-course-info-section");
+                        tempLayoutContainer.add(heading, welcomeParagraph);
 
-                HorizontalLayout temp[] = {
-                                helperCourseInfoSection("Course Enrolled", "0", VaadinIcon.ACADEMY_CAP),
-                                helperCourseInfoSection("Total Credit", "0", VaadinIcon.TROPHY),
-                                helperCourseInfoSection("GPA", "0.00", VaadinIcon.MEDAL)
-                };
+                        return tempLayoutContainer;
+                }
 
-                temp[0].addClassName("dashboard-course-info-section-child");
-                temp[1].addClassName("dashboard-course-info-section-child");
-                temp[2].addClassName("dashboard-course-info-section-child");
-                tempLayoutContainer.add(temp[0], temp[1], temp[2]);
+                private HorizontalLayout CourseInfoSection() {
+                        HorizontalLayout tempLayoutContainer = new HorizontalLayout();
+                        tempLayoutContainer.addClassName("dashobard-course-info-section");
 
-                return tempLayoutContainer;
+                        HorizontalLayout temp[] = {
+                                        helperCourseInfoSection("Course Enrolled", "0", VaadinIcon.ACADEMY_CAP),
+                                        helperCourseInfoSection("Total Credit", "0", VaadinIcon.TROPHY),
+                                        helperCourseInfoSection("GPA", "0.00", VaadinIcon.MEDAL)
+                        };
 
-        }
+                        temp[0].addClassName("dashboard-course-info-section-child");
+                        temp[1].addClassName("dashboard-course-info-section-child");
+                        temp[2].addClassName("dashboard-course-info-section-child");
+                        tempLayoutContainer.add(temp[0], temp[1], temp[2]);
 
-        private HorizontalLayout helperCourseInfoSection(String title, String number, VaadinIcon icon) {
-                HorizontalLayout tempLayoutContainer = new HorizontalLayout();
+                        return tempLayoutContainer;
 
-                VerticalLayout tempLayout = new VerticalLayout();
-                Paragraph paragraph = new Paragraph(title);
-                H1 heading = new H1(number);
+                }
 
-                tempLayout.add(paragraph, heading);
-                Icon icn = new Icon(icon);
-                tempLayoutContainer.add(tempLayout, icn);
-                return tempLayoutContainer;
-        }
+                private HorizontalLayout helperCourseInfoSection(String title, String number, VaadinIcon icon) {
+                        HorizontalLayout tempLayoutContainer = new HorizontalLayout();
 
-        private VerticalLayout courseEnrollSection() {
-                VerticalLayout tempLayoutContainer = new VerticalLayout();
+                        VerticalLayout tempLayout = new VerticalLayout();
+                        Paragraph paragraph = new Paragraph(title);
+                        H1 heading = new H1(number);
 
-                HorizontalLayout temp = new HorizontalLayout(
-                                new VerticalLayout(
-                                                new H2("Currently Enrolled Courses"),
-                                                new Paragraph("Courses you are taking this semester")),
-                                new Anchor("/courses", new HorizontalLayout(
-                                                new H6("Enroll More"), new Icon(VaadinIcon.ARROW_RIGHT))));
-                temp.setWidthFull();
+                        tempLayout.add(paragraph, heading);
+                        Icon icn = new Icon(icon);
+                        icn.addClassName("iconWrapper-icon");
 
-                tempLayoutContainer.add(
-                                temp,
-                                displayCourses());
+                        Span iconWrapper = new Span();
+                        iconWrapper.add(icn);
+                        iconWrapper.addClassName("iconWrapper");
 
-                return tempLayoutContainer;
-        }
+                        tempLayoutContainer.add(tempLayout, iconWrapper);
+                        return tempLayoutContainer;
+                }
 
-        private HorizontalLayout displayCourses() {
-                HorizontalLayout tempLayoutContainer = new HorizontalLayout();
-                tempLayoutContainer.addClassName("dashboard-displaycourse");
-                tempLayoutContainer.add(
-                                displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
-                                                "CIS-101", "3 Cr",
-                                                "Fall 2026"),
-                                displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
-                                                "CIS-101", "3 Cr",
-                                                "Fall 2026"),
-                                displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
-                                                "CIS-101", "3 Cr",
-                                                "Fall 2026"),
-                                displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
-                                                "CIS-101", "3 Cr",
-                                                "Fall 2026"));
+                private VerticalLayout courseEnrollSection() {
+                        VerticalLayout tempLayoutContainer = new VerticalLayout();
 
-                return tempLayoutContainer;
-        }
+                        HorizontalLayout temp = new HorizontalLayout(
+                                        new VerticalLayout(
+                                                        new H2("Currently Enrolled Courses"),
+                                                        new Paragraph("Courses you are taking this semester")),
+                                        new Anchor("/courses", new HorizontalLayout(
+                                                        new H6("Enroll More"), new Icon(VaadinIcon.ARROW_RIGHT))));
+                        temp.setWidthFull();
 
-        private VerticalLayout displayCoursesHelper(String courseName, String instructor, String courseCode,
-                        String creditHours, String duration) {
-                VerticalLayout tempLayoutContainer = new VerticalLayout();
-                tempLayoutContainer.addClassName("dashboard-displaycourse-child");
+                        tempLayoutContainer.add(
+                                        temp,
+                                        displayCourses());
 
-                Span courseNameSpan = new Span(courseName);
-                courseNameSpan.addClassName("dashboard-displaycourse-child-courseName");
-                Span instructorSpan = new Span(instructor);
-                instructorSpan.addClassName("dashboard-displaycourse-child-instructor");
-                Span courseCodeSpan = new Span(courseCode);
-                courseCodeSpan.addClassName("dashboard-displaycourse-child-courseCode");
-                Span creditHourSpan = new Span(creditHours);
-                creditHourSpan.addClassName("dashboard-displaycourse-child-creditHour");
-                Section durationSpan = new Section(
-                                new Icon(VaadinIcon.CALENDAR_O),
-                                new Span(duration));
-                creditHourSpan.addClassName("dashboard-displaycourse-child-duration");
+                        return tempLayoutContainer;
+                }
 
-                HorizontalLayout temp = new HorizontalLayout(courseCodeSpan, creditHourSpan);
-                temp.setWidthFull();
+                private HorizontalLayout displayCourses() {
+                        HorizontalLayout tempLayoutContainer = new HorizontalLayout();
+                        tempLayoutContainer.addClassName("dashboard-displaycourse");
+                        tempLayoutContainer.add(
+                                        displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
+                                                        "CIS-101", "3 Cr",
+                                                        "Fall 2026"),
+                                        displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
+                                                        "CIS-101", "3 Cr",
+                                                        "Fall 2026"),
+                                        displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
+                                                        "CIS-101", "3 Cr",
+                                                        "Fall 2026"),
+                                        displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
+                                                        "CIS-101", "3 Cr",
+                                                        "Fall 2026"));
 
-                tempLayoutContainer.add(
-                                temp,
-                                courseNameSpan,
-                                instructorSpan,
-                                durationSpan);
-                return tempLayoutContainer;
+                        return tempLayoutContainer;
+                }
+
+                private VerticalLayout displayCoursesHelper(String courseName, String instructor, String courseCode,
+                                String creditHours, String duration) {
+                        VerticalLayout tempLayoutContainer = new VerticalLayout();
+                        tempLayoutContainer.addClassName("dashboard-displaycourse-child");
+
+                        Span courseNameSpan = new Span(courseName);
+                        courseNameSpan.addClassName("dashboard-displaycourse-child-courseName");
+                        Span instructorSpan = new Span(instructor);
+                        instructorSpan.addClassName("dashboard-displaycourse-child-instructor");
+                        Span courseCodeSpan = new Span(courseCode);
+                        courseCodeSpan.addClassName("dashboard-displaycourse-child-courseCode");
+                        Span creditHourSpan = new Span(creditHours);
+                        creditHourSpan.addClassName("dashboard-displaycourse-child-creditHour");
+                        Section durationSpan = new Section(
+                                        new Icon(VaadinIcon.CALENDAR_O),
+                                        new Span(duration));
+                        creditHourSpan.addClassName("dashboard-displaycourse-child-duration");
+
+                        HorizontalLayout temp = new HorizontalLayout(courseCodeSpan, creditHourSpan);
+                        temp.setWidthFull();
+
+                        tempLayoutContainer.add(
+                                        temp,
+                                        courseNameSpan,
+                                        instructorSpan,
+                                        durationSpan);
+                        return tempLayoutContainer;
+                }
         }
 }

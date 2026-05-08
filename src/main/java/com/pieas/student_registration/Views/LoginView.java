@@ -21,8 +21,8 @@ public class LoginView extends HorizontalLayout {
 
     private StudentService studentService;
 
-    public LoginView(StudentService studentService) {
-        this.studentService = studentService;
+    public LoginView(StudentService stdService) {
+        this.studentService = stdService;
         setSizeFull();
 
         LoginSidebar sidebar = new LoginSidebar();
