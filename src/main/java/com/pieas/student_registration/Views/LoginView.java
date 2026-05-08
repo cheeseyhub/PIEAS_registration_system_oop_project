@@ -161,8 +161,22 @@ class LoginForm extends VerticalLayout {
                 return;
             }
 
+<<<<<<< HEAD
             loginButton.setEnabled(false);
             loginButton.setText("Signing in...");
+=======
+            regNo.setInvalid(false);
+            if (authenticate(dep, reg, passwordUser)) {
+                Notification.show("Welcome!");
+
+                // Storing the data in the session when logged in;
+                studentService.storeStudentData(reg);
+
+                UI.getCurrent().navigate("dashboard");
+            } else {
+                Notification.show("Invalid Credentials");
+            }
+>>>>>>> backend
 
             try {
                 if (this.studentService.authenticateUser(department, registrationNumber, password)) {
