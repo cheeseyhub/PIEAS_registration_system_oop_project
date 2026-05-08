@@ -204,6 +204,91 @@
     font-size: small;
 }
 
-.temp {
-    border: 2px solid red;
+/* Change Password */
+.ChangePasswordView {
+
+    align-self: center;
+
+    padding: 50px 25% ;
+
+    background-color: aliceblue;
+
+}
+
+.ChangePasswordView-form {
+    border-radius: 20px;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    background-color:#fdfdfd;
+}
+
+.ChangePasswordView-form-passwordField {
+    margin: 10px;
+    width: 90%;
+    height: 20px;
+
+    padding: 10px;
+
+    background-color: inherit;
+
+    height: max-content;
+}
+
+.ChangePasswordView-form-passwordField::part(label) {
+    font-weight: bolder;
+}
+
+.ChangePasswordView-form-passwordNote {
+    width: 80%;
+    height: 20px;
+    align-self: center;
+    padding: 20px 20px;
+
+    background-color: aliceblue;
+    border-radius: 20px;
+
+    text-align: justify;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ChangePasswordView-form-button {
+    align-self: center;
+    width: 80%;
+    padding: 10px;
+    margin: 20px;
+
+    background: linear-gradient(to right, rgb(10, 28, 58), rgb(56, 75, 144));
+    border-radius: 20px;
+
+    font-weight: bolder;
+
+    color: aliceblue;
+}
+
+.ChangePasswordView-iconWrapper {
+    width: 70px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    border-radius: 15px; 
+    
+    background: linear-gradient(135deg, #1e2a5a 0%, #2b3a78 100%);
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ChangePasswordView-icon {
+    color: #e8e6e0;
+    width: 50px;
+    height: 32px;
 }
