@@ -7,14 +7,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "students")
 public class StudentEntity {
@@ -22,37 +27,50 @@ public class StudentEntity {
     @Id
     private String id;
 
+    @NotBlank(message = "The name of student must not be blank.")
     private String name;
-
-    @NotBlank
+    @DecimalMin(value = "0.0", message = "Percentage cannot be negative")
+    @DecimalMax(value = "100.00", message = "Percentage cannot exceed 100.00")
+    @NotBlank(message = "Passowrd cannot be blank")
     private String password;
 
     @Indexed(unique = true)
     @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX")
     private String registrationNumber;
 
-    @NotBlank
+    @NotBlank(message = "The  department must not be blank")
     private String department;
 
-    @NotBlank
+    @NotBlank(message = "The fatherName must not be blank")
     private String fatherName;
-    @NotBlank
+
+    @NotBlank(message = "The contactNo must not be blank")
     private String contactNo;
-    @NotBlank
+
+    @NotBlank(message = "The domicile must not be blank")
     private String domicile;
-    @NotBlank
+
+    @NotBlank(message = "The rollNumber must not be blank")
     private String rollNo;
-    @NotBlank
+
+    @NotBlank(message = "The dateOfBirth must not be blank")
     private String dateOfBirth;
-    @NotBlank
+
+    @NotBlank(message = "The CNIC must not be blank")
     private String cnic;
-    @NotBlank
+
+    @NotBlank(message = "The pieasEmail must not be blank")
+    @Email
     private String pieasEmail;
-    @NotBlank
+
+    @NotBlank(message = "The email must not be blank")
+    @Email
     private String personalEmail;
-    @NotBlank
+
+    @NotBlank(message = "The libararyId must not be blank")
     private String libraryId;
-    @NotBlank
+
+    @NotBlank(message = "The address of student  must not be blank")
     private String address;
 
     private ArrayList<SemesterEntity> semesters;

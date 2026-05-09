@@ -5,15 +5,17 @@ import org.springframework.data.annotation.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class SubjectEntity {
     @Id
     private String id;
-    @NotBlank
+    @NotBlank(message = "Subject name must not be blank")
     private String subjectName;
     private double gpa;
 
