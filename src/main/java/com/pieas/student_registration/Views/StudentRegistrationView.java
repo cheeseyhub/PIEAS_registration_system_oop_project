@@ -92,10 +92,6 @@ public class StudentRegistrationView extends HorizontalLayout {
 
             DatePicker dateOfBirth = new DatePicker("Date Of Birth");
 
-            ComboBox<> department = new ComboBox<>(
-
-            );
-
             formLayoutContainer.add(
                     name, fatherName, emailAddress, rollNo, regNo, dateOfBirth, cnic, Address, Domicile, phoneNumber,
                     emergencyPhoneNumber);
