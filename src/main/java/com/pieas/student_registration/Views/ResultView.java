@@ -1,13 +1,14 @@
 package com.pieas.student_registration.Views;
 
 import com.pieas.student_registration.Views.TemplateClasses.*;
-import com.vaadin.copilot.shaded.guava.collect.Table;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -43,7 +44,7 @@ public class ResultView extends HorizontalLayout {
             tempLayoutContainer.setWidthFull();
             tempLayoutContainer.setHeightFull();
 
-            tempLayoutContainer.add(MainViewHeader());
+            tempLayoutContainer.add(MainViewHeader(), semesterNavbar(), displayResult());
 
             return tempLayoutContainer;
         }
@@ -90,6 +91,78 @@ public class ResultView extends HorizontalLayout {
             return tempLayoutContainer;
         }
 
-    }
+        private HorizontalLayout semesterNavbar() {
+            HorizontalLayout tempHorizontalLayout = new HorizontalLayout();
+            tempHorizontalLayout.addClassName("semesterNavbar");
+            Button btn[] = { semesterNabarTemplate("All courses"),
+                    semesterNabarTemplate("Fall 2025"),
+                    semesterNabarTemplate("Spring 2026") };
 
+            for (Button button : btn) {
+                button.addClickListener(e -> {
+                    for (Button tempBtn : btn) {
+                        if (tempBtn.hasClassName("semesterNavbarCell-active"))
+                            tempBtn.removeClassName("semesterNavbarCell-active");
+                    }
+
+                    button.addClassName("semesterNavbarCell-active");
+
+                });
+            }
+
+            btn[0].click();
+
+            tempHorizontalLayout.add(btn);
+            return tempHorizontalLayout;
+        }
+
+        private Button semesterNabarTemplate(String text) {
+            Button textButton = new Button(text);
+            textButton.addClassName("semesterNavbarCell");
+            return textButton;
+        }
+
+        private VerticalLayout displayResult() {
+            VerticalLayout tempLayoutContainer = new VerticalLayout();
+            tempLayoutContainer.addClassName("resultView-table");
+
+            tempLayoutContainer.add(
+                    displayResultRowTemplate(new String[] { "Course", "Tilte", "Semester", "Credits", "Grade", "GPA" }),
+                    displayResultRowTemplate(new String[] { "CIS-101", "Computer Programming and Fundamentals",
+                            "Fall 2025", "3", "A", "4.0" }),
+                    displayResultRowTemplate(new String[] { "CIS-101", "Computer Programming and Fundamentals",
+                            "Fall 2025", "3", "B", "4.0" }),
+                    displayResultRowTemplate(new String[] { "CIS-101", "Computer Programming and Fundamentals",
+                            "Fall 2025", "3", "C", "4.0" }),
+                    displayResultRowTemplate(new String[] { "CIS-101", "Computer Programming and Fundamentals",
+                            "Fall 2025", "3", "F", "4.0" }),
+                    displayResultRowTemplate(new String[] { "CIS-101", "Computer Programming and Fundamentals",
+                            "Fall 2025", "3", "D", "4.0" }));
+
+            return tempLayoutContainer;
+        }
+
+        private HorizontalLayout displayResultRowTemplate(String data[]) {
+            HorizontalLayout tempLayoutContainer = new HorizontalLayout();
+            tempLayoutContainer.addClassName("resultView-table-row");
+            tempLayoutContainer.setWidthFull();
+
+            for (String i : data) {
+                tempLayoutContainer.add(new Span(i));
+            }
+
+            if (data[4].contains("A"))
+                tempLayoutContainer.getComponentAt(4).addClassName("result-view-grade-A");
+            else if (data[4].contains("B"))
+                tempLayoutContainer.getComponentAt(4).addClassName("result-view-grade-B");
+            else if (data[4].contains("C"))
+                tempLayoutContainer.getComponentAt(4).addClassName("result-view-grade-C");
+            else if (data[4].contains("D"))
+                tempLayoutContainer.getComponentAt(4).addClassName("result-view-grade-D");
+            else if (data[4].contains("F"))
+                tempLayoutContainer.getComponentAt(4).addClassName("result-view-grade-F");
+
+            return tempLayoutContainer;
+        }
+    }
 }
