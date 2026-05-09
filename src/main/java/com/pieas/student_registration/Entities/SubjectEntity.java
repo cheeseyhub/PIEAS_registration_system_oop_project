@@ -3,7 +3,13 @@ package com.pieas.student_registration.Entities;
 import org.springframework.data.annotation.Id;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class SubjectEntity {
     @Id
     private String id;
@@ -13,30 +19,6 @@ public class SubjectEntity {
 
     public SubjectEntity(@NotBlank String subjectName, double gpa) {
         this.subjectName = subjectName;
-        this.gpa = gpa;
-    }
-
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public double getGpa() {
-        return gpa;
-    }
-
-    public void setGpa(double gpa) {
         this.gpa = gpa;
     }
 
