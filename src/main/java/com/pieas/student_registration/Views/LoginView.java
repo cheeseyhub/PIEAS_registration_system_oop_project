@@ -170,10 +170,10 @@ class LoginForm extends VerticalLayout {
                 if (this.studentService.authenticateUser(department, registrationNumber, password)) {
                     Notification.show("Welcome!");
                     studentService.storeStudentData(registrationNumber);
-                    UI.getCurrent().navigate("dashboard");
+                    UI.getCurrent().navigate("main");
                 } else {
                     Notification.show("Invalid credentials");
-                    passwordField.clear();
+                    // passwordField.clear();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
