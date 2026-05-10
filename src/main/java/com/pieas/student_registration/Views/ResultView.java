@@ -1,6 +1,8 @@
 package com.pieas.student_registration.Views;
 
+import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.H2;
@@ -8,9 +10,10 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -18,24 +21,39 @@ import com.vaadin.flow.router.Route;
 @StyleSheet("styles/style.css")
 @PageTitle("Student Registration")
 
-public class ResultView extends HorizontalLayout {
-    ResultView() {
-        this.setWidthFull();
-        this.setHeightFull();
-        this.setSpacing(false);
-        this.setPadding(false);
+public class ResultView extends HorizontalLayout implements BeforeEnterObserver {
+    private String currentUser;
 
-        this.add(new Sidebar(), new MainView());
+    @Override
+    public void beforeEnter(BeforeEnterEvent e) {
+        AuthUtil.requireLogin(e);
+    }
+
+    public ResultView() {
+        try {
+            this.currentUser = AuthUtil.getCurrentStudentName();
+        } catch (Exception e) {
+            UI.getCurrent().navigate("");
+            return;
+        }
+
+        add(
+                new Sidebar(),
+                new MainView(currentUser));
+
+        this.setWidthFull();
+        this.setSpacing(false);
+        this.addClassName("dashboard");
     }
 
     class MainView extends VerticalLayout {
-        MainView() {
+        MainView(String studentName) {
             this.setWidthFull();
             this.setHeightFull();
             this.setSpacing(false);
             this.setPadding(false);
 
-            this.add(new Header(), Main());
+            this.add(new Header(studentName), Main());
         }
 
         private VerticalLayout Main() {

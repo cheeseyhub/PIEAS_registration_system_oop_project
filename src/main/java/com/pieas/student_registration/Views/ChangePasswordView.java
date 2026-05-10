@@ -1,6 +1,7 @@
 package com.pieas.student_registration.Views;
 
 import com.vaadin.flow.component.notification.Notification.Position;
+import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -14,6 +15,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import java.lang.Thread;
@@ -22,25 +25,39 @@ import java.lang.Thread;
 @PageTitle("Change Password")
 @StyleSheet("styles/style.css")
 
-public class ChangePasswordView extends HorizontalLayout {
-    public ChangePasswordView() {
-        this.setWidthFull();
-        this.setHeightFull();
-        this.setPadding(false);
-        this.setSpacing(false);
+public class ChangePasswordView extends HorizontalLayout implements BeforeEnterObserver {
+    private String currentUser;
 
-        this.add(new Sidebar(),
-                new MainView());
+    @Override
+    public void beforeEnter(BeforeEnterEvent e) {
+        AuthUtil.requireLogin(e);
+    }
+
+    public ChangePasswordView() {
+        try {
+            this.currentUser = AuthUtil.getCurrentStudentName();
+        } catch (Exception e) {
+            UI.getCurrent().navigate("");
+            return;
+        }
+
+        add(
+                new Sidebar(),
+                new MainView(currentUser));
+
+        this.setWidthFull();
+        this.setSpacing(false);
+        this.addClassName("dashboard");
     }
 
     class MainView extends VerticalLayout {
-        MainView() {
+        MainView(String studentName) {
             this.setWidthFull();
             this.setHeightFull();
             this.setPadding(false);
             this.setSpacing(false);
 
-            this.add(new Header(), changePasswordView());
+            this.add(new Header(studentName), changePasswordView());
         }
 
         private VerticalLayout changePasswordView() {

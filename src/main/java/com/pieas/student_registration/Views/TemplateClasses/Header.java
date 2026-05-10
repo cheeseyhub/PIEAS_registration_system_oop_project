@@ -7,9 +7,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class Header extends HorizontalLayout {
-    String StudentName = "Zohaib Kaleem";
+    private String StudentName;
 
-    public Header() {
+    public Header(String stdName) {
+        this.StudentName = stdName;
         this.setWidthFull();
         this.setHeight("max-content");
 

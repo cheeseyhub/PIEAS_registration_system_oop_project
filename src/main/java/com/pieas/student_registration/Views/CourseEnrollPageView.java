@@ -1,5 +1,6 @@
 package com.pieas.student_registration.Views;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Hr;
@@ -11,31 +12,50 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
 
 @Route("courses")
 @PageTitle("Course Enrollment")
 @StyleSheet("styles/style.css")
 
-public class CourseEnrollPageView extends HorizontalLayout {
-    CourseEnrollPageView() {
+public class CourseEnrollPageView extends HorizontalLayout implements BeforeEnterObserver {
+    private String currentUser;
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent e) {
+        AuthUtil.requireLogin(e);
+    }
+
+    public CourseEnrollPageView() {
+        try {
+            this.currentUser = AuthUtil.getCurrentStudentName();
+        } catch (Exception e) {
+            UI.getCurrent().navigate("");
+            return;
+        }
+
+        add(
+                new Sidebar(),
+                new MainView(currentUser));
+
         this.setWidthFull();
         this.setSpacing(false);
-        this.setPadding(false);
-
-        this.add(new Sidebar(), new MainView());
+        this.addClassName("dashboard");
     }
 
     class MainView extends VerticalLayout {
-        MainView() {
+        MainView(String studentName) {
             this.setWidthFull();
             this.setHeightFull();
             this.setSpacing(false);
             this.setPadding(false);
 
-            this.add(new Header());
+            this.add(new Header(studentName));
             this.add(IntroCourseEnrollSection());
         }
 

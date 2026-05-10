@@ -184,7 +184,6 @@ public class StudentService {
             throw new NotLoggedIn("No Student is logged in ");
 
         }
-
     }
 
 }

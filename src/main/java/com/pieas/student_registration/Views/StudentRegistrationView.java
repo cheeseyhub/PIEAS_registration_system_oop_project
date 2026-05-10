@@ -3,7 +3,9 @@ package com.pieas.student_registration.Views;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.StyleSheet;
@@ -32,29 +34,38 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Student Registration")
 
 public class StudentRegistrationView extends HorizontalLayout implements BeforeEnterObserver {
-    StudentRegistrationView() {
-        this.setWidthFull();
-        this.setHeightFull();
-        this.getStyle().set("height", "max-content");
-        this.setSpacing(false);
-        this.setPadding(false);
-
-        this.add(new Sidebar(), new MainView());
-    }
+    private String currentUser;
 
     @Override
     public void beforeEnter(BeforeEnterEvent e) {
+        AuthUtil.requireLogin(e);
+    }
 
+    public StudentRegistrationView() {
+        try {
+            this.currentUser = AuthUtil.getCurrentStudentName();
+        } catch (Exception e) {
+            UI.getCurrent().navigate("");
+            return;
+        }
+
+        add(
+                new Sidebar(),
+                new MainView(currentUser));
+
+        this.setWidthFull();
+        this.setSpacing(false);
+        this.addClassName("dashboard");
     }
 
     class MainView extends VerticalLayout {
-        MainView() {
+        MainView(String studentName) {
             this.setWidthFull();
             this.setHeightFull();
             this.setSpacing(false);
             this.setPadding(false);
 
-            this.add(new Header(), Main());
+            this.add(new Header(studentName), Main());
         }
 
         private VerticalLayout Main() {

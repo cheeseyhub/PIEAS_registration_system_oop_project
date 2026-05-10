@@ -1,6 +1,8 @@
 package com.pieas.student_registration.Views;
 
+import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
@@ -13,6 +15,8 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -20,11 +24,25 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Dashboard")
 @StyleSheet("styles/style.css")
 
-public class DashboardView extends HorizontalLayout {
+public class DashboardView extends HorizontalLayout implements BeforeEnterObserver {
+        private String currentUser;
+
+        @Override
+        public void beforeEnter(BeforeEnterEvent e) {
+                AuthUtil.requireLogin(e);
+        }
+
         public DashboardView() {
+                try {
+                        this.currentUser = AuthUtil.getCurrentStudentName();
+                } catch (Exception e) {
+                        UI.getCurrent().navigate("");
+                        return;
+                }
+
                 add(
                                 new Sidebar(),
-                                new Main());
+                                new Main(currentUser));
 
                 this.setWidthFull();
                 this.setSpacing(false);
@@ -32,14 +50,14 @@ public class DashboardView extends HorizontalLayout {
         }
 
         class Main extends VerticalLayout {
-                Main() {
+                Main(String studentName) {
                         this.setWidthFull();
                         this.setPadding(false);
                         this.setSpacing(false);
                         this.addClassName("main-section");
 
                         add(
-                                        new Header(),
+                                        new Header(studentName),
                                         new DashboardMainView());
                 }
         }
