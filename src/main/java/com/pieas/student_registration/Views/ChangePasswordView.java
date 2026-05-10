@@ -85,8 +85,12 @@ public class ChangePasswordView extends HorizontalLayout {
                     "Use a unique password you don't reuse on other sites. Mix letters, numbers, and symbols for stronger protection.");
             passwordNote.addClassName("ChangePasswordView-form-passwordNote");
 
-            Button changePasswordButton = new Button("Change Password");
+            Button changePasswordButton = new Button("");
             changePasswordButton.addClassName("ChangePasswordView-form-button");
+
+            Icon saveIcon = new Icon(VaadinIcon.KEY_O);
+            changePasswordButton.getElement().appendChild(saveIcon.getElement(),
+                    new Span("Change Password").getElement());
 
             // Change Password Function
             changePasswordButton.addClickListener(e -> {
