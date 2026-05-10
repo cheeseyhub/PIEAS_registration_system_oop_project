@@ -197,6 +197,7 @@ public class StudentService {
         StudentEntity student = this.getStudentByRegistration(studentRegistrationNo);
 
         student.setPassword(passwordEncoder.encode(newPassword));
+        studentRepository.save(student);
         return "Password changed succesfully";
     }
 
