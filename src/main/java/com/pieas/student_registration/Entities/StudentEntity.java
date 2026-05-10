@@ -7,70 +7,87 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "students")
 public class StudentEntity {
+
     @Id
     private String id;
+
+    @NotBlank(message = "The name of student must not be blank.")
     private String name;
 
+    @NotBlank(message = "Passowrd cannot be blank")
     private String password;
+
+    @DecimalMin(value = "0.0", message = "Percentage cannot be negative")
+    @DecimalMax(value = "100.00", message = "Percentage cannot exceed 100.00")
+    private double percentage;
+
     @Indexed(unique = true)
     @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX")
     private String registrationNumber;
-    @NotBlank
+
+    // Department must in the format BS/MS max three letter word.
+    @NotBlank(message = "The  department must not be blank")
+    @Pattern(regexp = "^(BS|MS) (CIS|ME|MME|CE|PHY|EE|NE)$", message = "Department must be BS or MS followed by CIS, ME, MME, CE, PHY, or EE (e.g., 'BS CIS' or 'MS ME')")
     private String department;
 
+    @NotBlank(message = "The fatherName must not be blank")
+    private String fatherName;
+
+    @NotBlank(message = "The contactNo must not be blank")
+    private String contactNo;
+
+    @NotBlank(message = "The domicile must not be blank")
+    private String domicile;
+
+    @NotBlank(message = "The rollNumber must not be blank")
+    private String rollNo;
+
+    @NotBlank(message = "The dateOfBirth must not be blank")
+    private String dateOfBirth;
+
+    @NotBlank(message = "The CNIC must not be blank")
+    private String cnic;
+
+    @NotBlank(message = "The pieasEmail must not be blank")
+    @Email
+    private String pieasEmail;
+
+    @NotBlank(message = "The email must not be blank")
+    @Email
+    private String personalEmail;
+
+    @NotBlank(message = "The libararyId must not be blank")
+    private String libraryId;
+
+    @NotBlank(message = "The address of student  must not be blank")
+    private String address;
+
     private ArrayList<SemesterEntity> semesters;
-
-    public ArrayList<SemesterEntity> getSemesters() {
-        return semesters;
-    }
-
-    public void setSemesters(ArrayList<SemesterEntity> semesters) {
-        this.semesters = semesters;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRegistrationNumber() {
-        return registrationNumber;
-    }
-
-    public void setRegistrationNumber(String registrationNumber) {
-        this.registrationNumber = registrationNumber;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    private ArrayList<CertificationEntity> certifications;
 
     public Optional<SemesterEntity> getSemster(int semesterNumber) {
         return Optional.of(this.semesters.get(semesterNumber));
+
+    }
+
+    public Optional<CertificationEntity> getDegree(int degreeIndex) {
+        return Optional.of(this.certifications.get(degreeIndex));
 
     }
 }

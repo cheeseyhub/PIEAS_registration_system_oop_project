@@ -5,7 +5,15 @@ import java.util.ArrayList;
 import org.springframework.data.annotation.Id;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SemesterEntity {
     @Id
     private String id;
@@ -19,32 +27,8 @@ public class SemesterEntity {
         this.enrolled = enrolled;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public int getSemesterNumber() {
-        return semesterNumber;
-    }
-
-    public void setSemesterNumber(int semesterNumber) {
-        this.semesterNumber = semesterNumber;
-    }
-
     public boolean isEnrolled() {
         return enrolled;
-    }
-
-    public void setEnrolled(boolean enrolled) {
-        this.enrolled = enrolled;
-    }
-
-    public ArrayList<SubjectEntity> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(ArrayList<SubjectEntity> subjects) {
-        this.subjects = subjects;
     }
 
     public void addSubject(SubjectEntity subject) {
