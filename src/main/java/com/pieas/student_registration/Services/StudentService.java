@@ -187,4 +187,17 @@ public class StudentService {
 
     }
 
+    public String setNewPassword(String newPassword) throws IllegalArgumentException {
+
+        String studentRegistrationNo = (String) VaadinSession.getCurrent().getAttribute("studentRegistrationNo");
+        if (studentRegistrationNo.isEmpty() || studentRegistrationNo.isBlank()) {
+            throw new IllegalArgumentException("Student not logged in");
+
+        }
+        StudentEntity student = this.getStudentByRegistration(studentRegistrationNo);
+
+        student.setPassword(passwordEncoder.encode(newPassword));
+        return "Password changed succesfully";
+    }
+
 }
