@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.DuplicateKeyException;
+import com.pieas.student_registration.Entities.CertificationEntity;
 import com.pieas.student_registration.Entities.SemesterEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Entities.SubjectEntity;
@@ -23,12 +24,12 @@ public class StudentService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public Optional<StudentEntity> getStduentById(String id) {
+    public Optional<StudentEntity> getStudentById(String id) {
         return studentRepository.findById(id);
 
     }
 
-    public void addStudent(StudentEntity student) {
+    public void addStudent(StudentEntity student) throws IllegalArgumentException {
         String encodedPassword = passwordEncoder.encode(student.getPassword());
         student.setPassword(encodedPassword);
         if (student.getSemesters() == null) {
@@ -37,7 +38,8 @@ public class StudentService {
         try {
             studentRepository.insert(student);
         } catch (DuplicateKeyException e) {
-            System.err.println(e.getMessage());
+            throw new IllegalArgumentException(
+                    "Student with registration number" + student.getRegistrationNumber() + " is already registered");
         }
     }
 
@@ -50,7 +52,7 @@ public class StudentService {
 
     public String enrollInSemester(String id, int semesterNumber) {
 
-        Optional<StudentEntity> student = this.getStduentById(id);
+        Optional<StudentEntity> student = this.getStudentById(id);
 
         if (student.isPresent()) {
             ArrayList<SemesterEntity> semesters = student.get().getSemesters();
@@ -76,7 +78,11 @@ public class StudentService {
         }
 
         Optional<StudentEntity> student = studentRepository.findByRegistrationNumber(registrationNumber);
-        if (student.isPresent() && passwordEncoder.matches(password, student.get().getPassword())) {
+        if (student.isPresent()
+                &&
+                passwordEncoder.matches(password, student.get().getPassword())
+                &&
+                student.get().getDepartment().equals(department)) {
             return true;
         }
         return false;
@@ -84,7 +90,7 @@ public class StudentService {
     }
 
     public StudentEntity getStudentByRegistration(String registrationNo) {
-        StudentEntity student = studentRepository.findByRegistrationNumber(registrationNo).orElseGet(null);
+        StudentEntity student = studentRepository.findByRegistrationNumber(registrationNo).orElse(null);
         return student;
 
     }
@@ -124,15 +130,33 @@ public class StudentService {
         return "Subject added to semester " + semesterNumber + " for student " + registrationNumber + ".";
     }
 
+    public String addCertification(String registrationNumber,
+            CertificationEntity certification) {
+        StudentEntity student = this.getStudentByRegistration(registrationNumber);
+        if (student == null) {
+            return "Student Does not exist ";
+        }
+
+        if (student.getCertifications() == null) {
+            student.setCertifications(new ArrayList<>());
+
+        }
+        student.getCertifications().add(certification);
+        studentRepository.save(student);
+        return "Degree " + certification.getDegreeName() + " successfully added  to " + student.getRegistrationNumber();
+
+    }
+
     public void storeStudentData(String reg) {
-        VaadinSession.getCurrent().setAttribute("student", this.getStudentByRegistration(reg));
+        StudentEntity student = this.getStudentByRegistration(reg);
+        VaadinSession.getCurrent().setAttribute("studentRegistrationNo", student.getRegistrationNumber());
     }
 
     public boolean checkStudentLoggedIn() {
 
-        StudentEntity student = (StudentEntity) VaadinSession.getCurrent().getAttribute("student");
+        String studentRegistrationNumber = (String) VaadinSession.getCurrent().getAttribute("studentRegistrationNo");
 
-        if (student != null) {
+        if (studentRegistrationNumber != null && !studentRegistrationNumber.isBlank()) {
             return true;
 
         } else {
@@ -140,10 +164,10 @@ public class StudentService {
         }
     }
 
-    public String getLoggedStudentId() throws NotLoggedIn {
-        StudentEntity student = (StudentEntity) VaadinSession.getCurrent().getAttribute("student");
-        if (this.checkStudentLoggedIn()) {
-            return student.getId();
+    public String getLoggedStudentRegistrationNo() throws NotLoggedIn {
+        String studentRegistrationNo = (String) VaadinSession.getCurrent().getAttribute("studentRegistrationNo");
+        if (studentRegistrationNo != null && !studentRegistrationNo.isBlank()) {
+            return studentRegistrationNo;
         } else {
             throw new NotLoggedIn("No Student is logged in ");
         }
@@ -151,22 +175,13 @@ public class StudentService {
     }
 
     public String getLoggedStudentName() throws NotLoggedIn {
-        StudentEntity student = (StudentEntity) VaadinSession.getCurrent().getAttribute("student");
+        String studentRegistrationNo = (String) VaadinSession.getCurrent().getAttribute("studentRegistrationNo");
+
         if (this.checkStudentLoggedIn()) {
-            return student.getName();
+            String studentName = getStudentByRegistration(studentRegistrationNo).getName();
+            return studentName;
         } else {
             throw new NotLoggedIn("No Student is logged in ");
-
-        }
-
-    }
-
-    public StudentEntity getStudentData() throws NotLoggedIn {
-        StudentEntity student = (StudentEntity) VaadinSession.getCurrent().getAttribute("student");
-        if (this.checkStudentLoggedIn()) {
-            return student;
-        } else {
-            throw new NotLoggedIn("No Student is logged in");
 
         }
 

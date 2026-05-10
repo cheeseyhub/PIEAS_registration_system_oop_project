@@ -29,10 +29,13 @@ public class StudentEntity {
 
     @NotBlank(message = "The name of student must not be blank.")
     private String name;
-    @DecimalMin(value = "0.0", message = "Percentage cannot be negative")
-    @DecimalMax(value = "100.00", message = "Percentage cannot exceed 100.00")
+
     @NotBlank(message = "Passowrd cannot be blank")
     private String password;
+
+    @DecimalMin(value = "0.0", message = "Percentage cannot be negative")
+    @DecimalMax(value = "100.00", message = "Percentage cannot exceed 100.00")
+    private double percentage;
 
     @Indexed(unique = true)
     @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX")
@@ -74,14 +77,14 @@ public class StudentEntity {
     private String address;
 
     private ArrayList<SemesterEntity> semesters;
-    private ArrayList<DegreeEntity> certifications;
+    private ArrayList<CertificationEntity> certifications;
 
     public Optional<SemesterEntity> getSemster(int semesterNumber) {
         return Optional.of(this.semesters.get(semesterNumber));
 
     }
 
-    public Optional<DegreeEntity> getDegree(int degreeIndex) {
+    public Optional<CertificationEntity> getDegree(int degreeIndex) {
         return Optional.of(this.certifications.get(degreeIndex));
 
     }

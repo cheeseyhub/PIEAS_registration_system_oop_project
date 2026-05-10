@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class DegreeEntity {
+public class CertificationEntity {
     @NotBlank(message = "Degree Name is required.")
     private String degreeName;
     @NotBlank(message = "Institute is required.")
