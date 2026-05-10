@@ -30,6 +30,10 @@ public class StudentEntity {
     @NotBlank(message = "The name of student must not be blank.")
     private String name;
 
+    @NotBlank(message = "The gender  field must not be blank")
+    @Pattern(regexp = "^(male|female)$")
+    private String gender;
+
     @NotBlank(message = "Passowrd cannot be blank")
     private String password;
 
@@ -51,6 +55,9 @@ public class StudentEntity {
 
     @NotBlank(message = "The contactNo must not be blank")
     private String contactNo;
+
+    @NotBlank(message = "The emergencyContact must not be blank")
+    private String emergencyContact;
 
     @NotBlank(message = "The domicile must not be blank")
     private String domicile;
@@ -78,6 +85,8 @@ public class StudentEntity {
     @NotBlank(message = "The address of student  must not be blank")
     private String address;
 
+    private double cgpa;
+
     private ArrayList<SemesterEntity> semesters;
     private ArrayList<CertificationEntity> certifications;
 
@@ -89,5 +98,19 @@ public class StudentEntity {
     public Optional<CertificationEntity> getDegree(int degreeIndex) {
         return Optional.of(this.certifications.get(degreeIndex));
 
+    }
+
+    public double calculateCgpa() {
+        if (semesters == null || semesters.isEmpty()) {
+            return 0.0;
+        }
+
+        double total = 0.0;
+        for (SemesterEntity semester : semesters) {
+            total += semester.getSemesterGpa();
+        }
+
+        this.cgpa = total / semesters.size();
+        return this.cgpa;
     }
 }

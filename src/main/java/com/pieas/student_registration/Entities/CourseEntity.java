@@ -21,5 +21,7 @@ public class CourseEntity {
     private String courseName;
     @NotBlank(message = "department name must not be blank")
     private String department;
+    @NotBlank
+    private String courseCode;
 
 }
