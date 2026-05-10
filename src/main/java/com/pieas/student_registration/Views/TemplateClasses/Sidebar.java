@@ -1,5 +1,6 @@
 package com.pieas.student_registration.Views.TemplateClasses;
 
+import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
@@ -70,7 +71,7 @@ public class Sidebar extends VerticalLayout {
         logoutButton.setWidthFull();
         logoutButton.setIcon(new Icon(VaadinIcon.EXIT_O));
         logoutButton.addClickListener(e -> {
-            UI.getCurrent().navigate("logout");
+            AuthUtil.logout();
         });
 
         add(logoutButton);

@@ -1,6 +1,7 @@
 package com.pieas.student_registration.Views;
 
 import com.vaadin.flow.component.notification.Notification.Position;
+import com.pieas.student_registration.Services.StudentService;
 import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
 import com.vaadin.flow.component.UI;
@@ -21,11 +22,15 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import java.lang.Thread;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Route("changePassword")
 @PageTitle("Change Password")
 @StyleSheet("styles/style.css")
 
 public class ChangePasswordView extends HorizontalLayout implements BeforeEnterObserver {
+    @Autowired
+    private StudentService std;
     private String currentUser;
 
     @Override
@@ -138,11 +143,11 @@ public class ChangePasswordView extends HorizontalLayout implements BeforeEnterO
 
                 // PASSWORD CHANGE CODE HERE
                 try {
+                    Notification.show(std.setNewPassword(passwordString));
                     Notification.show("Password Changed Successfully", 2000, Position.BOTTOM_END);
                     Thread.sleep(3);
-                    UI.getCurrent().navigate("main");
                 } catch (Exception err) {
-                    Notification.show("Error Changing Passwor.\nTry Again Later", 2000, Position.BOTTOM_END);
+                    Notification.show("Error Changing Password.\nTry Again Later", 2000, Position.BOTTOM_END);
                     return;
                 }
             });

@@ -44,6 +44,6 @@ public class AuthUtil {
 
     public static void logout() {
         VaadinSession.getCurrent().setAttribute("studentRegistrationNo", null);
-        UI.getCurrent().navigate("login");
+        UI.getCurrent().navigate("");
     }
 }
