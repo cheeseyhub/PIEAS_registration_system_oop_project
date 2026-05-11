@@ -37,10 +37,6 @@ public class StudentEntity {
     @NotBlank(message = "Passowrd cannot be blank")
     private String password;
 
-    @DecimalMin(value = "0.0", message = "Percentage cannot be negative")
-    @DecimalMax(value = "100.00", message = "Percentage cannot exceed 100.00")
-    private double percentage;
-
     @Indexed(unique = true)
     @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX")
     private String registrationNumber;
@@ -112,5 +108,14 @@ public class StudentEntity {
 
         this.cgpa = total / semesters.size();
         return this.cgpa;
+    }
+
+    public int getCurrentSemester() {
+        if (semesters == null || semesters.isEmpty()) {
+            return 0;
+        }
+
+        return this.getSemesters().size() - 1;
+
     }
 }
