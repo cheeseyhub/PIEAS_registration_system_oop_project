@@ -110,12 +110,8 @@ public class StudentEntity {
         return this.cgpa;
     }
 
-    public int getCurrentSemester() {
-        if (semesters == null || semesters.isEmpty()) {
-            return 0;
-        }
-
-        return this.getSemesters().size() - 1;
+    public SemesterEntity getCurrentSemester() {
+        return this.semesters.getLast();
 
     }
 }
