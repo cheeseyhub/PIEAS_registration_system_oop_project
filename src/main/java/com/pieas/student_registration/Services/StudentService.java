@@ -201,4 +201,17 @@ public class StudentService {
         return "Password changed succesfully";
     }
 
+    public StudentEntity getLoggedUser() throws NotLoggedIn {
+        String studentRegistrationNo = (String) VaadinSession.getCurrent().getAttribute("studentRegistrationNo");
+
+        if (this.checkStudentLoggedIn()) {
+            StudentEntity student = getStudentByRegistration(studentRegistrationNo);
+            return student;
+        } else {
+            throw new NotLoggedIn("No Student is logged in ");
+
+        }
+
+    }
+
 }
