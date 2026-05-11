@@ -2,6 +2,8 @@ package com.pieas.student_registration.Entities;
 
 import java.util.ArrayList;
 
+import javax.security.auth.Subject;
+
 import org.springframework.data.annotation.Id;
 
 import jakarta.validation.constraints.NotBlank;
@@ -62,6 +64,21 @@ public class SemesterEntity {
 
         total = total / sumOfCreditHours;
         return total;
+
+    }
+
+    public int getTotalCreditHour() {
+        int totalSumOfCreditHour = 0;
+
+        for (SubjectEntity subject : subjects) {
+            totalSumOfCreditHour += subject.getCreditHour();
+        }
+        return totalSumOfCreditHour;
+
+    }
+
+    public int getTotalEnrolledSubjects() {
+        return this.subjects.size();
 
     }
 
