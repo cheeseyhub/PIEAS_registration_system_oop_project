@@ -143,7 +143,7 @@ public class ChangePasswordView extends HorizontalLayout implements BeforeEnterO
 
                 // PASSWORD CHANGE CODE HERE
                 try {
-                    Notification.show(std.setNewPassword(passwordString));
+                    std.setNewPassword(passwordString);
                     Notification.show("Password Changed Successfully", 2000, Position.BOTTOM_END);
                     Thread.sleep(3);
                 } catch (Exception err) {

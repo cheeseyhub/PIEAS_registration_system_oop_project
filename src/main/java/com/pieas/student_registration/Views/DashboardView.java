@@ -1,5 +1,11 @@
 package com.pieas.student_registration.Views;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.pieas.student_registration.Entities.CourseEntity;
+import com.pieas.student_registration.Entities.StudentEntity;
+import com.pieas.student_registration.Entities.SubjectEntity;
+import com.pieas.student_registration.Services.StudentService;
 import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
 import com.vaadin.flow.component.UI;
@@ -13,6 +19,7 @@ import com.vaadin.flow.component.html.Section;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -25,6 +32,11 @@ import com.vaadin.flow.router.Route;
 @StyleSheet("styles/style.css")
 
 public class DashboardView extends HorizontalLayout implements BeforeEnterObserver {
+        @Autowired
+        private StudentService studentService;
+
+        private StudentEntity studentData;
+
         private String currentUser;
 
         @Override
@@ -32,17 +44,20 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                 AuthUtil.requireLogin(e);
         }
 
-        public DashboardView() {
+        public DashboardView(StudentService studentService) {
+                this.studentService = studentService;
                 try {
-                        this.currentUser = AuthUtil.getCurrentStudentName();
+                        this.currentUser = studentService.getLoggedStudentName();
+                        this.studentData = studentService.getLoggedUser();
                 } catch (Exception e) {
                         UI.getCurrent().navigate("");
+                        Notification.show(e.getMessage());
                         return;
                 }
 
                 add(
                                 new Sidebar(),
-                                new Main(currentUser));
+                                new Main());
 
                 this.setWidthFull();
                 this.setSpacing(false);
@@ -50,14 +65,14 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
         }
 
         class Main extends VerticalLayout {
-                Main(String studentName) {
+                Main() {
                         this.setWidthFull();
                         this.setPadding(false);
                         this.setSpacing(false);
                         this.addClassName("main-section");
 
                         add(
-                                        new Header(studentName),
+                                        new Header(currentUser),
                                         new DashboardMainView());
                 }
         }
@@ -87,11 +102,20 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                 private HorizontalLayout CourseInfoSection() {
                         HorizontalLayout tempLayoutContainer = new HorizontalLayout();
                         tempLayoutContainer.addClassName("dashobard-course-info-section");
+                        studentData.calculateCgpa();
 
                         HorizontalLayout temp[] = {
-                                        helperCourseInfoSection("Course Enrolled", "0", VaadinIcon.ACADEMY_CAP),
-                                        helperCourseInfoSection("Total Credit", "0", VaadinIcon.TROPHY),
-                                        helperCourseInfoSection("GPA", "0.00", VaadinIcon.MEDAL)
+
+                                        helperCourseInfoSection("Course Enrolled",
+                                                        String.valueOf(studentData.getCurrentSemester()
+                                                                        .getTotalEnrolledSubjects()),
+                                                        VaadinIcon.ACADEMY_CAP),
+                                        helperCourseInfoSection("Total Credit",
+                                                        String.valueOf(studentData.getCurrentSemester()
+                                                                        .getTotalCreditHour()),
+                                                        VaadinIcon.TROPHY),
+                                        helperCourseInfoSection("GPA", String.valueOf(studentData.getCgpa()),
+                                                        VaadinIcon.MEDAL)
                         };
 
                         temp[0].addClassName("dashboard-course-info-section-child");
@@ -143,39 +167,30 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                 private HorizontalLayout displayCourses() {
                         HorizontalLayout tempLayoutContainer = new HorizontalLayout();
                         tempLayoutContainer.addClassName("dashboard-displaycourse");
-                        tempLayoutContainer.add(
-                                        displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
-                                                        "CIS-101", "3 Cr",
-                                                        "Fall 2026"),
-                                        displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
-                                                        "CIS-101", "3 Cr",
-                                                        "Fall 2026"),
-                                        displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
-                                                        "CIS-101", "3 Cr",
-                                                        "Fall 2026"),
-                                        displayCoursesHelper("Computer Programming and Fundamentals", "Zohaib Kaleem",
-                                                        "CIS-101", "3 Cr",
-                                                        "Fall 2026"));
+
+                        for (SubjectEntity course : studentData.getCurrentSemester().getSubjects()) {
+                                tempLayoutContainer.add(
+                                                displayCoursesHelper(course));
+                        }
 
                         return tempLayoutContainer;
                 }
 
-                private VerticalLayout displayCoursesHelper(String courseName, String instructor, String courseCode,
-                                String creditHours, String duration) {
+                private VerticalLayout displayCoursesHelper(SubjectEntity subject) {
                         VerticalLayout tempLayoutContainer = new VerticalLayout();
                         tempLayoutContainer.addClassName("dashboard-displaycourse-child");
 
-                        Span courseNameSpan = new Span(courseName);
+                        Span courseNameSpan = new Span(subject.getCourseTitle());
                         courseNameSpan.addClassName("dashboard-displaycourse-child-courseName");
-                        Span instructorSpan = new Span(instructor);
+                        Span instructorSpan = new Span(subject.getInstructor());
                         instructorSpan.addClassName("dashboard-displaycourse-child-instructor");
-                        Span courseCodeSpan = new Span(courseCode);
+                        Span courseCodeSpan = new Span(subject.getCourseCode());
                         courseCodeSpan.addClassName("dashboard-displaycourse-child-courseCode");
-                        Span creditHourSpan = new Span(creditHours);
+                        Span creditHourSpan = new Span(String.valueOf(subject.getCreditHour()).concat(" Cr"));
                         creditHourSpan.addClassName("dashboard-displaycourse-child-creditHour");
                         Section durationSpan = new Section(
                                         new Icon(VaadinIcon.CALENDAR_O),
-                                        new Span(duration));
+                                        new Span(String.valueOf(subject.getDuration())));
                         creditHourSpan.addClassName("dashboard-displaycourse-child-duration");
 
                         HorizontalLayout temp = new HorizontalLayout(courseCodeSpan, creditHourSpan);
