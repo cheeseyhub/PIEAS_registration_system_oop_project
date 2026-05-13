@@ -7,8 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -23,7 +21,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Document(collection = "students")
 public class StudentEntity {
-
     @Id
     private String id;
 
@@ -36,6 +33,8 @@ public class StudentEntity {
 
     @NotBlank(message = "Passowrd cannot be blank")
     private String password;
+
+    public static boolean isAllowedToEdit = false;
 
     @Indexed(unique = true)
     @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX")

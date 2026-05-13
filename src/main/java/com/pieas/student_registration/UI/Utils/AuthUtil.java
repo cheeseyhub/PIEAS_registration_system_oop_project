@@ -46,4 +46,9 @@ public class AuthUtil {
         VaadinSession.getCurrent().setAttribute("studentRegistrationNo", null);
         UI.getCurrent().navigate("");
     }
+
+    public static void adminLogout() {
+        VaadinSession.getCurrent().setAttribute("admin", null);
+        UI.getCurrent().navigate("");
+    }
 }

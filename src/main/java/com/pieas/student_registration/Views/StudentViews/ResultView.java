@@ -1,4 +1,4 @@
-package com.pieas.student_registration.Views;
+package com.pieas.student_registration.Views.StudentViews;
 
 import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
@@ -38,7 +38,7 @@ public class ResultView extends HorizontalLayout implements BeforeEnterObserver 
         }
 
         add(
-                new Sidebar(),
+                new Sidebar("result"),
                 new MainView(currentUser));
 
         this.setWidthFull();

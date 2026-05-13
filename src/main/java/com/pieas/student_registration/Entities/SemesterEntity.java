@@ -2,8 +2,6 @@ package com.pieas.student_registration.Entities;
 
 import java.util.ArrayList;
 
-import javax.security.auth.Subject;
-
 import org.springframework.data.annotation.Id;
 
 import jakarta.validation.constraints.NotBlank;

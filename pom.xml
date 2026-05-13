@@ -81,6 +81,11 @@
 			<version>1.18.46</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <optional>true</optional>
+</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

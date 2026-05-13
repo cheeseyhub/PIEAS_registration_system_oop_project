@@ -1,24 +1,21 @@
 package com.pieas.student_registration.Views.TemplateClasses;
 
 import com.pieas.student_registration.UI.Utils.AuthUtil;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.html.Section;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-public class Sidebar extends VerticalLayout {
-    private String currentPage;
+public class AdminSidebar extends VerticalLayout {
+    private String currentPanel;
 
-    public Sidebar(String currentPage) {
+    public AdminSidebar() {
         this.setHeight("100vh");
         this.setWidth("max-content");
         this.setPadding(false);
         this.setSpacing(false);
         this.addClassName("sidebar");
-
-        this.currentPage = currentPage;
 
         Section top = new Section();
         top.addClassName("sidebar-top-section");
@@ -33,6 +30,12 @@ public class Sidebar extends VerticalLayout {
 
         add(top);
         addLogoutButton();
+
+        currentPanel = "student";
+    }
+
+    public String getCurrentView() {
+        return currentPanel;
     }
 
     private VerticalLayout addButtons() {
@@ -42,11 +45,10 @@ public class Sidebar extends VerticalLayout {
         buttonContainer.setWidthFull();
 
         Object[][] buttons = {
-                { "Dashboard", "main", VaadinIcon.DASHBOARD },
-                { "Student Registration", "registration", VaadinIcon.USER_STAR },
-                { "Course Enroll", "courses", VaadinIcon.BOOK },
-                { "View Results", "result", VaadinIcon.CHART_LINE },
-                { "Change Password", "changePassword", VaadinIcon.KEY }
+                { "Manage Students", "student", VaadinIcon.ACADEMY_CAP },
+                { "Manage Courses", "course", VaadinIcon.BOOK },
+                { "Manage Departments", "department", VaadinIcon.BUILDING },
+                { "Manage Admins", "admin", VaadinIcon.KEY }
         };
 
         for (Object[] btn : buttons) {
@@ -55,11 +57,8 @@ public class Sidebar extends VerticalLayout {
             button.setWidthFull();
             button.setIcon(new Icon((VaadinIcon) btn[2]));
 
-            if (this.currentPage.matches((String) btn[1]))
-                button.addClassName("sidebar-button-active");
             button.addClickListener(e -> {
-                UI.getCurrent().navigate((String) btn[1]);
-
+                currentPanel = (String) btn[1];
             });
 
             button.getStyle().set("text-align", "left");
@@ -77,7 +76,7 @@ public class Sidebar extends VerticalLayout {
         logoutButton.setWidthFull();
         logoutButton.setIcon(new Icon(VaadinIcon.EXIT_O));
         logoutButton.addClickListener(e -> {
-            AuthUtil.logout();
+            AuthUtil.adminLogout();
         });
 
         add(logoutButton);

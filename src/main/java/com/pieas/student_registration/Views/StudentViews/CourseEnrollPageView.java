@@ -1,4 +1,4 @@
-package com.pieas.student_registration.Views;
+package com.pieas.student_registration.Views.StudentViews;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.StyleSheet;
@@ -40,7 +40,7 @@ public class CourseEnrollPageView extends HorizontalLayout implements BeforeEnte
         }
 
         add(
-                new Sidebar(),
+                new Sidebar("courses"),
                 new MainView(currentUser));
 
         this.setWidthFull();

@@ -1,4 +1,4 @@
-package com.pieas.student_registration.Views;
+package com.pieas.student_registration.Views.StudentViews;
 
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.pieas.student_registration.Services.StudentService;
@@ -47,7 +47,7 @@ public class ChangePasswordView extends HorizontalLayout implements BeforeEnterO
         }
 
         add(
-                new Sidebar(),
+                new Sidebar("changePassword"),
                 new MainView(currentUser));
 
         this.setWidthFull();

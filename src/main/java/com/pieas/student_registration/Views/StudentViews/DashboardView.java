@@ -1,8 +1,7 @@
-package com.pieas.student_registration.Views;
+package com.pieas.student_registration.Views.StudentViews;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.pieas.student_registration.Entities.CourseEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Entities.SubjectEntity;
 import com.pieas.student_registration.Services.StudentService;
@@ -36,7 +35,6 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
         private StudentService studentService;
 
         private StudentEntity studentData;
-
         private String currentUser;
 
         @Override
@@ -44,8 +42,8 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                 AuthUtil.requireLogin(e);
         }
 
-        public DashboardView(StudentService studentService) {
-                this.studentService = studentService;
+        public DashboardView(StudentService stdService) {
+                this.studentService = stdService;
                 try {
                         this.currentUser = studentService.getLoggedStudentName();
                         this.studentData = studentService.getLoggedUser();
@@ -56,7 +54,7 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                 }
 
                 add(
-                                new Sidebar(),
+                                new Sidebar("main"),
                                 new Main());
 
                 this.setWidthFull();

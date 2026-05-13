@@ -1,8 +1,9 @@
-package com.pieas.student_registration.Views;
+package com.pieas.student_registration.Views.StudentViews;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
 import com.vaadin.flow.component.UI;
@@ -50,7 +51,7 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
         }
 
         add(
-                new Sidebar(),
+                new Sidebar("registration"),
                 new MainView(currentUser));
 
         this.setWidthFull();
@@ -197,7 +198,7 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
             // CAN USE SATIC VARIABLE FOR ALL STUDENTS
             // if(!Student.canEdit) means not allowed set value read only
 
-            if (!true) {
+            if (StudentEntity.isAllowedToEdit) {
                 name.setReadOnly(true);
                 fatherName.setReadOnly(true);
                 dateOfBirth.setReadOnly(true);

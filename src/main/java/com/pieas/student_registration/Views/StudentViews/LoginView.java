@@ -1,4 +1,4 @@
-package com.pieas.student_registration.Views;
+package com.pieas.student_registration.Views.StudentViews;
 
 import com.pieas.student_registration.Services.StudentService;
 import com.vaadin.flow.component.UI;
