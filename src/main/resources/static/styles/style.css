@@ -604,3 +604,11 @@
 
     color: aliceblue;
 }  
+
+.student-display-row-template{
+    background-color: aliceblue;
+
+    display: flex;
+    justify-content: space-between;
+    
+}

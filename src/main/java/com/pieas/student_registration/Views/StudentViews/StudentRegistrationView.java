@@ -198,7 +198,7 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
             // CAN USE SATIC VARIABLE FOR ALL STUDENTS
             // if(!Student.canEdit) means not allowed set value read only
 
-            if (StudentEntity.isAllowedToEdit) {
+            if (false == StudentEntity.isAllowedToEdit) {
                 name.setReadOnly(true);
                 fatherName.setReadOnly(true);
                 dateOfBirth.setReadOnly(true);

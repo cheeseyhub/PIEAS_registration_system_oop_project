@@ -8,4 +8,5 @@ import com.pieas.student_registration.Entities.CourseEntity;
 
 public interface CourseRepository extends MongoRepository<CourseEntity, String> {
     List<CourseEntity> findByDepartment(String department);
+    
 }
