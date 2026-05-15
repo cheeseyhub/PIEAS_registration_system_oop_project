@@ -1,8 +1,6 @@
 package com.pieas.student_registration.Views.AdminViews;
 
-import com.pieas.student_registration.Entities.CourseEntity;
 import com.pieas.student_registration.Entities.DepartmentEntity;
-import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Entities.SubjectEntity;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
@@ -12,7 +10,6 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 
 class ManageCourseView extends VerticalLayout {
