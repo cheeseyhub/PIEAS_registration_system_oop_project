@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .iconWrapper {
@@ -910,4 +910,98 @@
 .manage-admin-table-button {
   border: none;
   background-color: inherit;
+}
+
+.course-display-table {
+  gap: 0px;
+}
+
+.course-display-table > :nth-child(1) {
+  background-color: rgb(247, 247, 247);
+
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.course-display-table > * {
+  background-color: #ffffff;
+  width: 100%;
+
+  font-size: 1.2em;
+
+  display: grid;
+  gap: 0;
+
+  grid-template-columns: 2fr 2fr 2fr 1fr 1fr 1fr 1fr;
+
+  justify-content: center;
+}
+
+.course-display-table > * > * {
+  padding: 5px;
+  justify-content: center;
+  text-align: center;
+}
+
+.manage-course-table-button {
+  border: none;
+  background-color: inherit;
+}
+
+.course-display-table > :nth-last-child(1) {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.course-display-table > :not(:nth-child(1)):hover {
+  background-color: rgb(238, 245, 248);
+}
+
+.addCourseForm {
+  align-items: center;
+
+  padding: 20px 20%;
+}
+
+.addCourseHeader {
+  background: linear-gradient(to right, rgb(10, 28, 58), rgb(56, 75, 144));
+
+  display: grid;
+
+  grid-template-columns: 2fr 1fr;
+
+  padding: 20px;
+
+  color: aliceblue;
+  font-size: larger;
+  font-weight: bolder;
+
+  border-radius: 20px;
+
+  margin-bottom: 20px;
+}
+
+.addCourseForm:nth-child(1) {
+  justify-self: start;
+}
+
+.add-new-course-button {
+  width: max-content;
+  justify-self: end;
+
+  padding: 10px 20px;
+
+  background: inherit;
+  color: aliceblue;
+}
+
+.addCourseForm > * {
+  width: 50%;
+  height: max-content;
+}
+
+.addCourseButton {
+  align-self: flex-end;
+  width: max-content;
+  padding: 10px 20px;
 }

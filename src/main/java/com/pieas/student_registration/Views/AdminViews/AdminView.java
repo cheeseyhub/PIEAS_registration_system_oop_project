@@ -50,7 +50,7 @@ public class AdminView extends HorizontalLayout {
                         tempLayout.add(new ManageStudentView());
                         break;
                     case "course":
-                        tempLayout.add(new ManageCoursesView());
+                        tempLayout.add(new ManageCourseView());
                         break;
                     case "department":
                         tempLayout.add(new ManageDepartmentView());

@@ -45,6 +45,9 @@ public class SubjectEntity {
     @NotBlank
     private int creditHour;
 
+    @NotBlank
+    private String department;
+
     @Pattern(regexp = "^(A\\+|A-|A|B\\+|B-|B|C\\+|C-|C|D\\+|D-|D|F)$", message = "Grade must be a valid letter grade (e.g., A+, A, B-, F)")
     private String grade;
 
