@@ -17,10 +17,9 @@ public class AdminView extends HorizontalLayout {
 
     AdminView() {
         this.setWidthFull();
-        this.setHeightFull();
+        this.getStyle().set("height", "max-content");
         this.setSpacing(false);
         sidebar = new AdminSidebar();
-        sidebar.setHeightFull();
         add(sidebar);
 
         this.add(new MainView());
@@ -29,7 +28,7 @@ public class AdminView extends HorizontalLayout {
     class MainView extends VerticalLayout {
         MainView() {
             this.setWidthFull();
-            this.setHeightFull();
+            this.setHeight("max(max-content, 100vh)");
             this.setSpacing(false);
 
             this.add(new Header("Admin"));
