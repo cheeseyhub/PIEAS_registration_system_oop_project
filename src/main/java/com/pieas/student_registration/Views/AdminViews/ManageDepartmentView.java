@@ -1,8 +1,15 @@
 package com.pieas.student_registration.Views.AdminViews;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import com.pieas.student_registration.Entities.DepartmentEntity;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
@@ -46,14 +53,108 @@ public class ManageDepartmentView extends VerticalLayout {
         TextField department = new TextField("Department Name");
         department.setRequired(true);
 
+        MultiSelectComboBox<String> degreeTitleSelect = new MultiSelectComboBox<>("Select items");
+        degreeTitleSelect.setItems("BS", "MS", "PHD");
+
+        Set<String> selectedValues = degreeTitleSelect.getValue();
+
         Button addButton = new Button("Add Department");
         addButton.addClassName("addDepartmentButton");
+
+        VerticalLayout degreeNameLayout = addDegreeNameFields();
+        List<String> degreeNames = getDegreeNamesFromLayout(degreeNameLayout);
+
         addButton.addClickListener(e -> {
             // Add department logic here
         });
 
-        tempLayout.add(department, addButton);
+        tempLayout.add(department, degreeTitleSelect, degreeNameLayout, addButton);
         return tempLayout;
+    }
+
+    private VerticalLayout addDegreeNameFields() {
+        VerticalLayout degreeNameLayout = new VerticalLayout();
+        degreeNameLayout.setWidthFull();
+        degreeNameLayout.setSpacing(true);
+
+        HorizontalLayout headerRow = new HorizontalLayout();
+        headerRow.setAlignItems(Alignment.CENTER);
+        headerRow.setWidthFull();
+
+        Button addDegreeNameButton = new Button(new Icon(VaadinIcon.PLUS));
+        addDegreeNameButton.addClassName("add-degree-button");
+
+        headerRow.add(new H2("Add Degree Name"), addDegreeNameButton);
+        headerRow.expand(new H2("Add Degree Name")); // Push button to the right
+
+        degreeNameLayout.add(headerRow);
+
+        addNewDegreeNameRow(degreeNameLayout);
+
+        addDegreeNameButton.addClickListener(e -> {
+            addNewDegreeNameRow(degreeNameLayout);
+        });
+
+        return degreeNameLayout;
+    }
+
+    private void addNewDegreeNameRow(VerticalLayout parentLayout) {
+        HorizontalLayout row = new HorizontalLayout();
+        row.setWidthFull();
+        row.setAlignItems(Alignment.BASELINE);
+        row.setSpacing(true);
+
+        TextField degreeName = new TextField();
+        degreeName.setPlaceholder("Enter degree name");
+        degreeName.setRequired(true);
+        degreeName.setWidthFull();
+
+        Button removeButton = new Button(new Icon(VaadinIcon.TRASH));
+        removeButton.addClassName("remove-degree-row-button");
+        removeButton.addClickListener(e -> {
+            parentLayout.remove(row);
+        });
+
+        row.add(degreeName, removeButton);
+        row.expand(degreeName);
+
+        parentLayout.add(row);
+    }
+
+    private List<String> getDegreeNamesFromLayout(VerticalLayout degreeNameLayout) {
+        List<String> degreeNames = new ArrayList<>();
+
+        for (Component component : degreeNameLayout.getChildren().toArray(Component[]::new)) {
+            // Skip the header row (first component)
+            if (component instanceof HorizontalLayout) {
+                HorizontalLayout row = (HorizontalLayout) component;
+
+                boolean isHeaderRow = false;
+                for (Component child : row.getChildren().toArray(Component[]::new)) {
+                    if (child instanceof H2 || child instanceof Button) {
+                        isHeaderRow = true;
+                        break;
+                    }
+                }
+
+                if (isHeaderRow) {
+                    continue;
+                }
+
+                for (Component child : row.getChildren().toArray(Component[]::new)) {
+                    if (child instanceof TextField) {
+                        TextField textField = (TextField) child;
+                        String value = textField.getValue();
+                        if (value != null && !value.trim().isEmpty()) {
+                            degreeNames.add(value.trim());
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return degreeNames;
     }
 
     private VerticalLayout displayDepartment() {

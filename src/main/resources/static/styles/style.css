@@ -649,8 +649,6 @@
 }
 
 .addstudentforum {
-  display: flex;
-  justify-content: center;
   align-items: center;
 
   padding: 20px 20%;
@@ -797,4 +795,119 @@
 
   background: inherit;
   color: aliceblue;
+}
+
+.adddepartmentforum {
+  padding: 20px 20%;
+
+  align-items: center;
+}
+
+.adddepartmentforum > * {
+  width: 50%;
+  height: max-content;
+}
+
+.addDepartmentButton {
+  align-self: flex-end;
+  width: max-content;
+  padding: 10px 20px;
+}
+
+/* Admin */
+.admin-display-table {
+  gap: 0px;
+}
+
+.admin-display-table > :nth-child(1) {
+  background-color: rgb(221, 221, 221);
+
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 10px;
+}
+
+.admin-display-table > * {
+  background-color: #ffffff;
+  width: 100%;
+
+  font-size: 1.2em;
+
+  display: grid;
+  gap: 0;
+
+  grid-template-columns: 2.5fr 2fr 1fr;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-display-table > * > * {
+  padding: 5px;
+  justify-content: center;
+  text-align: center;
+}
+
+.admin-display-table > :nth-last-child(1) {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.admin-display-table > :not(:nth-child(1)):hover {
+  background-color: rgb(238, 245, 248);
+}
+
+.admin-display-table-button {
+  border: none;
+  background-color: inherit;
+}
+
+.addAdminHeader {
+  background: linear-gradient(to right, rgb(10, 28, 58), rgb(56, 75, 144));
+
+  display: grid;
+
+  grid-template-columns: 2fr 1fr;
+
+  padding: 20px;
+
+  color: aliceblue;
+  font-size: larger;
+  font-weight: bolder;
+
+  border-radius: 20px;
+
+  margin-bottom: 20px;
+}
+
+.add-new-admin-button {
+  width: max-content;
+  justify-self: end;
+
+  padding: 10px 20px;
+
+  background: inherit;
+  color: aliceblue;
+}
+
+.addadminforum {
+  padding: 20px 20%;
+
+  align-items: center;
+}
+
+.addadminforum > * {
+  width: 50%;
+  height: max-content;
+}
+
+.addAdminButton {
+  align-self: flex-end;
+  width: max-content;
+  padding: 10px 20px;
+}
+
+.manage-admin-table-button {
+  border: none;
+  background-color: inherit;
 }
