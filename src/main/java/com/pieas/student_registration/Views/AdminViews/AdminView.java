@@ -16,7 +16,11 @@ public class AdminView extends HorizontalLayout {
     private AdminSidebar sidebar;
 
     AdminView() {
+        this.setWidthFull();
+        this.setHeightFull();
+        this.setSpacing(false);
         sidebar = new AdminSidebar();
+        sidebar.setHeightFull();
         add(sidebar);
 
         this.add(new MainView());
@@ -26,9 +30,10 @@ public class AdminView extends HorizontalLayout {
         MainView() {
             this.setWidthFull();
             this.setHeightFull();
+            this.setSpacing(false);
 
-            add(new Header("Admin"));
-            add(displayMain());
+            this.add(new Header("Admin"));
+            this.add(displayMain());
 
         }
 
@@ -36,8 +41,9 @@ public class AdminView extends HorizontalLayout {
             VerticalLayout tempLayout = new VerticalLayout();
             tempLayout.setWidthFull();
             tempLayout.setHeightFull();
+            tempLayout.setSpacing(false);
 
-            tempLayout.add(new ManageStudentView());
+            tempLayout.add(new ManageDepartmentView());
             sidebar.addClickListener(e -> {
                 tempLayout.removeAll();
                 switch (sidebar.getCurrentView()) {
@@ -58,6 +64,5 @@ public class AdminView extends HorizontalLayout {
             return tempLayout;
         }
 
-        
     }
 }

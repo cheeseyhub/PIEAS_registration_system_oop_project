@@ -58,6 +58,7 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                                 new Main());
 
                 this.setWidthFull();
+                this.setHeightFull();
                 this.setSpacing(false);
                 this.addClassName("dashboard");
         }
