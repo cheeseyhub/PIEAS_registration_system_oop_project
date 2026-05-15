@@ -605,6 +605,13 @@
     color: aliceblue;
 }  
 
+.admin-layout-main{
+    background-color:  rgb(245, 250, 253);
+
+    padding: 15% 50px;
+    border: 2px solid red;
+}
+
 .student-display-row-template{
     background-color: aliceblue;
 
