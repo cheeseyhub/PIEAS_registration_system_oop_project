@@ -55,7 +55,7 @@ public class AdminView extends HorizontalLayout {
             tempLayout.setHeightFull();
             tempLayout.setSpacing(false);
 
-            tempLayout.add(new ManageDepartmentView());
+            tempLayout.add(new ManageDepartmentView(departmentService));
             sidebar.addClickListener(e -> {
                 tempLayout.removeAll();
                 switch (sidebar.getCurrentView()) {
@@ -66,7 +66,7 @@ public class AdminView extends HorizontalLayout {
                         tempLayout.add(new ManageCourseView());
                         break;
                     case "department":
-                        tempLayout.add(new ManageDepartmentView());
+                        tempLayout.add(new ManageDepartmentView(departmentService));
                         break;
                     case "admin":
                         tempLayout.add(new ManageAdminView());
