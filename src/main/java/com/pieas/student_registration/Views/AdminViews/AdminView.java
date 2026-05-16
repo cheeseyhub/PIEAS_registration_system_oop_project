@@ -1,5 +1,9 @@
 package com.pieas.student_registration.Views.AdminViews;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.pieas.student_registration.Services.DepartmentService;
+import com.pieas.student_registration.Services.StudentService;
 import com.pieas.student_registration.Views.TemplateClasses.AdminSidebar;
 import com.pieas.student_registration.Views.TemplateClasses.Header;
 import com.vaadin.flow.component.dependency.StyleSheet;
@@ -13,9 +17,18 @@ import com.vaadin.flow.router.Route;
 @StyleSheet("styles/style.css")
 
 public class AdminView extends HorizontalLayout {
+    @Autowired
+    StudentService studentService;
+
+    @Autowired
+    DepartmentService departmentService;
+
     private AdminSidebar sidebar;
 
-    AdminView() {
+    AdminView(StudentService studentService, DepartmentService departmentService) {
+        this.studentService = studentService;
+        this.departmentService = departmentService;
+
         this.setWidthFull();
         this.getStyle().set("height", "max-content");
         this.setSpacing(false);
@@ -47,7 +60,7 @@ public class AdminView extends HorizontalLayout {
                 tempLayout.removeAll();
                 switch (sidebar.getCurrentView()) {
                     case "student":
-                        tempLayout.add(new ManageStudentView());
+                        tempLayout.add(new ManageStudentView(studentService, departmentService));
                         break;
                     case "course":
                         tempLayout.add(new ManageCourseView());
