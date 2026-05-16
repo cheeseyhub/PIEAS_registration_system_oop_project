@@ -17,4 +17,8 @@ public class DepartmentService {
     public List<DepartmentEntity> getAllDepartments() {
         return departmentRepository.findAll();
     }
+
+    public void addDepartment(DepartmentEntity department) {
+        departmentRepository.insert(department);
+    }
 }
