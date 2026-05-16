@@ -7,14 +7,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "departments")
 public class DepartmentEntity {
@@ -28,4 +26,11 @@ public class DepartmentEntity {
 
     List<String> degreeName;
 
+    public DepartmentEntity(@NotBlank(message = "department name must not be empty") String departmentName,
+            List<@Pattern(regexp = "^(BS|MS|PHD)$", message = "Department must be BS or MS followed by CIS, ME, MME, CE, PHY, or EE (e.g., 'BS CIS' or 'MS ME')") String> degreeTitle,
+            List<String> degreeName) {
+        this.departmentName = departmentName;
+        this.degreeTitle = degreeTitle;
+        this.degreeName = degreeName;
+    }
 }
