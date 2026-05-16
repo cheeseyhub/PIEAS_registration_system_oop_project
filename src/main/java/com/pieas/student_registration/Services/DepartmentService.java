@@ -23,6 +23,6 @@ public class DepartmentService {
     }
 
     public void deleteDepartment(String departmentName) {
-        departmentRepository.deledeleteByDepartmentName(departmentName);
+        departmentRepository.deleteByDepartmentName(departmentName);
     }
 }
