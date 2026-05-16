@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.pieas.student_registration.Entities.DepartmentEntity;
 
 public interface DepartmentRepository extends MongoRepository<DepartmentEntity, String> {
-    void deledeleteByDepartmentName(String departmentName);
+    void deleteByDepartmentName(String departmentName);
 
 }
