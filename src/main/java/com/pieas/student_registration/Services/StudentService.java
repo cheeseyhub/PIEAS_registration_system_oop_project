@@ -25,7 +25,7 @@ public class StudentService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public Optional<StudentEntity> getStudentById(String id) {
-        
+
         return studentRepository.findById(id);
 
     }
@@ -90,7 +90,6 @@ public class StudentService {
 
     }
 
-    
     public StudentEntity getStudentByRegistration(String registrationNo) {
         StudentEntity student = studentRepository.findByRegistrationNumber(registrationNo).orElse(null);
         return student;

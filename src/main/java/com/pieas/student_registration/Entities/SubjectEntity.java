@@ -32,7 +32,7 @@ public class SubjectEntity {
     private String instructor;
 
     @NotBlank
-    private String duration;
+    private int semesterNo;
 
     @DecimalMax(value = "4.0")
     @DecimalMin(value = "0.0")
