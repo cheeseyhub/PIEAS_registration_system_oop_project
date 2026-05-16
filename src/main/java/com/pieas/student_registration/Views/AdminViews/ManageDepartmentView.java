@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.pieas.student_registration.Entities.DepartmentEntity;
 import com.pieas.student_registration.Services.DepartmentService;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -64,16 +66,25 @@ public class ManageDepartmentView extends VerticalLayout {
         MultiSelectComboBox<String> degreeTitleSelect = new MultiSelectComboBox<>("Select items");
         degreeTitleSelect.setItems("BS", "MS", "PHD");
 
-        Set<String> selectedValues = degreeTitleSelect.getValue();
-
         Button addButton = new Button("Add Department");
         addButton.addClassName("addDepartmentButton");
 
         VerticalLayout degreeNameLayout = addDegreeNameFields();
-        List<String> degreeNames = getDegreeNamesFromLayout(degreeNameLayout);
 
         addButton.addClickListener(e -> {
-            // Add department logic here
+            List<String> degreeNames = getDegreeNamesFromLayout(degreeNameLayout);
+            List<String> selectedValues = new ArrayList<>(degreeTitleSelect.getValue());
+
+            for (String degree : degreeNames)
+                Notification.show(degree);
+
+            for (String degree : selectedValues)
+                Notification.show(degree);
+
+            departmentService.addDepartment(new DepartmentEntity(department.getValue(),
+                    selectedValues, degreeNames));
+            UI.getCurrent().getPage().reload();
+
         });
 
         tempLayout.add(department, degreeTitleSelect, degreeNameLayout, addButton);
@@ -93,7 +104,7 @@ public class ManageDepartmentView extends VerticalLayout {
         addDegreeNameButton.addClassName("add-degree-button");
 
         headerRow.add(new H2("Add Degree Name"), addDegreeNameButton);
-        headerRow.expand(new H2("Add Degree Name")); // Push button to the right
+        headerRow.expand(new H2("Add Degree Name"));
 
         degreeNameLayout.add(headerRow);
 
@@ -185,7 +196,6 @@ public class ManageDepartmentView extends VerticalLayout {
     private HorizontalLayout displayDepartmentTemplate(DepartmentEntity department) {
         HorizontalLayout tempHorizontalLayout = new HorizontalLayout();
         tempHorizontalLayout.setWidthFull();
-        tempHorizontalLayout.setHeightFull();
 
         tempHorizontalLayout.addClassName("department-display-row-template");
         tempHorizontalLayout.add(new Span(department.getDepartmentName()));
@@ -207,14 +217,15 @@ public class ManageDepartmentView extends VerticalLayout {
         }
         tempHorizontalLayout.add(degreeNameLayout);
 
-        Button btn = new Button(new Icon(VaadinIcon.TRASH));
+        Button deleteButton = new Button(new Icon(VaadinIcon.TRASH));
 
-        btn.addClassName("department-display-table-button");
-        btn.addClickListener(e -> {
-
+        deleteButton.addClassName("department-display-table-button");
+        deleteButton.addClickListener(e -> {
+            departmentService.deleteDepartment(department.getId());
+            UI.getCurrent().getPage().reload();
         });
 
-        tempHorizontalLayout.add(btn);
+        tempHorizontalLayout.add(deleteButton);
         return tempHorizontalLayout;
     }
 
