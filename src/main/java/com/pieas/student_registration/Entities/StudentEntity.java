@@ -82,13 +82,11 @@ public class StudentEntity {
     private String address;
 
     public StudentEntity(@NotBlank(message = "Passowrd cannot be blank") String password,
-            @NotBlank @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX") String registrationNumber,
-            @NotBlank(message = "The department must not be blank") @Pattern(regexp = "^(BS|MS) (CIS|ME|MME|CE|PHY|EE|NE)$", message = "Department must be BS or MS followed by CIS, ME, MME, CE, PHY, or EE (e.g., 'BS CIS' or 'MS ME')") String department,
-            String address) {
+            @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX") String registrationNumber,
+            @NotBlank(message = "The department must not be blank") @Pattern(regexp = "^(BS|MS) (CIS|ME|MME|CE|PHY|EE|NE)$", message = "Department must be BS or MS followed by CIS, ME, MME, CE, PHY, or EE (e.g., 'BS CIS' or 'MS ME')") String department) {
         this.password = password;
         this.registrationNumber = registrationNumber;
         this.department = department;
-        this.address = address;
     }
 
     private double cgpa;
