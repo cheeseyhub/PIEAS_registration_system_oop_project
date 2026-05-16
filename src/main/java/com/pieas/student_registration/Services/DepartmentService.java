@@ -21,4 +21,8 @@ public class DepartmentService {
     public void addDepartment(DepartmentEntity department) {
         departmentRepository.insert(department);
     }
+
+    public void deleteDepartment(String departmentName) {
+        departmentRepository.deledeleteByDepartmentName(departmentName);
+    }
 }
