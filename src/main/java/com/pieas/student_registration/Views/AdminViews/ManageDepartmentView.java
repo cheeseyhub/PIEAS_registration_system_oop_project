@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.pieas.student_registration.Entities.DepartmentEntity;
+import com.pieas.student_registration.Services.DepartmentService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
@@ -19,7 +22,12 @@ import com.vaadin.flow.component.textfield.TextField;
 
 public class ManageDepartmentView extends VerticalLayout {
 
-    public ManageDepartmentView() {
+    @Autowired
+    DepartmentService departmentService;
+
+    public ManageDepartmentView(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+
         this.addClassName("admin-layout-main");
         this.setWidthFull();
         this.setHeightFull();
@@ -125,7 +133,6 @@ public class ManageDepartmentView extends VerticalLayout {
         List<String> degreeNames = new ArrayList<>();
 
         for (Component component : degreeNameLayout.getChildren().toArray(Component[]::new)) {
-            // Skip the header row (first component)
             if (component instanceof HorizontalLayout) {
                 HorizontalLayout row = (HorizontalLayout) component;
 
@@ -163,27 +170,12 @@ public class ManageDepartmentView extends VerticalLayout {
         tempLayout.setWidthFull();
         tempLayout.setHeightFull();
 
-        DepartmentEntity departments[] = new DepartmentEntity[10];
-
-        for (int count = 0; count < 10; count++) {
-
-            departments[count] = new DepartmentEntity();
-
-            departments[count].setDepartmentName("Computer and Information Sciences");
-            departments[count].setDegreeTitle(new java.util.ArrayList<String>(
-                    java.util.Arrays.asList("BS", "MS", "PHD")));
-            departments[count].setDegreeName(new java.util.ArrayList<String>(
-                    java.util.Arrays.asList("BS Computer and Information Sciences",
-                            "MS Computer and Information Sciences",
-                            "PHD Computer and Information Sciences")));
-        }
-
         tempLayout.add(new HorizontalLayout(
                 new Span("Department Name"),
                 new Span("Degrees Offered"),
                 new Span("Degree Title"),
                 new Span("Edit")));
-        for (DepartmentEntity department : departments) {
+        for (DepartmentEntity department : departmentService.getAllDepartments()) {
             tempLayout.add(displayDepartmentTemplate(department));
         }
 
