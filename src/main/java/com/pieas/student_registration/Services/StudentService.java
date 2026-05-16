@@ -30,6 +30,10 @@ public class StudentService {
 
     }
 
+    public void deleteStudent(String registrationNo) {
+        studentRepository.deleteByRegistrationNumber(registrationNo);
+    }
+
     public void addStudent(StudentEntity student) throws IllegalArgumentException {
         String encodedPassword = passwordEncoder.encode(student.getPassword());
         student.setPassword(encodedPassword);
