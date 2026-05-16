@@ -34,7 +34,7 @@ public class StudentEntity {
     @NotBlank(message = "Passowrd cannot be blank")
     private String password;
 
-    public static boolean isAllowedToEdit = false;
+    public boolean isAllowedToEdit = false;
 
     @Indexed(unique = true)
     @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX")
