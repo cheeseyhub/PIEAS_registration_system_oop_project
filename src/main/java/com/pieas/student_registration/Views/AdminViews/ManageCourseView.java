@@ -91,7 +91,7 @@ class ManageCourseView extends VerticalLayout {
             courses[count].setCourseTitle(String.valueOf("Data Structures and Algorithms"));
             courses[count].setInstructor(String.valueOf("Kaleem Abbas"));
             courses[count].setCourseCode(String.valueOf("DSA-222"));
-            courses[count].setDuration(String.valueOf("Fall 2025"));
+            courses[count].setSemesterNo(2);
             courses[count].setCreditHour(count % 4 + 1);
         }
 
@@ -127,7 +127,7 @@ class ManageCourseView extends VerticalLayout {
                 new Span(course.getCourseTitle()),
                 new Span(course.getInstructor()),
                 new Span(course.getCourseCode()),
-                new Span(course.getDuration()),
+                new Span(String.valueOf(course.getSemesterNo())),
                 new Span(String.valueOf(course.getCreditHour())),
                 btn);
 

@@ -187,9 +187,9 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                         courseCodeSpan.addClassName("dashboard-displaycourse-child-courseCode");
                         Span creditHourSpan = new Span(String.valueOf(subject.getCreditHour()).concat(" Cr"));
                         creditHourSpan.addClassName("dashboard-displaycourse-child-creditHour");
-                        Section durationSpan = new Section(
+                        Section semesterSection = new Section(
                                         new Icon(VaadinIcon.CALENDAR_O),
-                                        new Span(String.valueOf(subject.getDuration())));
+                                        new Span(String.valueOf(subject.getSemesterNo())));
                         creditHourSpan.addClassName("dashboard-displaycourse-child-duration");
 
                         HorizontalLayout temp = new HorizontalLayout(courseCodeSpan, creditHourSpan);
@@ -199,7 +199,7 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                                         temp,
                                         courseNameSpan,
                                         instructorSpan,
-                                        durationSpan);
+                                        semesterSection);
                         return tempLayoutContainer;
                 }
         }
