@@ -24,10 +24,10 @@ public class StudentEntity {
     @Id
     private String id;
 
-    @NotBlank(message = "The name of student must not be blank.")
+    // @NotBlank(message = "The name of student must not be blank.")
     private String name;
 
-    @NotBlank(message = "The gender  field must not be blank")
+    // @NotBlank(message = "The gender field must not be blank")
     @Pattern(regexp = "^(male|female)$")
     private String gender;
 
@@ -37,48 +37,59 @@ public class StudentEntity {
     public boolean isAllowedToEdit = false;
 
     @Indexed(unique = true)
+    // @NotBlank
     @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX")
     private String registrationNumber;
 
     // Department must in the format BS/MS max three letter word.
-    @NotBlank(message = "The  department must not be blank")
+    @NotBlank(message = "The department must not be blank")
     @Pattern(regexp = "^(BS|MS) (CIS|ME|MME|CE|PHY|EE|NE)$", message = "Department must be BS or MS followed by CIS, ME, MME, CE, PHY, or EE (e.g., 'BS CIS' or 'MS ME')")
     private String department;
 
-    @NotBlank(message = "The fatherName must not be blank")
+    // @NotBlank(message = "The fatherName must not be blank")
     private String fatherName;
 
-    @NotBlank(message = "The contactNo must not be blank")
+    // @NotBlank(message = "The contactNo must not be blank")
     private String contactNo;
 
-    @NotBlank(message = "The emergencyContact must not be blank")
+    // @NotBlank(message = "The emergencyContact must not be blank")
     private String emergencyContact;
 
-    @NotBlank(message = "The domicile must not be blank")
+    // @NotBlank(message = "The domicile must not be blank")
     private String domicile;
 
-    @NotBlank(message = "The rollNumber must not be blank")
+    // @NotBlank(message = "The rollNumber must not be blank")
     private String rollNo;
 
-    @NotBlank(message = "The dateOfBirth must not be blank")
+    // @NotBlank(message = "The dateOfBirth must not be blank")
     private String dateOfBirth;
 
-    @NotBlank(message = "The CNIC must not be blank")
+    // @NotBlank(message = "The CNIC must not be blank")
     private String cnic;
 
-    @NotBlank(message = "The pieasEmail must not be blank")
+    // @NotBlank(message = "The pieasEmail must not be blank")
     @Email
     private String pieasEmail;
 
-    @NotBlank(message = "The email must not be blank")
+    // @NotBlank(message = "The email must not be blank")
     @Email
     private String personalEmail;
 
-    @NotBlank(message = "The libararyId must not be blank")
+    // @NotBlank(message = "The libararyId must not be blank")
     private String libraryId;
 
-    @NotBlank(message = "The address of student  must not be blank")
+    // @NotBlank(message = "The address of student must not be blank")
     private String address;
+
+    public StudentEntity(@NotBlank(message = "Passowrd cannot be blank") String password,
+            @NotBlank @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX") String registrationNumber,
+            @NotBlank(message = "The department must not be blank") @Pattern(regexp = "^(BS|MS) (CIS|ME|MME|CE|PHY|EE|NE)$", message = "Department must be BS or MS followed by CIS, ME, MME, CE, PHY, or EE (e.g., 'BS CIS' or 'MS ME')") String department,
+            String address) {
+        this.password = password;
+        this.registrationNumber = registrationNumber;
+        this.department = department;
+        this.address = address;
+    }
 
     private double cgpa;
 

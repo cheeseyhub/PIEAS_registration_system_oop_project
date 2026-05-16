@@ -32,6 +32,7 @@ public class StudentService {
 
     public void deleteStudent(String registrationNo) {
         studentRepository.deleteByRegistrationNumber(registrationNo);
+
     }
 
     public void addStudent(StudentEntity student) throws IllegalArgumentException {
