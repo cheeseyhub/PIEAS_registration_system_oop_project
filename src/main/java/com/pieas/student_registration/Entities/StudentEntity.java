@@ -48,6 +48,9 @@ public class StudentEntity {
     // @NotBlank(message = "The fatherName must not be blank")
     private String fatherName;
 
+    private String degreeName;
+    private String degreeTitle;
+
     // @NotBlank(message = "The contactNo must not be blank")
     private String contactNo;
 
@@ -100,15 +103,9 @@ public class StudentEntity {
     private double cgpa;
 
     private ArrayList<SemesterEntity> semesters;
-    private ArrayList<CertificationEntity> certifications;
 
     public Optional<SemesterEntity> getSemster(int semesterNumber) {
         return Optional.of(this.semesters.get(semesterNumber));
-
-    }
-
-    public Optional<CertificationEntity> getDegree(int degreeIndex) {
-        return Optional.of(this.certifications.get(degreeIndex));
 
     }
 
