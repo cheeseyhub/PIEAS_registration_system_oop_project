@@ -64,7 +64,7 @@ public class StudentEntity {
     private LocalDate dateOfBirth;
 
     // @NotBlank(message = "The CNIC must not be blank")
-    private String cnic;
+    private Double cnic;
 
     // @NotBlank(message = "The pieasEmail must not be blank")
     @Email
