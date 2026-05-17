@@ -1,7 +1,16 @@
 package com.pieas.student_registration.Views.AdminViews;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.pieas.student_registration.Entities.CourseEntity;
 import com.pieas.student_registration.Entities.DepartmentEntity;
 import com.pieas.student_registration.Entities.SubjectEntity;
+import com.pieas.student_registration.Services.CourseService;
+import com.pieas.student_registration.Services.DepartmentService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
@@ -10,10 +19,20 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 
 class ManageCourseView extends VerticalLayout {
-    public ManageCourseView() {
+    @Autowired
+    CourseService courseService;
+
+    @Autowired
+    DepartmentService departmentService;
+
+    public ManageCourseView(CourseService courseService, DepartmentService departmentService) {
+        this.courseService = courseService;
+        this.departmentService = departmentService;
+
         this.addClassName("admin-layout-main");
         this.setWidthFull();
         this.setHeightFull();
@@ -42,7 +61,14 @@ class ManageCourseView extends VerticalLayout {
         tempLayout.addClassName("addCourseForm");
         tempLayout.setWidthFull();
 
-        Select<DepartmentEntity> department = new Select<>("Department");
+        Select<String> department = new Select<>("Department");
+        List<String> temp = new ArrayList<>();
+        for (DepartmentEntity dep : departmentService.getAllDepartments()) {
+            for (String degree : dep.getDegreeName()) {
+                temp.add(degree);
+            }
+        }
+        department.setItems(temp);
 
         TextField courseTitle = new TextField("Course Title");
         courseTitle.setPlaceholder("Course Title");
@@ -56,22 +82,32 @@ class ManageCourseView extends VerticalLayout {
         courseCode.setPlaceholder("Course Code");
         courseCode.setRequired(true);
 
-        TextField duration = new TextField("Duration");
-        duration.setPlaceholder("Duration");
-        duration.setRequired(true);
+        Select<Integer> semesterNo = new Select<>("Semester No.");
+        department.addValueChangeListener(e -> {
+            if (department.getValue() != null) {
+                if (department.getValue().startsWith("BS"))
+                    semesterNo.setItems(1, 2, 3, 4, 5, 6, 7, 8);
+                else if (department.getValue().startsWith("MS"))
+                    semesterNo.setItems(1, 2, 3, 4);
+                else if (department.getValue().startsWith("PHD"))
+                    semesterNo.setItems(1, 2, 3, 4, 5, 6);
+            }
+        });
 
-        TextField creditHours = new TextField("Credit Hours");
-        creditHours.setPlaceholder("Credit Hours");
-        creditHours.setRequired(true);
+        Select<Integer> creditHours = new Select<>("Credit Hours");
+        creditHours.setItems(1, 2, 3);
 
         Button addButton = new Button("Add Course");
         addButton.addClassName("addCourseButton");
 
         addButton.addClickListener(e -> {
-            // Add course logic here
+            courseService.addCourse(new CourseEntity(courseTitle.getValue(), department.getValue(),
+                    instructor.getValue(), courseCode.getValue(),
+                    semesterNo.getValue(), creditHours.getValue()));
+            UI.getCurrent().getPage().reload();
         });
 
-        tempLayout.add(department, courseTitle, instructor, courseCode, duration, creditHours, addButton);
+        tempLayout.add(department, courseTitle, instructor, courseCode, semesterNo, creditHours, addButton);
         return tempLayout;
     }
 
@@ -80,20 +116,6 @@ class ManageCourseView extends VerticalLayout {
         tempLayout.addClassName("course-display-table");
         tempLayout.setWidthFull();
         tempLayout.setHeightFull();
-
-        SubjectEntity courses[] = new SubjectEntity[100];
-
-        for (int count = 0; count < 100; count++) {
-
-            courses[count] = new SubjectEntity();
-
-            courses[count].setDepartment(String.valueOf("Computer and Information Sciences"));
-            courses[count].setCourseTitle(String.valueOf("Data Structures and Algorithms"));
-            courses[count].setInstructor(String.valueOf("Kaleem Abbas"));
-            courses[count].setCourseCode(String.valueOf("DSA-222"));
-            courses[count].setSemesterNo(2);
-            courses[count].setCreditHour(count % 4 + 1);
-        }
 
         tempLayout.add(new HorizontalLayout(
                 new Span("Department"),
@@ -104,14 +126,14 @@ class ManageCourseView extends VerticalLayout {
                 new Span("Credit Hours"),
                 new Span("Edit")));
 
-        for (SubjectEntity course : courses) {
+        for (CourseEntity course : courseService.getAllCourses()) {
             tempLayout.add(displayCourseTemplate(course));
         }
 
         return tempLayout;
     }
 
-    private HorizontalLayout displayCourseTemplate(SubjectEntity course) {
+    private HorizontalLayout displayCourseTemplate(CourseEntity course) {
         HorizontalLayout tempHorizontalLayout = new HorizontalLayout();
         tempHorizontalLayout.addClassName("course-display-row-template");
 
@@ -119,12 +141,13 @@ class ManageCourseView extends VerticalLayout {
 
         btn.addClassName("manage-course-table-button");
         btn.addClickListener(e -> {
-
+            courseService.deleteCourse(course.getId());
+            UI.getCurrent().getPage().reload();
         });
 
         tempHorizontalLayout.add(
                 new Span(course.getDepartment()),
-                new Span(course.getCourseTitle()),
+                new Span(course.getCourseName()),
                 new Span(course.getInstructor()),
                 new Span(course.getCourseCode()),
                 new Span(String.valueOf(course.getSemesterNo())),

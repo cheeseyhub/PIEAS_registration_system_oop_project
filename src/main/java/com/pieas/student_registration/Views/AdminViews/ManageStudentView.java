@@ -73,7 +73,7 @@ class ManageStudentView extends VerticalLayout {
         List<String> temp = new ArrayList<>();
         for (DepartmentEntity dep : departmentService.getAllDepartments()) {
             for (String degree : dep.getDegreeName()) {
-                temp.add(dep.getDepartmentName() + " " + degree);
+                temp.add(degree);
             }
         }
 

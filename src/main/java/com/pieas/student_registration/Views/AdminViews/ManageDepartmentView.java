@@ -149,7 +149,7 @@ public class ManageDepartmentView extends VerticalLayout {
 
                 boolean isHeaderRow = false;
                 for (Component child : row.getChildren().toArray(Component[]::new)) {
-                    if (child instanceof H2 || child instanceof Button) {
+                    if (child instanceof H2) {
                         isHeaderRow = true;
                         break;
                     }
@@ -221,7 +221,7 @@ public class ManageDepartmentView extends VerticalLayout {
 
         deleteButton.addClassName("department-display-table-button");
         deleteButton.addClickListener(e -> {
-            departmentService.deleteDepartment(department.getId());
+            departmentService.deleteDepartment(department.getDepartmentName());
             UI.getCurrent().getPage().reload();
         });
 

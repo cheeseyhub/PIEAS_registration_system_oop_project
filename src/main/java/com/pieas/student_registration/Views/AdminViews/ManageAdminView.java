@@ -1,6 +1,10 @@
 package com.pieas.student_registration.Views.AdminViews;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.pieas.student_registration.Entities.AdminEntity;
+import com.pieas.student_registration.Services.AdminService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
@@ -12,7 +16,11 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 
 public class ManageAdminView extends VerticalLayout {
-    public ManageAdminView() {
+    @Autowired
+    private AdminService adminService;
+
+    public ManageAdminView(AdminService admnService) {
+        this.adminService = admnService;
         this.addClassName("admin-layout-main");
         this.setWidthFull();
         this.setHeightFull();
@@ -51,7 +59,8 @@ public class ManageAdminView extends VerticalLayout {
         addButton.addClassName("addAdminButton");
 
         addButton.addClickListener(e -> {
-            // Add admin logic here
+            adminService.addAdmin(new AdminEntity(username.getValue(), password.getValue()));
+            UI.getCurrent().getPage().reload();
         });
 
         tempLayout.add(username, password, addButton);
@@ -64,21 +73,12 @@ public class ManageAdminView extends VerticalLayout {
         tempLayout.setWidthFull();
         tempLayout.setHeightFull();
 
-        AdminEntity admin[] = new AdminEntity[10];
-
-        for (int count = 0; count < 10; count++) {
-
-            admin[count] = new AdminEntity();
-
-            admin[count].setUsername("admin" + count + "@pieas.edu.pk");
-            admin[count].setPassword("admin" + count);
-        }
-
         tempLayout.add(new HorizontalLayout(
                 new Span("Username"),
                 new Span("Password"),
                 new Span("Edit")));
-        for (AdminEntity admn : admin) {
+
+        for (AdminEntity admn : adminService.getAllAdmins()) {
             tempLayout.add(displayAdminTemplate(admn));
         }
 
@@ -93,7 +93,8 @@ public class ManageAdminView extends VerticalLayout {
 
         btn.addClassName("manage-admin-table-button");
         btn.addClickListener(e -> {
-
+            adminService.deleteAdmin(admin.getUsername());
+            UI.getCurrent().getPage().reload();
         });
 
         tempHorizontalLayout.add(

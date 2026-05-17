@@ -2,6 +2,8 @@ package com.pieas.student_registration.Views.AdminViews;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pieas.student_registration.Services.AdminService;
+import com.pieas.student_registration.Services.CourseService;
 import com.pieas.student_registration.Services.DepartmentService;
 import com.pieas.student_registration.Services.StudentService;
 import com.pieas.student_registration.Views.TemplateClasses.AdminSidebar;
@@ -21,13 +23,22 @@ public class AdminView extends HorizontalLayout {
     StudentService studentService;
 
     @Autowired
+    CourseService courseService;
+
+    @Autowired
     DepartmentService departmentService;
+
+    @Autowired
+    AdminService adminService;
 
     private AdminSidebar sidebar;
 
-    AdminView(StudentService studentService, DepartmentService departmentService) {
+    AdminView(StudentService studentService, DepartmentService departmentService, CourseService courseService,
+            AdminService adminService) {
+        this.courseService = courseService;
         this.studentService = studentService;
         this.departmentService = departmentService;
+        this.adminService = adminService;
 
         this.setWidthFull();
         this.getStyle().set("height", "max-content");
@@ -63,13 +74,13 @@ public class AdminView extends HorizontalLayout {
                         tempLayout.add(new ManageStudentView(studentService, departmentService));
                         break;
                     case "course":
-                        tempLayout.add(new ManageCourseView());
+                        tempLayout.add(new ManageCourseView(courseService, departmentService));
                         break;
                     case "department":
                         tempLayout.add(new ManageDepartmentView(departmentService));
                         break;
                     case "admin":
-                        tempLayout.add(new ManageAdminView());
+                        tempLayout.add(new ManageAdminView(adminService));
                         break;
                 }
             });
