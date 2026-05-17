@@ -89,6 +89,15 @@ public class StudentEntity {
         this.department = department;
     }
 
+    public StudentEntity(String name, @NotBlank(message = "Passowrd cannot be blank") String password,
+            @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX") String registrationNumber,
+            @NotBlank(message = "The department must not be blank") @Pattern(regexp = "^(BS|MS|PHD)", message = "Department must start with BS, MS or PHD") String department) {
+        this.name = name;
+        this.password = password;
+        this.registrationNumber = registrationNumber;
+        this.department = department;
+    }
+
     private double cgpa;
 
     private ArrayList<SemesterEntity> semesters;
