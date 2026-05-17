@@ -14,8 +14,8 @@ public class AdminService {
 
     }
 
-    public void deleteAdmin(String adminId) {
-        adminRepository.deleteByAdminId(adminId);
+    public void deleteAdmin(String username) {
+        adminRepository.deleteByadminUsername(username);
     }
 
 }

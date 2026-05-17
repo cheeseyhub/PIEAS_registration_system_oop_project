@@ -6,5 +6,5 @@ import com.pieas.student_registration.Entities.AdminEntity;
 
 public interface AdminRepository extends MongoRepository<AdminEntity, String> {
 
-    void deleteByAdminId(String adminId);
+    void deleteByadminUsername(String username);
 }
