@@ -1,6 +1,6 @@
 package com.pieas.student_registration.Views.AdminViews;
 
-import com.pieas.student_registration.Entities.Admin;
+import com.pieas.student_registration.Entities.AdminEntity;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
@@ -64,11 +64,11 @@ public class ManageAdminView extends VerticalLayout {
         tempLayout.setWidthFull();
         tempLayout.setHeightFull();
 
-        Admin admin[] = new Admin[10];
+        AdminEntity admin[] = new AdminEntity[10];
 
         for (int count = 0; count < 10; count++) {
 
-            admin[count] = new Admin();
+            admin[count] = new AdminEntity();
 
             admin[count].setUsername("admin" + count + "@pieas.edu.pk");
             admin[count].setPassword("admin" + count);
@@ -78,14 +78,14 @@ public class ManageAdminView extends VerticalLayout {
                 new Span("Username"),
                 new Span("Password"),
                 new Span("Edit")));
-        for (Admin admn : admin) {
+        for (AdminEntity admn : admin) {
             tempLayout.add(displayAdminTemplate(admn));
         }
 
         return tempLayout;
     }
 
-    private HorizontalLayout displayAdminTemplate(Admin admin) {
+    private HorizontalLayout displayAdminTemplate(AdminEntity admin) {
         HorizontalLayout tempHorizontalLayout = new HorizontalLayout();
         tempHorizontalLayout.addClassName("admin-display-row-template");
 

@@ -23,7 +23,7 @@ public class CourseService {
     }
 
     public CourseEntity addCourse(CourseEntity course) {
-        return courseRepository.save(course);
+        return courseRepository.insert(course);
     }
 
     public void deleteCourse(String id) {
@@ -37,4 +37,5 @@ public class CourseService {
     public ArrayList<CourseEntity> getCoursesByDepartment(String department) {
         return new ArrayList<>(courseRepository.findByDepartment(department));
     }
+
 }

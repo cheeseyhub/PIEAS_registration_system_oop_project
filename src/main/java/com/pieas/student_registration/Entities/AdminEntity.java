@@ -3,6 +3,8 @@ package com.pieas.student_registration.Entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.vaadin.copilot.shaded.checkerframework.common.aliasing.qual.Unique;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,11 +16,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "admins")
-public class Admin {
+public class AdminEntity {
     @Id
-    String id;
+    private String id;
+
+    @Unique
+    private String adminId;
+
     @NotBlank
-    String username;
+    private String username;
     @NotBlank
-    String password;
+    private String password;
 }
