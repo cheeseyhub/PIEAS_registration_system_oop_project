@@ -1,5 +1,7 @@
 package com.pieas.student_registration.Services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pieas.student_registration.Entities.AdminEntity;
@@ -16,6 +18,10 @@ public class AdminService {
 
     public void deleteAdmin(String username) {
         adminRepository.deleteByadminUsername(username);
+    }
+
+    public List<AdminEntity> getAllAdmins() {
+        return adminRepository.findAll();
     }
 
 }
