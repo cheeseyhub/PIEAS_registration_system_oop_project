@@ -3,10 +3,12 @@ package com.pieas.student_registration.Services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.pieas.student_registration.Entities.AdminEntity;
 import com.pieas.student_registration.Repositories.AdminRepository;
 
+@Service
 public class AdminService {
     @Autowired
     AdminRepository adminRepository;
@@ -17,7 +19,7 @@ public class AdminService {
     }
 
     public void deleteAdmin(String username) {
-        adminRepository.deleteByadminUsername(username);
+        adminRepository.deleteByuserName(username);
     }
 
     public List<AdminEntity> getAllAdmins() {
