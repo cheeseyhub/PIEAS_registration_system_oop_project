@@ -43,7 +43,7 @@ public class StudentEntity {
 
     // Department must in the format BS/MS max three letter word.
     @NotBlank(message = "The department must not be blank")
-    @Pattern(regexp = "^(BS|MS) (CIS|ME|MME|CE|PHY|EE|NE)$", message = "Department must be BS or MS followed by CIS, ME, MME, CE, PHY, or EE (e.g., 'BS CIS' or 'MS ME')")
+    @Pattern(regexp = "^(BS|MS|PHD)", message = "Department must start with BS, MS or PHD")
     private String department;
 
     // @NotBlank(message = "The fatherName must not be blank")
