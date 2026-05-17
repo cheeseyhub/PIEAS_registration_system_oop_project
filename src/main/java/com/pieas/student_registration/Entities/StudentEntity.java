@@ -127,7 +127,11 @@ public class StudentEntity {
         return this.cgpa;
     }
 
-    public SemesterEntity getCurrentSemester() {
+    public SemesterEntity getCurrentSemester() throws IndexOutOfBoundsException {
+        if (this.semesters == null || this.semesters.isEmpty()) {
+            throw new IndexOutOfBoundsException("No semester enrolled");
+
+        }
         return this.semesters.getLast();
 
     }
