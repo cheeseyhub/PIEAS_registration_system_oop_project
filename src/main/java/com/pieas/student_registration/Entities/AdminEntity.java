@@ -14,17 +14,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "admins")
 public class AdminEntity {
     @Id
     private String id;
 
-    @Unique
-    private String adminId;
-
     @NotBlank
+    @Unique
     private String username;
     @NotBlank
     private String password;
+
+    public AdminEntity(@NotBlank @Unique String username, @NotBlank String password) {
+        this.username = username;
+        this.password = password;
+    }
+
 }
