@@ -1,5 +1,6 @@
 package com.pieas.student_registration.Entities;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -34,8 +35,6 @@ public class StudentEntity {
     @NotBlank(message = "Passowrd cannot be blank")
     private String password;
 
-    public boolean isAllowedToEdit = false;
-
     @Indexed(unique = true)
     // @NotBlank
     @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX")
@@ -62,7 +61,7 @@ public class StudentEntity {
     private String rollNo;
 
     // @NotBlank(message = "The dateOfBirth must not be blank")
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
 
     // @NotBlank(message = "The CNIC must not be blank")
     private String cnic;
