@@ -13,4 +13,5 @@ public interface StudentRepository extends MongoRepository<StudentEntity, String
     List<StudentEntity> findByDepartment(String department);
 
     void deleteByRegistrationNumber(String registrationNo);
+
 }

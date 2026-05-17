@@ -203,4 +203,14 @@ public class StudentService {
 
     }
 
+    public void updateStudent() {
+        String studentRegistrationNo = (String) VaadinSession.getCurrent().getAttribute("studentRegistrationNo");
+        if (studentRegistrationNo.isEmpty() || studentRegistrationNo.isBlank()) {
+            throw new IllegalArgumentException("Student not logged in");
+
+        }
+        StudentEntity student = this.getStudentByRegistration(studentRegistrationNo);
+        studentRepository.save(student);
+    }
+
 }
