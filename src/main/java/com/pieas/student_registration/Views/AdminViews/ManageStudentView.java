@@ -15,6 +15,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -30,6 +31,7 @@ class ManageStudentView extends VerticalLayout {
 
     public ManageStudentView(StudentService studentService, DepartmentService departmentService) {
         this.studentService = studentService;
+        this.departmentService = departmentService;
 
         this.addClassName("admin-layout-main");
         this.setWidthFull();
@@ -59,6 +61,10 @@ class ManageStudentView extends VerticalLayout {
         tempLayout.addClassName("addstudentforum");
         tempLayout.setWidthFull();
 
+        TextField name = new TextField("Name");
+        name.setPlaceholder("Enter Student Name");
+        name.setRequired(true);
+
         TextField regNo = new TextField("Reg No");
         regNo.setPattern("\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}");
         regNo.setMaxLength(16);
@@ -69,12 +75,10 @@ class ManageStudentView extends VerticalLayout {
         PasswordField password = new PasswordField("Password");
         password.setPlaceholder("Enter Password");
 
-        Select<String> department = new Select<>("Department");
+        Select<String> department = new Select<>("Degree Program");
         List<String> temp = new ArrayList<>();
         for (DepartmentEntity dep : departmentService.getAllDepartments()) {
-            for (String degree : dep.getDegreeName()) {
-                temp.add(degree);
-            }
+            temp.addAll(dep.getDegreeName());
         }
 
         department.setItems(temp);
@@ -83,10 +87,19 @@ class ManageStudentView extends VerticalLayout {
         addButton.addClassName("addStudentButton");
 
         addButton.addClickListener(e -> {
-            studentService.addStudent(new StudentEntity(password.getValue(), regNo.getValue(), department.getValue()));
+            try {
+                studentService
+                        .addStudent(new StudentEntity(name.getValue(), password.getValue(), regNo.getValue(),
+                                department.getValue()));
+                Notification.show("Student Added Successfully");
+                UI.getCurrent().getPage().reload();
+            } catch (Exception ex) {
+                Notification.show(ex.getMessage());
+            }
+
         });
 
-        tempLayout.add(department, regNo, password, addButton);
+        tempLayout.add(name, department, regNo, password, addButton);
         return tempLayout;
     }
 
@@ -97,9 +110,9 @@ class ManageStudentView extends VerticalLayout {
         tempLayout.setHeightFull();
 
         tempLayout.add(new HorizontalLayout(
+                new Span("Registration Number"),
                 new Span("Name"),
-                new Span("FatherName"),
-                new Span("Department"),
+                new Span("Degree Program"),
                 new Span("Current Semester Enrolled"),
                 new Span("Edit")));
         for (StudentEntity student : studentService.getAllStudents()) {
@@ -122,8 +135,8 @@ class ManageStudentView extends VerticalLayout {
         });
 
         tempHorizontalLayout.add(
+                new Span(student.getRegistrationNumber()),
                 new Span(student.getName()),
-                new Span(student.getFatherName()),
                 new Span(student.getDepartment()),
                 new Span(String.valueOf(student.getCurrentSemesterIndex() + 1)),
                 btn);

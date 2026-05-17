@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pieas.student_registration.Entities.CourseEntity;
 import com.pieas.student_registration.Entities.DepartmentEntity;
-import com.pieas.student_registration.Entities.SubjectEntity;
 import com.pieas.student_registration.Services.CourseService;
 import com.pieas.student_registration.Services.DepartmentService;
 import com.vaadin.flow.component.UI;
@@ -16,10 +15,10 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 
 class ManageCourseView extends VerticalLayout {
@@ -101,10 +100,15 @@ class ManageCourseView extends VerticalLayout {
         addButton.addClassName("addCourseButton");
 
         addButton.addClickListener(e -> {
-            courseService.addCourse(new CourseEntity(courseTitle.getValue(), department.getValue(),
-                    instructor.getValue(), courseCode.getValue(),
-                    semesterNo.getValue(), creditHours.getValue()));
-            UI.getCurrent().getPage().reload();
+            try {
+                courseService.addCourse(new CourseEntity(courseTitle.getValue(), department.getValue(),
+                        instructor.getValue(), courseCode.getValue(),
+                        semesterNo.getValue(), creditHours.getValue()));
+                Notification.show("Course Added Successfully");
+                UI.getCurrent().getPage().reload();
+            } catch (Exception ex) {
+                Notification.show("Error Adding Course: " + ex.getMessage());
+            }
         });
 
         tempLayout.add(department, courseTitle, instructor, courseCode, semesterNo, creditHours, addButton);

@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.vaadin.copilot.shaded.checkerframework.common.aliasing.qual.Unique;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

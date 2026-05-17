@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.DuplicateKeyException;
-import com.pieas.student_registration.Entities.CertificationEntity;
 import com.pieas.student_registration.Entities.SemesterEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Entities.SubjectEntity;
