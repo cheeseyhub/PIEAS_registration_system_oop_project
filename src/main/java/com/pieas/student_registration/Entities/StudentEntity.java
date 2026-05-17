@@ -52,10 +52,10 @@ public class StudentEntity {
     private String degreeTitle;
 
     // @NotBlank(message = "The contactNo must not be blank")
-    private String contactNo;
+    private Double contactNo;
 
     // @NotBlank(message = "The emergencyContact must not be blank")
-    private String emergencyContact;
+    private Double emergencyContact;
 
     // @NotBlank(message = "The domicile must not be blank")
     private String domicile;

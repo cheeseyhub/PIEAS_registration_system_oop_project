@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pieas.student_registration.Entities.CertificationEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Entities.SubjectEntity;
 import com.pieas.student_registration.Services.StudentService;
