@@ -77,7 +77,7 @@ public class StudentService {
 
     }
 
-    public boolean authenticateUser(String department, String registrationNumber, String password) {
+    public boolean authenticateUser(String degreeProgram, String registrationNumber, String password) {
         if (!registrationNumber.matches("\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}")) {
             return false;
         }
@@ -87,7 +87,7 @@ public class StudentService {
                 &&
                 passwordEncoder.matches(password, student.get().getPassword())
                 &&
-                student.get().getDepartment().equals(department)) {
+                student.get().getDegreeName().equals(degreeProgram)) {
             return true;
         }
         return false;

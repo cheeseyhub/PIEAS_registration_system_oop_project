@@ -28,6 +28,8 @@ class ManageStudentView extends VerticalLayout {
 
     @Autowired
     DepartmentService departmentService;
+    private String degreeTitle;
+    private String department;
 
     public ManageStudentView(StudentService studentService, DepartmentService departmentService) {
         this.studentService = studentService;
@@ -75,22 +77,60 @@ class ManageStudentView extends VerticalLayout {
         PasswordField password = new PasswordField("Password");
         password.setPlaceholder("Enter Password");
 
-        Select<String> department = new Select<>("Degree Program");
+        Select<String> degreeProgram = new Select<>("Degree Program");
         List<String> temp = new ArrayList<>();
         for (DepartmentEntity dep : departmentService.getAllDepartments()) {
             temp.addAll(dep.getDegreeName());
         }
 
-        department.setItems(temp);
+        degreeProgram.setItems(temp);
+
+        this.degreeTitle = "";
+        this.department = "";
+
+        degreeProgram.addValueChangeListener(e -> {
+            degreeTitle = degreeProgram.getValue().split(" ")[0];
+            Notification.show(degreeProgram.getValue().split(" ")[0]);
+
+            department = "";
+
+            for (DepartmentEntity dep : departmentService.getAllDepartments()) {
+                if (dep.getDegreeName().contains(degreeProgram.getValue())) {
+                    department = dep.getDepartmentName();
+                    Notification.show(department);
+                    break;
+                }
+            }
+        });
 
         Button addButton = new Button("Add Student");
         addButton.addClassName("addStudentButton");
 
         addButton.addClickListener(e -> {
             try {
+                if (name.getValue().isEmpty()) {
+                    Notification.show("Please enter student name");
+                    return;
+                }
+                if (regNo.getValue().isEmpty()) {
+                    Notification.show("Please enter registration number");
+                    return;
+                }
+                if (password.getValue().isEmpty()) {
+                    Notification.show("Please enter password");
+                    return;
+                }
+                if (degreeProgram.getValue() == null) {
+                    Notification.show("Please select a degree program");
+                    return;
+                }
+
+                Notification.show(
+                        degreeTitle + department);
+
                 studentService
                         .addStudent(new StudentEntity(name.getValue(), password.getValue(), regNo.getValue(),
-                                department.getValue()));
+                                degreeProgram.getValue(), degreeTitle, department));
                 Notification.show("Student Added Successfully");
                 UI.getCurrent().getPage().reload();
             } catch (Exception ex) {
@@ -99,7 +139,7 @@ class ManageStudentView extends VerticalLayout {
 
         });
 
-        tempLayout.add(name, department, regNo, password, addButton);
+        tempLayout.add(name, degreeProgram, regNo, password, addButton);
         return tempLayout;
     }
 
@@ -137,7 +177,7 @@ class ManageStudentView extends VerticalLayout {
         tempHorizontalLayout.add(
                 new Span(student.getRegistrationNumber()),
                 new Span(student.getName()),
-                new Span(student.getDepartment()),
+                new Span(student.getDegreeName()),
                 new Span(String.valueOf(student.getCurrentSemesterIndex() + 1)),
                 btn);
 

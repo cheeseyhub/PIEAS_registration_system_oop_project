@@ -118,7 +118,7 @@ public class LoginView extends HorizontalLayout {
             instructionText.getStyle().set("color", "#666");
             instructionText.getStyle().set("margin", "0 0 20px 0");
 
-            Select<String> departmentSelect = new Select<>("Department");
+            Select<String> departmentSelect = new Select<>("Degree Program");
             List<String> temp = new ArrayList<>();
             for (DepartmentEntity dep : departmentService.getAllDepartments()) {
                 for (String degree : dep.getDegreeName()) {
@@ -151,11 +151,11 @@ public class LoginView extends HorizontalLayout {
 
             loginButton.addClickListener(event -> {
 
-                String department = departmentSelect.getValue();
+                String degreeProgram = departmentSelect.getValue();
                 String registrationNumber = regNoField.getValue();
                 String password = passwordField.getValue();
 
-                if (department == null || department.isEmpty()) {
+                if (degreeProgram == null || degreeProgram.isEmpty()) {
                     Notification.show("Please select a department", 3000, Notification.Position.MIDDLE);
                     return;
                 }
@@ -179,7 +179,7 @@ public class LoginView extends HorizontalLayout {
                 loginButton.setText("Signing in...");
 
                 try {
-                    if (this.studentService.authenticateUser(department, registrationNumber, password)) {
+                    if (this.studentService.authenticateUser(degreeProgram, registrationNumber, password)) {
                         Notification.show("Welcome!");
                         studentService.storeStudentData(registrationNumber);
                         UI.getCurrent().navigate("main");
