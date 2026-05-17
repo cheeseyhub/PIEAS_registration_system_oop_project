@@ -19,7 +19,7 @@ public class AdminService {
     }
 
     public void deleteAdmin(String username) {
-        adminRepository.deleteByuserName(username);
+        adminRepository.deleteByusername(username);
     }
 
     public List<AdminEntity> getAllAdmins() {
