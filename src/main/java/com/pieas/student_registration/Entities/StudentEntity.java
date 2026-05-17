@@ -58,10 +58,10 @@ public class StudentEntity {
     private Double emergencyContact;
 
     // @NotBlank(message = "The domicile must not be blank")
-    private String domicile;
+    private String domicile = "";
 
     // @NotBlank(message = "The rollNumber must not be blank")
-    private String rollNo;
+    private String rollNo = "";
 
     // @NotBlank(message = "The dateOfBirth must not be blank")
     private LocalDate dateOfBirth;
@@ -71,17 +71,17 @@ public class StudentEntity {
 
     // @NotBlank(message = "The pieasEmail must not be blank")
     @Email
-    private String pieasEmail;
+    private String pieasEmail = "";
 
     // @NotBlank(message = "The email must not be blank")
     @Email
-    private String personalEmail;
+    private String personalEmail = "";
 
     // @NotBlank(message = "The libararyId must not be blank")
-    private String libraryId;
+    private String libraryId = "";
 
     // @NotBlank(message = "The address of student must not be blank")
-    private String address;
+    private String address = "";
 
     public StudentEntity(@NotBlank(message = "Passowrd cannot be blank") String password,
             @Pattern(regexp = "\\d{2}-\\d{1}-\\d{1}-\\d{3}-\\d{4}", message = "Registration number must match format: XX-X-X-XXX-XXXX") String registrationNumber,
@@ -102,7 +102,7 @@ public class StudentEntity {
 
     private double cgpa;
 
-    private ArrayList<SemesterEntity> semesters;
+    private ArrayList<SemesterEntity> semesters = new ArrayList<>();
 
     public Optional<SemesterEntity> getSemster(int semesterNumber) {
         return Optional.of(this.semesters.get(semesterNumber));
