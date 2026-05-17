@@ -136,23 +136,6 @@ public class StudentService {
         return "Subject added to semester " + semesterNumber + " for student " + registrationNumber + ".";
     }
 
-    public String addCertification(String registrationNumber,
-            CertificationEntity certification) {
-        StudentEntity student = this.getStudentByRegistration(registrationNumber);
-        if (student == null) {
-            return "Student Does not exist ";
-        }
-
-        if (student.getCertifications() == null) {
-            student.setCertifications(new ArrayList<>());
-
-        }
-        student.getCertifications().add(certification);
-        studentRepository.save(student);
-        return "Degree " + certification.getDegreeName() + " successfully added  to " + student.getRegistrationNumber();
-
-    }
-
     public void storeStudentData(String reg) {
         StudentEntity student = this.getStudentByRegistration(reg);
         VaadinSession.getCurrent().setAttribute("studentRegistrationNo", student.getRegistrationNumber());

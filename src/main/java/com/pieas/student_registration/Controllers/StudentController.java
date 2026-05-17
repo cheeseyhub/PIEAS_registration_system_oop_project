@@ -39,11 +39,4 @@ public class StudentController {
         return studentService.addSubject(registrationNumber, semesterNumber, subject);
     }
 
-    @PostMapping("/{registrationNumber}/certification")
-    public String addCertification(@PathVariable String registrationNumber,
-            @RequestBody CertificationEntity certificationEntity) {
-        return studentService.addCertification(registrationNumber, certificationEntity);
-
-    }
-
 }
