@@ -23,7 +23,6 @@ public class SemesterEntity {
     private boolean enrolled;
 
     @NotEmpty
-    @DocumentReference
     private ArrayList<CourseEntity> courses;
 
     private double semesterGpa;
