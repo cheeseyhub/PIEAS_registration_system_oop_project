@@ -60,14 +60,14 @@ class ManageCourseView extends VerticalLayout {
         tempLayout.addClassName("addCourseForm");
         tempLayout.setWidthFull();
 
-        Select<String> department = new Select<>("Department");
+        Select<String> degreeProgram = new Select<>("Degree Program");
         List<String> temp = new ArrayList<>();
         for (DepartmentEntity dep : departmentService.getAllDepartments()) {
             for (String degree : dep.getDegreeName()) {
                 temp.add(degree);
             }
         }
-        department.setItems(temp);
+        degreeProgram.setItems(temp);
 
         TextField courseTitle = new TextField("Course Title");
         courseTitle.setPlaceholder("Course Title");
@@ -82,13 +82,13 @@ class ManageCourseView extends VerticalLayout {
         courseCode.setRequired(true);
 
         Select<Integer> semesterNo = new Select<>("Semester No.");
-        department.addValueChangeListener(e -> {
-            if (department.getValue() != null) {
-                if (department.getValue().startsWith("BS"))
+        degreeProgram.addValueChangeListener(e -> {
+            if (degreeProgram.getValue() != null) {
+                if (degreeProgram.getValue().startsWith("BS"))
                     semesterNo.setItems(1, 2, 3, 4, 5, 6, 7, 8);
-                else if (department.getValue().startsWith("MS"))
+                else if (degreeProgram.getValue().startsWith("MS"))
                     semesterNo.setItems(1, 2, 3, 4);
-                else if (department.getValue().startsWith("PHD"))
+                else if (degreeProgram.getValue().startsWith("PHD"))
                     semesterNo.setItems(1, 2, 3, 4, 5, 6);
             }
         });
@@ -101,7 +101,7 @@ class ManageCourseView extends VerticalLayout {
 
         addButton.addClickListener(e -> {
             try {
-                courseService.addCourse(new CourseEntity(courseTitle.getValue(), department.getValue(),
+                courseService.addCourse(new CourseEntity(courseTitle.getValue(), degreeProgram.getValue(),
                         instructor.getValue(), courseCode.getValue(),
                         semesterNo.getValue(), creditHours.getValue()));
                 Notification.show("Course Added Successfully");
@@ -111,7 +111,7 @@ class ManageCourseView extends VerticalLayout {
             }
         });
 
-        tempLayout.add(department, courseTitle, instructor, courseCode, semesterNo, creditHours, addButton);
+        tempLayout.add(degreeProgram, courseTitle, instructor, courseCode, semesterNo, creditHours, addButton);
         return tempLayout;
     }
 
@@ -122,7 +122,7 @@ class ManageCourseView extends VerticalLayout {
         tempLayout.setHeightFull();
 
         tempLayout.add(new HorizontalLayout(
-                new Span("Department"),
+                new Span("Degree Program"),
                 new Span("Course Title"),
                 new Span("Instructor"),
                 new Span("Course Code"),
@@ -150,7 +150,7 @@ class ManageCourseView extends VerticalLayout {
         });
 
         tempHorizontalLayout.add(
-                new Span(course.getDepartment()),
+                new Span(course.getDegreeProgram()),
                 new Span(course.getCourseName()),
                 new Span(course.getInstructor()),
                 new Span(course.getCourseCode()),

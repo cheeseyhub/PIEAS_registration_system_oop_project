@@ -2,7 +2,6 @@ package com.pieas.student_registration.Entities;
 
 import java.util.ArrayList;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import jakarta.validation.constraints.NotBlank;

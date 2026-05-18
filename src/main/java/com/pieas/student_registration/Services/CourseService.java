@@ -34,8 +34,8 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public ArrayList<CourseEntity> getCoursesByDegreeProgram(String degreeProgram) {
-        return new ArrayList<>(courseRepository.findByDegreeProgram(degreeProgram));
+    public ArrayList<CourseEntity> getCoursesBydegreeProgram(String degreeProgram) {
+        return new ArrayList<>(courseRepository.findBydegreeProgram(degreeProgram));
     }
 
 }

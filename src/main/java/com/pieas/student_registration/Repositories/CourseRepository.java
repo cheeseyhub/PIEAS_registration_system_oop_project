@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.pieas.student_registration.Entities.CourseEntity;
 
 public interface CourseRepository extends MongoRepository<CourseEntity, String> {
-    List<CourseEntity> findByDegreeProgram(String degreeProgram);
+    List<CourseEntity> findBydegreeProgram(String degreeProgram);
 
 }

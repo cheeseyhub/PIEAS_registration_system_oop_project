@@ -9,6 +9,7 @@ import com.vaadin.flow.component.html.Section;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -17,13 +18,15 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authorization.method.AuthorizeReturnObject;
 
 import com.pieas.student_registration.Entities.CourseEntity;
+import com.pieas.student_registration.Entities.SemesterEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Services.CourseService;
-import com.pieas.student_registration.Services.DepartmentService;
 import com.pieas.student_registration.Services.StudentService;
 import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
@@ -38,12 +41,7 @@ public class CourseEnrollPageView extends HorizontalLayout implements BeforeEnte
     private StudentService studentService;
 
     @Autowired
-    private DepartmentService departmentService;
-
-    @Autowired
     private CourseService courseService;
-
-    @Autowired
     private StudentEntity studentData;
 
     @Override
@@ -51,12 +49,11 @@ public class CourseEnrollPageView extends HorizontalLayout implements BeforeEnte
         AuthUtil.requireLogin(e);
     }
 
-    public CourseEnrollPageView(StudentService studentService, DepartmentService departmentService,
+    public CourseEnrollPageView(StudentService studentService,
             CourseService courseService) {
         try {
             this.studentService = studentService;
             this.studentData = studentService.getLoggedUser();
-            this.departmentService = departmentService;
             this.courseService = courseService;
 
             this.currentUser = AuthUtil.getCurrentStudentName();
@@ -129,39 +126,54 @@ public class CourseEnrollPageView extends HorizontalLayout implements BeforeEnte
             tempLayoutContainer.setPadding(false);
             tempLayoutContainer.addClassName("course-enrollment-displaycourse");
 
-            TextField search = new TextField("", "Search by course content or course code...");
-            search.addClassName("course-enrollment-search");
-
-            tempLayoutContainer.add(search);
-
-            for (CourseEntity course : courseService.getCoursesByDegreeProgram(studentData.getDegreeName())) {
-                displayCoursesTemplate(course);
+            for (CourseEntity course : courseService.getCoursesBydegreeProgram(studentData.getDegreeName())) {
+                tempLayoutContainer.add(displayCoursesTemplate(course));
             }
 
             return tempLayoutContainer;
         }
 
-        private VerticalLayout displayCoursesTemplate(String courseName, String instructor, String courseCode,
-                String creditHours, String duration, boolean isEnrolled) {
+        private VerticalLayout displayCoursesTemplate(CourseEntity course) {
             VerticalLayout tempLayoutContainer = new VerticalLayout();
             tempLayoutContainer.addClassName("course-enrollment-displaycourse-child");
 
-            Span courseNameSpan = new Span(courseName);
+            Span courseNameSpan = new Span(course.getCourseName());
             courseNameSpan.addClassName("course-enrollment-displaycourse-child-courseName");
-            Span instructorSpan = new Span(instructor);
+            Span instructorSpan = new Span(course.getInstructor());
             instructorSpan.addClassName("course-enrollment-displaycourse-child-instructor");
-            Span courseCodeSpan = new Span(courseCode);
+            Span courseCodeSpan = new Span(course.getCourseCode());
             courseCodeSpan.addClassName("course-enrollment-displaycourse-child-courseCode");
-            Span creditHourSpan = new Span(creditHours);
+            Span creditHourSpan = new Span(String.valueOf(course.getCreditHour()) + " Cr");
             creditHourSpan.addClassName("course-enrollment-displaycourse-child-creditHour");
             Section durationSpan = new Section(
-                    new Span(duration));
+                    new Span(String.valueOf(course.getSemesterNo())));
             creditHourSpan.addClassName("course-enrollment-displaycourse-child-duration");
 
             Span enrollButton = new Span();
+            enrollButton.getStyle().set("cursor", "pointer");
+            enrollButton.addClickListener(e -> {
+                if (course.isEnrolledInCourse() == false) {
+
+                    // if the semster array is null create a new semster and add subject to it
+                    if (studentData.getCurrentSemester() == null) {
+                        List<SemesterEntity> semester = new ArrayList<>();
+                        semester.add(new SemesterEntity(new ArrayList<>(), true));
+                        studentData.setSemesters((ArrayList<SemesterEntity>) semester);
+                    } else {
+                        studentData.getCurrentSemester().addSubject(course);
+                    }
+
+                } else {
+                    studentData.getCurrentSemester().removeSubject(course);
+                    course.setEnrolledInCourse(false);
+                    studentService.updateStudent(studentData);
+                    Notification.show("Course Unenrolled Successfully!");
+                }
+                UI.getCurrent().navigate("courses");
+            });
             Icon icon;
 
-            if (isEnrolled == false) {
+            if (course.isEnrolledInCourse() == false) {
                 icon = new Icon(VaadinIcon.PLUS);
                 icon.getStyle().set("width", "20px");
                 icon.getStyle().set("height", "20px");
