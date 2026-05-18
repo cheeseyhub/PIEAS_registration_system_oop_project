@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pieas.student_registration.Entities.CourseEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
-import com.pieas.student_registration.Entities.SubjectEntity;
 import com.pieas.student_registration.Services.StudentService;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +34,7 @@ public class StudentController {
     @PostMapping("/{registrationNumber}/{semesterNumber}")
     public String addSubject(@PathVariable String registrationNumber,
             @PathVariable int semesterNumber,
-            @RequestBody SubjectEntity subject) {
+            @RequestBody CourseEntity subject) {
         return studentService.addSubject(registrationNumber, semesterNumber, subject);
     }
 

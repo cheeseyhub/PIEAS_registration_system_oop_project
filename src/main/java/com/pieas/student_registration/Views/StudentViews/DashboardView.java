@@ -2,8 +2,8 @@ package com.pieas.student_registration.Views.StudentViews;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pieas.student_registration.Entities.CourseEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
-import com.pieas.student_registration.Entities.SubjectEntity;
 import com.pieas.student_registration.Services.StudentService;
 import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
@@ -112,7 +112,7 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
 
                                         helperCourseInfoSection("Course Enrolled",
                                                         String.valueOf(studentData.getCurrentSemester()
-                                                                        .getTotalEnrolledSubjects()),
+                                                                        .getTotalEnrolledcourses()),
                                                         VaadinIcon.ACADEMY_CAP),
                                         helperCourseInfoSection("Total Credit",
                                                         String.valueOf(studentData.getCurrentSemester()
@@ -172,14 +172,7 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                         HorizontalLayout tempLayoutContainer = new HorizontalLayout();
                         tempLayoutContainer.addClassName("dashboard-displaycourse");
 
-                        if (studentData.getCurrentSemester() == null
-                                        || studentData.getCurrentSemester().getSubjects() == null
-                                        || studentData.getCurrentSemester().getSubjects().isEmpty()) {
-                                tempLayoutContainer.add(new Paragraph("No courses enrolled for the current semester."));
-                                return tempLayoutContainer;
-                        }
-
-                        for (SubjectEntity course : studentData.getCurrentSemester().getSubjects()) {
+                        for (CourseEntity course : studentData.getCurrentSemester().getCourses()) {
                                 tempLayoutContainer.add(
                                                 displayCoursesHelper(course));
                         }
@@ -187,7 +180,7 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                         return tempLayoutContainer;
                 }
 
-                private VerticalLayout displayCoursesHelper(SubjectEntity subject) {
+                private VerticalLayout displayCoursesHelper(CourseEntity subject) {
                         VerticalLayout tempLayoutContainer = new VerticalLayout();
                         tempLayoutContainer.addClassName("dashboard-displaycourse-child");
 
