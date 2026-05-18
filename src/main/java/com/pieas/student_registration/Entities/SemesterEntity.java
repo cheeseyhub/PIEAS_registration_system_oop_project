@@ -2,6 +2,7 @@ package com.pieas.student_registration.Entities;
 
 import java.util.ArrayList;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import jakarta.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ public class SemesterEntity {
     private boolean enrolled;
 
     @NotEmpty
+    @DBRef
     private ArrayList<CourseEntity> courses;
 
     private double semesterGpa;
