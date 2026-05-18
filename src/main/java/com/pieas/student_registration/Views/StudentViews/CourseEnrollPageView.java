@@ -18,6 +18,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,7 +135,17 @@ public class CourseEnrollPageView extends HorizontalLayout implements BeforeEnte
         }
 
         private VerticalLayout displayCoursesTemplate(CourseEntity course) {
+            if (studentData.getCurrentSemester() != null && studentData.getCurrentSemester().getCourses() != null) {
+                for (CourseEntity c : studentData.getCurrentSemester().getCourses()) {
+                    if (c.getCourseCode().equals(course.getCourseCode())) {
+                        course.setEnrolledInCourse(true);
+                        break;
+                    }
+                }
+            }
+
             VerticalLayout tempLayoutContainer = new VerticalLayout();
+            this.setHeightFull();
             tempLayoutContainer.addClassName("course-enrollment-displaycourse-child");
 
             Span courseNameSpan = new Span(course.getCourseName());
@@ -146,31 +157,56 @@ public class CourseEnrollPageView extends HorizontalLayout implements BeforeEnte
             Span creditHourSpan = new Span(String.valueOf(course.getCreditHour()) + " Cr");
             creditHourSpan.addClassName("course-enrollment-displaycourse-child-creditHour");
             Section durationSpan = new Section(
-                    new Span(String.valueOf(course.getSemesterNo())));
+                    new Span(String.valueOf(course.getSemesterNo()) + " Semester"));
             creditHourSpan.addClassName("course-enrollment-displaycourse-child-duration");
 
             Span enrollButton = new Span();
             enrollButton.getStyle().set("cursor", "pointer");
+
             enrollButton.addClickListener(e -> {
-                if (course.isEnrolledInCourse() == false) {
+                try {
 
-                    // if the semster array is null create a new semster and add subject to it
-                    if (studentData.getCurrentSemester() == null) {
-                        List<SemesterEntity> semester = new ArrayList<>();
-                        semester.add(new SemesterEntity(new ArrayList<>(), true));
-                        studentData.setSemesters((ArrayList<SemesterEntity>) semester);
+                    if (course.isEnrolledInCourse() == false) {
+                        if (studentData.getCurrentSemester() == null || studentData.getSemesters().isEmpty()) {
+                            ArrayList<SemesterEntity> semesters = new ArrayList<>();
+                            SemesterEntity newSemester = new SemesterEntity(1, "Fall 2026", true,
+                                    new ArrayList<CourseEntity>(0), 0);
+                            semesters.add(newSemester);
+                            studentData.setSemesters(semesters);
+                        }
+
+                        if (studentData.getCurrentSemester().getCourses() == null
+                                || studentData.getCurrentSemester().getCourses().isEmpty()) {
+                            studentData.getCurrentSemester().setCourses(new ArrayList<CourseEntity>());
+                        }
+
+                        studentData.getCurrentSemester().getCourses().add(course);
+                        course.setEnrolledInCourse(true);
+                        for (CourseEntity c : studentData.getCurrentSemester().getCourses()) {
+                            if (c.getCourseCode().equals(course.getCourseCode())) {
+                                c.setEnrolledInCourse(true);
+                                break;
+                            }
+                        }
+
+                        studentService.updateStudent(studentData);
+                        Notification.show("Enrolled in course: " + course.getCourseName());
+                        UI.getCurrent().getPage().reload();
                     } else {
-                        studentData.getCurrentSemester().addSubject(course);
+                        ArrayList<CourseEntity> updatedCourseList = new ArrayList<>();
+                        updatedCourseList.addAll(studentData.getCurrentSemester().getCourses());
+                        updatedCourseList.removeIf(c -> c.getCourseCode().equals(course.getCourseCode()));
+                        studentData.getCurrentSemester().setCourses(updatedCourseList);
+                        studentService.updateStudent(studentData);
+                        course.setEnrolledInCourse(false);
+                        Notification.show("Dropped course: " + course.getCourseName());
+                        UI.getCurrent().getPage().reload();
                     }
-
-                } else {
-                    studentData.getCurrentSemester().removeSubject(course);
-                    course.setEnrolledInCourse(false);
-                    studentService.updateStudent(studentData);
-                    Notification.show("Course Unenrolled Successfully!");
+                } catch (Exception ex) {
+                    Notification.show("Error enrolling in course: " + ex.getMessage());
                 }
-                UI.getCurrent().navigate("courses");
             });
+
             Icon icon;
 
             if (course.isEnrolledInCourse() == false) {

@@ -45,7 +45,6 @@ public class Sidebar extends VerticalLayout {
                 { "Dashboard", "main", VaadinIcon.DASHBOARD },
                 { "Student Registration", "registration", VaadinIcon.USER_STAR },
                 { "Course Enroll", "courses", VaadinIcon.BOOK },
-                { "View Results", "result", VaadinIcon.CHART_LINE },
                 { "Change Password", "changePassword", VaadinIcon.KEY }
         };
 

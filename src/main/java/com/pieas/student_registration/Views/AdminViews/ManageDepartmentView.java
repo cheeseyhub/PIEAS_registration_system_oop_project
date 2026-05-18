@@ -74,12 +74,6 @@ public class ManageDepartmentView extends VerticalLayout {
             List<String> degreeNames = getDegreeNamesFromLayout(degreeNameLayout);
             List<String> selectedValues = new ArrayList<>(degreeTitleSelect.getValue());
 
-            for (String degree : degreeNames)
-                Notification.show(degree);
-
-            for (String degree : selectedValues)
-                Notification.show(degree);
-
             departmentService.addDepartment(new DepartmentEntity(department.getValue(),
                     selectedValues, degreeNames));
             UI.getCurrent().getPage().reload();

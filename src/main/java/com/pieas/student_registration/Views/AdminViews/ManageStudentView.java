@@ -90,14 +90,12 @@ class ManageStudentView extends VerticalLayout {
 
         degreeProgram.addValueChangeListener(e -> {
             degreeTitle = degreeProgram.getValue().split(" ")[0];
-            Notification.show(degreeProgram.getValue().split(" ")[0]);
 
             department = "";
 
             for (DepartmentEntity dep : departmentService.getAllDepartments()) {
                 if (dep.getDegreeName().contains(degreeProgram.getValue())) {
                     department = dep.getDepartmentName();
-                    Notification.show(department);
                     break;
                 }
             }
@@ -124,9 +122,6 @@ class ManageStudentView extends VerticalLayout {
                     Notification.show("Please select a degree program");
                     return;
                 }
-
-                Notification.show(
-                        degreeTitle + department);
 
                 studentService
                         .addStudent(new StudentEntity(name.getValue(), password.getValue(), regNo.getValue(),

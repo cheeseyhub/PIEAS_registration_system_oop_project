@@ -1,8 +1,11 @@
 package com.pieas.student_registration.Views.StudentViews;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pieas.student_registration.Entities.CourseEntity;
+import com.pieas.student_registration.Entities.SemesterEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
 import com.pieas.student_registration.Services.StudentService;
 import com.pieas.student_registration.UI.Utils.AuthUtil;
@@ -102,21 +105,21 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                         HorizontalLayout tempLayoutContainer = new HorizontalLayout();
                         tempLayoutContainer.addClassName("dashobard-course-info-section");
 
-                        if (studentData.getCurrentSemester() == null) {
-                                tempLayoutContainer.add(new Paragraph(
-                                                "No course information available for the current semester."));
-                                return tempLayoutContainer;
+                        SemesterEntity currentSemester = studentData.getCurrentSemester();
+
+                        if (currentSemester == null) {
+                                currentSemester = new SemesterEntity(1, "Fall 2026", true,
+                                                new ArrayList<CourseEntity>(), 0);
                         }
+
                         studentData.calculateCgpa();
                         HorizontalLayout temp[] = {
 
                                         helperCourseInfoSection("Course Enrolled",
-                                                        String.valueOf(studentData.getCurrentSemester()
-                                                                        .getTotalEnrolledcourses()),
+                                                        String.valueOf(currentSemester.getTotalEnrolledcourses()),
                                                         VaadinIcon.ACADEMY_CAP),
                                         helperCourseInfoSection("Total Credit",
-                                                        String.valueOf(studentData.getCurrentSemester()
-                                                                        .getTotalCreditHour()),
+                                                        String.valueOf(currentSemester.getTotalCreditHour()),
                                                         VaadinIcon.TROPHY),
                                         helperCourseInfoSection("GPA", String.valueOf(studentData.getCgpa()),
                                                         VaadinIcon.MEDAL)
@@ -172,6 +175,13 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                         HorizontalLayout tempLayoutContainer = new HorizontalLayout();
                         tempLayoutContainer.addClassName("dashboard-displaycourse");
 
+                        if (studentData.getCurrentSemester() == null
+                                        || studentData.getCurrentSemester().getCourses() == null
+                                        || studentData.getCurrentSemester().getCourses().isEmpty()) {
+                                tempLayoutContainer.add(new Paragraph("No courses enrolled for the current semester."));
+                                return tempLayoutContainer;
+                        }
+
                         for (CourseEntity course : studentData.getCurrentSemester().getCourses()) {
                                 tempLayoutContainer.add(
                                                 displayCoursesHelper(course));
@@ -184,7 +194,7 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                         VerticalLayout tempLayoutContainer = new VerticalLayout();
                         tempLayoutContainer.addClassName("dashboard-displaycourse-child");
 
-                        Span courseNameSpan = new Span(subject.getCourseTitle());
+                        Span courseNameSpan = new Span(subject.getCourseName());
                         courseNameSpan.addClassName("dashboard-displaycourse-child-courseName");
                         Span instructorSpan = new Span(subject.getInstructor());
                         instructorSpan.addClassName("dashboard-displaycourse-child-instructor");
@@ -194,7 +204,7 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                         creditHourSpan.addClassName("dashboard-displaycourse-child-creditHour");
                         Section semesterSection = new Section(
                                         new Icon(VaadinIcon.CALENDAR_O),
-                                        new Span(String.valueOf(subject.getSemesterNo())));
+                                        new Span(" " + String.valueOf(subject.getSemesterNo()) + " Semester"));
                         creditHourSpan.addClassName("dashboard-displaycourse-child-duration");
 
                         HorizontalLayout temp = new HorizontalLayout(courseCodeSpan, creditHourSpan);
