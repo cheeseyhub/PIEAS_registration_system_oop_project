@@ -179,123 +179,112 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
             department.setPlaceholder("Department");
             department.setRequired(true);
 
-            for (DepartmentEntity dep : departmentService.getAllDepartments()) {
-                if (dep.getDegreeName().contains(studentData.getDegreeName())) {
-                    department.setValue(dep.getDepartmentName());
-                    break;
+            Select<String> departmentSelect = new Select<>();
+            departmentSelect.setValue(studentData.getDepartment());
+
+            departmentSelect.setPlaceholder("Department");
+            departmentSelect.setRequiredIndicatorVisible(true);
+            departmentSelect.setValue(studentData.getDepartment());
+            departmentSelect.setReadOnly(true);
+
+            Select<String> degreeTitle = new Select<>("Degree Title");
+            degreeTitle.setPlaceholder("Degree Title");
+            degreeTitle.setRequiredIndicatorVisible(true);
+            degreeTitle.setValue(studentData.getDegreeTitle());
+            degreeTitle.setReadOnly(true);
+
+            Select<String> degreeName = new Select<>("Degree Name");
+            degreeName.setPlaceholder("Degree Name");
+            degreeName.setRequiredIndicatorVisible(true);
+            degreeName.setValue(studentData.getDegreeName());
+            degreeName.setReadOnly(true);
+
+            TextField rollNo = new TextField("Roll No.");
+            rollNo.setRequired(true);
+            rollNo.setValue(studentData.getRollNo());
+
+            TextField regNo = new TextField("Registration Number");
+            regNo.setValue(studentData.getRegistrationNumber());
+            regNo.setRequired(true);
+            regNo.setReadOnly(true);
+
+            TextField libraryId = new TextField("Library ID");
+            libraryId.setValue(studentData.getLibraryId());
+            libraryId.setRequired(true);
+
+            educationInfoSection.add(
+                    departmentSelect, degreeTitle, degreeName,
+                    rollNo, regNo, libraryId);
+
+            Section contactInfoSection = new Section();
+            contactInfoSection.addClassName("registrationForm-section-contact");
+
+            EmailField emailAddress = new EmailField("Email");
+            emailAddress.setRequired(true);
+            emailAddress.setPlaceholder("Enter Email Address");
+            emailAddress.setValue(studentData.getPersonalEmail());
+
+            EmailField pieasEmailAddress = new EmailField("PIEAS Email Address");
+            pieasEmailAddress.setRequired(true);
+            pieasEmailAddress.setPlaceholder("Enter PIEAS Email Address");
+            pieasEmailAddress.setValue(studentData.getPieasEmail());
+
+            NumberField phoneNumber = new NumberField("Phone Number");
+            phoneNumber.setPlaceholder("+92--- -------");
+            phoneNumber.setRequired(true);
+            phoneNumber.setValue(studentData.getContactNo());
+
+            NumberField emergencyPhoneNumber = new NumberField("Emergency Contact Number");
+            emergencyPhoneNumber.setPlaceholder("+92--- -------");
+            emergencyPhoneNumber.setRequired(true);
+            emergencyPhoneNumber.setValue(studentData.getEmergencyContact());
+
+            TextArea address = new TextArea("Address");
+            address.setRequired(true);
+            address.setPlaceholder("Enter Address");
+            address.setValue(studentData.getAddress());
+            contactInfoSection.add(
+                    emailAddress, pieasEmailAddress, phoneNumber, emergencyPhoneNumber, address);
+
+            Button updateInformationButton = new Button("Update Information");
+            updateInformationButton.addClassName("registrationForm-updateButton");
+
+            updateInformationButton.addClickListener(e -> {
+                try {
+                    studentData.setFatherName(fatherName.getValue());
+                    studentData.setDateOfBirth(dateOfBirth.getValue());
+                    studentData.setGender(gender.getValue());
+                    studentData.setCnic(cnic.getValue());
+                    studentData.setDomicile(domicile.getValue());
+                    studentData.setRollNo(rollNo.getValue());
+                    studentData.setLibraryId(libraryId.getValue());
+                    studentData.setPersonalEmail(emailAddress.getValue());
+                    studentData.setPieasEmail(pieasEmailAddress.getValue());
+                    studentData.setContactNo(phoneNumber.getValue());
+                    studentData.setEmergencyContact(emergencyPhoneNumber.getValue());
+                    studentData.setAddress(address.getValue());
+
+                    studentService.updateStudent(studentData);
+                    UI.getCurrent().getPage().reload();
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
+            });
 
-                department.setPlaceholder("Department");
-                department.setRequiredIndicatorVisible(true);
-                department.setValue(studentData.getDepartment());
-                department.setReadOnly(true);
+            tempVerticalLayout.add(
+                    new H5("Personal Information"),
+                    new Hr(),
+                    personalInfoSection,
 
-                Select<String> degreeTitle = new Select<>("Degree Title");
-                List<String> degreeTitles = new ArrayList<>();
-                for (DepartmentEntity dept : departmentService.getAllDepartments()) {
-                    degreeTitles.addAll(dept.getDegreeTitle());
-                }
-                degreeTitle.setItems(degreeTitles);
-                degreeTitle.setPlaceholder("Degree Title");
-                degreeTitle.setRequiredIndicatorVisible(true);
-                degreeTitle.setValue(studentData.getDegreeTitle());
+                    new H5("Education Information"),
+                    new Hr(),
+                    educationInfoSection,
 
-                Select<String> degreeName = new Select<>("Degree Name");
-                List<String> degreeNames = new ArrayList<>();
-                for (DepartmentEntity dept : departmentService.getAllDepartments()) {
-                    degreeNames.addAll(dept.getDegreeName());
-                }
+                    new H5("Contact Information"),
+                    new Hr(),
+                    contactInfoSection, updateInformationButton);
 
-                degreeName.setItems(degreeNames);
-                degreeName.setPlaceholder("Degree Name");
-                degreeName.setRequiredIndicatorVisible(true);
-                degreeName.setValue(studentData.getDegreeName());
-
-                TextField rollNo = new TextField("Roll No.");
-                rollNo.setRequired(true);
-                rollNo.setValue(studentData.getRollNo());
-
-                TextField regNo = new TextField("Registration Number");
-                regNo.setValue(studentData.getRegistrationNumber());
-                regNo.setRequired(true);
-                regNo.setReadOnly(true);
-
-                TextField libraryId = new TextField("Library ID");
-                libraryId.setValue(studentData.getLibraryId());
-                libraryId.setRequired(true);
-
-                educationInfoSection.add(
-                        department, degreeTitle, degreeName,
-                        rollNo, regNo, libraryId);
-
-                Section contactInfoSection = new Section();
-                contactInfoSection.addClassName("registrationForm-section-contact");
-
-                EmailField emailAddress = new EmailField("Email");
-                emailAddress.setRequired(true);
-                emailAddress.setPlaceholder("Enter Email Address");
-                emailAddress.setValue(studentData.getPersonalEmail());
-
-                EmailField pieasEmailAddress = new EmailField("PIEAS Email Address");
-                pieasEmailAddress.setRequired(true);
-                pieasEmailAddress.setPlaceholder("Enter PIEAS Email Address");
-                pieasEmailAddress.setValue(studentData.getPieasEmail());
-
-                NumberField phoneNumber = new NumberField("Phone Number");
-                phoneNumber.setPlaceholder("+92--- -------");
-                phoneNumber.setRequired(true);
-                phoneNumber.setValue(studentData.getContactNo());
-
-                NumberField emergencyPhoneNumber = new NumberField("Emergency Contact Number");
-                emergencyPhoneNumber.setPlaceholder("+92--- -------");
-                emergencyPhoneNumber.setRequired(true);
-                emergencyPhoneNumber.setValue(studentData.getEmergencyContact());
-
-                TextArea address = new TextArea("Address");
-                address.setRequired(true);
-                address.setPlaceholder("Enter Address");
-                address.setValue(studentData.getAddress());
-                contactInfoSection.add(
-                        emailAddress, pieasEmailAddress, phoneNumber, emergencyPhoneNumber, address);
-
-                Button updateInformationButton = new Button("Update Information");
-                updateInformationButton.addClassName("registrationForm-updateButton");
-
-                updateInformationButton.addClickListener(e -> {
-                    try {
-                        studentData.setFatherName(fatherName.getValue());
-                        studentData.setDateOfBirth(dateOfBirth.getValue());
-                        studentData.setGender(gender.getValue());
-                        studentData.setCnic(cnic.getValue());
-                        studentData.setDomicile(domicile.getValue());
-                        studentData.setDegreeTitle(degreeTitle.getValue());
-                        studentData.setDegreeName(degreeName.getValue());
-                        studentData.setRollNo(rollNo.getValue());
-                        studentData.setLibraryId(libraryId.getValue());
-                        studentData.setPersonalEmail(emailAddress.getValue());
-                        studentData.setPieasEmail(pieasEmailAddress.getValue());
-                        studentData.setContactNo(phoneNumber.getValue());
-                        studentData.setEmergencyContact(emergencyPhoneNumber.getValue());
-                        studentData.setAddress(address.getValue());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                });
-
-                tempVerticalLayout.add(
-                        new H5("Personal Information"),
-                        new Hr(),
-                        personalInfoSection,
-
-                        new H5("Education Information"),
-                        new Hr(),
-                        educationInfoSection,
-
-                        new H5("Contact Information"),
-                        new Hr(),
-                        contactInfoSection, updateInformationButton);
-
-            }
             return tempVerticalLayout;
         }
 
