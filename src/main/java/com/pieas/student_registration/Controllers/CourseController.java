@@ -35,7 +35,7 @@ public class CourseController {
 
     @GetMapping("/department/{department}")
     public ArrayList<CourseEntity> getCoursesByDepartment(@PathVariable String department) {
-        return courseService.getCoursesByDepartment(department);
+        return courseService.getCoursesByDegreeProgram(department);
     }
 
     @PostMapping
