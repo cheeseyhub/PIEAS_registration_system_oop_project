@@ -8,9 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.DuplicateKeyException;
+import com.pieas.student_registration.Entities.CourseEntity;
 import com.pieas.student_registration.Entities.SemesterEntity;
 import com.pieas.student_registration.Entities.StudentEntity;
-import com.pieas.student_registration.Entities.SubjectEntity;
 import com.pieas.student_registration.Exceptions.NotLoggedIn;
 import com.pieas.student_registration.Repositories.StudentRepository;
 import com.vaadin.flow.server.VaadinSession;
@@ -100,7 +100,7 @@ public class StudentService {
 
     }
 
-    public String addSubject(String registrationNumber, int semesterNumber, SubjectEntity subject) {
+    public String addSubject(String registrationNumber, int semesterNumber, CourseEntity subject) {
         Optional<StudentEntity> studentObject = studentRepository.findByRegistrationNumber(registrationNumber);
 
         if (studentObject.isEmpty()) {
@@ -125,8 +125,8 @@ public class StudentService {
             semesterEntity = semester.get();
         }
 
-        if (semesterEntity.getSubjects() == null) {
-            semesterEntity.setSubjects(new ArrayList<>());
+        if (semesterEntity.getCourses() == null) {
+            semesterEntity.setCourses(new ArrayList<>());
         }
 
         semesterEntity.addSubject(subject);

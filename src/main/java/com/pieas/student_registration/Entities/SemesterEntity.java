@@ -3,6 +3,7 @@ package com.pieas.student_registration.Entities;
 import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -16,8 +17,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SemesterEntity {
-    @Id
-    private String id;
     private int semesterNumber;
 
     @NotBlank(message = "Semester Name must not be empty.")
@@ -25,12 +24,13 @@ public class SemesterEntity {
     private boolean enrolled;
 
     @NotEmpty
-    private ArrayList<SubjectEntity> subjects;
+    @DocumentReference
+    private ArrayList<CourseEntity> courses;
 
     private double semesterGpa;
 
-    public SemesterEntity(ArrayList<SubjectEntity> subjects, boolean enrolled) {
-        this.subjects = subjects;
+    public SemesterEntity(ArrayList<CourseEntity> courses, boolean enrolled) {
+        this.courses = courses;
         this.enrolled = enrolled;
     }
 
@@ -38,25 +38,25 @@ public class SemesterEntity {
         return enrolled;
     }
 
-    public void addSubject(SubjectEntity subject) {
-        this.subjects.add(subject);
+    public void addSubject(CourseEntity course) {
+        this.courses.add(course);
     }
 
-    public void removeSubject(SubjectEntity subject) {
-        this.subjects.remove(subject);
+    public void removeSubject(CourseEntity course) {
+        this.courses.remove(course);
     }
 
     public double calculateCoursegpa() {
-        if (subjects.isEmpty() || subjects == null) {
+        if (courses.isEmpty() || courses == null) {
             return 0.0;
         }
         double total = 0.0;
 
-        for (SubjectEntity subject : subjects) {
+        for (CourseEntity subject : courses) {
             total += (subject.getGpa() * subject.getCreditHour());
         }
         double sumOfCreditHours = 0.0;
-        for (SubjectEntity subject : subjects) {
+        for (CourseEntity subject : courses) {
             sumOfCreditHours += subject.getCreditHour();
         }
 
@@ -68,15 +68,15 @@ public class SemesterEntity {
     public int getTotalCreditHour() {
         int totalSumOfCreditHour = 0;
 
-        for (SubjectEntity subject : subjects) {
+        for (CourseEntity subject : courses) {
             totalSumOfCreditHour += subject.getCreditHour();
         }
         return totalSumOfCreditHour;
 
     }
 
-    public int getTotalEnrolledSubjects() {
-        return this.subjects.size();
+    public int getTotalEnrolledcourses() {
+        return this.courses.size();
 
     }
 
