@@ -16,6 +16,15 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authorization.method.AuthorizeReturnObject;
+
+import com.pieas.student_registration.Entities.CourseEntity;
+import com.pieas.student_registration.Entities.StudentEntity;
+import com.pieas.student_registration.Services.CourseService;
+import com.pieas.student_registration.Services.DepartmentService;
+import com.pieas.student_registration.Services.StudentService;
 import com.pieas.student_registration.UI.Utils.AuthUtil;
 import com.pieas.student_registration.Views.TemplateClasses.*;
 
@@ -25,14 +34,31 @@ import com.pieas.student_registration.Views.TemplateClasses.*;
 
 public class CourseEnrollPageView extends HorizontalLayout implements BeforeEnterObserver {
     private String currentUser;
+    @Autowired
+    private StudentService studentService;
+
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private StudentEntity studentData;
 
     @Override
     public void beforeEnter(BeforeEnterEvent e) {
         AuthUtil.requireLogin(e);
     }
 
-    public CourseEnrollPageView() {
+    public CourseEnrollPageView(StudentService studentService, DepartmentService departmentService,
+            CourseService courseService) {
         try {
+            this.studentService = studentService;
+            this.studentData = studentService.getLoggedUser();
+            this.departmentService = departmentService;
+            this.courseService = courseService;
+
             this.currentUser = AuthUtil.getCurrentStudentName();
         } catch (Exception e) {
             UI.getCurrent().navigate("");
@@ -106,15 +132,11 @@ public class CourseEnrollPageView extends HorizontalLayout implements BeforeEnte
             TextField search = new TextField("", "Search by course content or course code...");
             search.addClassName("course-enrollment-search");
 
-            tempLayoutContainer.add(search,
-                    displayCoursesTemplate("Computer Programming and Fundamentals", "Zohaib Kaleem", "CIS-101", "3 cr",
-                            "Fall 2025", true),
-                    displayCoursesTemplate("Computer Programming and Fundamentals", "Zohaib Kaleem", "CIS-101", "3 cr",
-                            "Fall 2025", false),
-                    displayCoursesTemplate("Computer Programming and Fundamentals", "Zohaib Kaleem", "CIS-101", "3 cr",
-                            "Fall 2025", true),
-                    displayCoursesTemplate("Computer Programming and Fundamentals", "Zohaib Kaleem", "CIS-101", "3 cr",
-                            "Fall 2025", false));
+            tempLayoutContainer.add(search);
+
+            for (CourseEntity course : courseService.getCoursesByDegreeProgram(studentData.getDegreeName())) {
+                displayCoursesTemplate(course);
+            }
 
             return tempLayoutContainer;
         }

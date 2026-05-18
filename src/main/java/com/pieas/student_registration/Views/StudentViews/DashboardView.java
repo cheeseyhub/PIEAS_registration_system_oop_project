@@ -101,8 +101,13 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                 private HorizontalLayout CourseInfoSection() {
                         HorizontalLayout tempLayoutContainer = new HorizontalLayout();
                         tempLayoutContainer.addClassName("dashobard-course-info-section");
-                        studentData.calculateCgpa();
 
+                        if (studentData.getCurrentSemester() == null) {
+                                tempLayoutContainer.add(new Paragraph(
+                                                "No course information available for the current semester."));
+                                return tempLayoutContainer;
+                        }
+                        studentData.calculateCgpa();
                         HorizontalLayout temp[] = {
 
                                         helperCourseInfoSection("Course Enrolled",
@@ -166,6 +171,13 @@ public class DashboardView extends HorizontalLayout implements BeforeEnterObserv
                 private HorizontalLayout displayCourses() {
                         HorizontalLayout tempLayoutContainer = new HorizontalLayout();
                         tempLayoutContainer.addClassName("dashboard-displaycourse");
+
+                        if (studentData.getCurrentSemester() == null
+                                        || studentData.getCurrentSemester().getSubjects() == null
+                                        || studentData.getCurrentSemester().getSubjects().isEmpty()) {
+                                tempLayoutContainer.add(new Paragraph("No courses enrolled for the current semester."));
+                                return tempLayoutContainer;
+                        }
 
                         for (SubjectEntity course : studentData.getCurrentSemester().getSubjects()) {
                                 tempLayoutContainer.add(

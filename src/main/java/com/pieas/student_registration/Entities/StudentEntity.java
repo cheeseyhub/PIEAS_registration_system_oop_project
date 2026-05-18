@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.vaadin.copilot.shaded.commons.lang3.ObjectUtils.Null;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -126,7 +128,7 @@ public class StudentEntity {
 
     public SemesterEntity getCurrentSemester() throws IndexOutOfBoundsException {
         if (this.semesters == null || this.semesters.isEmpty()) {
-            throw new IndexOutOfBoundsException("No semester enrolled");
+            return null;
 
         }
         return this.semesters.getLast();

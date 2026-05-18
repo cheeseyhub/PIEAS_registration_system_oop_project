@@ -208,6 +208,7 @@ public class StudentService {
             throw new IllegalArgumentException("Student not logged in");
 
         }
+
         studentRepository.save(student);
     }
 

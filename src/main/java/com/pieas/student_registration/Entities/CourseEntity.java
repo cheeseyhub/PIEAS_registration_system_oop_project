@@ -19,7 +19,7 @@ public class CourseEntity {
     private String courseName;
 
     @NotBlank(message = "department name must not be blank")
-    private String department;
+    private String degreeProgram;
 
     @NotBlank
     private String instructor;
@@ -28,10 +28,11 @@ public class CourseEntity {
     private int creditHour;
 
     public CourseEntity(@NotBlank(message = "course name must not be blank") String courseName,
-            @NotBlank(message = "department name must not be blank") String department, @NotBlank String instructor,
+            @NotBlank(message = "degree program name must not be blank") String degreeProgram,
+            @NotBlank String instructor,
             String courseCode, int semesterNo, int creditHour) {
         this.courseName = courseName;
-        this.department = department;
+        this.degreeProgram = degreeProgram;
         this.instructor = instructor;
         this.courseCode = courseCode;
         this.semesterNo = semesterNo;

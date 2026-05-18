@@ -134,12 +134,20 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
             TextField fatherName = new TextField("Father Name");
             fatherName.setPlaceholder("Father Name");
             fatherName.setRequired(true);
-            fatherName.setValue(studentData.getFatherName());
+            if (studentData.getFatherName() == null || studentData.getFatherName().isBlank()) {
+                fatherName.setValue("");
+            } else {
+                fatherName.setValue(studentData.getFatherName());
+            }
 
             DatePicker dateOfBirth = new DatePicker("Date of Birth");
             dateOfBirth.setPlaceholder("Date of Birth");
             dateOfBirth.setRequired(true);
-            dateOfBirth.setValue(studentData.getDateOfBirth());
+            if (dateOfBirth.getValue() == null) {
+                dateOfBirth.setValue(LocalDate.now().minusYears(20));
+            } else {
+                dateOfBirth.setValue(studentData.getDateOfBirth());
+            }
 
             DatePicker.DatePickerI18n i18n = new DatePicker.DatePickerI18n();
 
@@ -157,18 +165,31 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
             Select<String> gender = new Select<>("Gender", "Male", "Female");
             gender.setPlaceholder("Gender");
             gender.setRequiredIndicatorVisible(true);
-            gender.setValue(studentData.getGender());
+            if (studentData.getGender() == null || studentData.getGender().isBlank()) {
+                gender.setValue("");
+            } else {
+                gender.setValue(studentData.getGender());
+            }
 
             NumberField cnic = new NumberField("CNIC");
             cnic.setPlaceholder("XXXXXXXXXXXXX");
             cnic.setAllowedCharPattern("[0-9-]");
             cnic.setRequired(true);
-            cnic.setValue(studentData.getCnic());
+
+            if (studentData.getCnic() == null || studentData.getCnic().isNaN()) {
+                cnic.setValue(0.0);
+            } else {
+                cnic.setValue(studentData.getCnic());
+            }
 
             TextField domicile = new TextField("Domicile");
             domicile.setPlaceholder("Domicile");
             domicile.setRequired(true);
-            domicile.setValue(studentData.getDomicile());
+            if (studentData.getDomicile() == null || studentData.getDomicile().isBlank()) {
+                domicile.setValue("");
+            } else {
+                domicile.setValue(studentData.getDomicile());
+            }
 
             personalInfoSection.add(name, fatherName, dateOfBirth, gender, cnic, domicile);
 
@@ -179,8 +200,8 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
             department.setPlaceholder("Department");
             department.setRequired(true);
 
-            Select<String> departmentSelect = new Select<>();
-            departmentSelect.setValue(studentData.getDepartment());
+            Select<String> departmentSelect = new Select<>("Department");
+            departmentSelect.setItems(studentData.getDepartment());
 
             departmentSelect.setPlaceholder("Department");
             departmentSelect.setRequiredIndicatorVisible(true);
@@ -188,20 +209,31 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
             departmentSelect.setReadOnly(true);
 
             Select<String> degreeTitle = new Select<>("Degree Title");
+            degreeTitle.setItems(studentData.getDegreeTitle());
+
             degreeTitle.setPlaceholder("Degree Title");
             degreeTitle.setRequiredIndicatorVisible(true);
             degreeTitle.setValue(studentData.getDegreeTitle());
             degreeTitle.setReadOnly(true);
 
             Select<String> degreeName = new Select<>("Degree Name");
+            degreeName.setItems(studentData.getDegreeName());
             degreeName.setPlaceholder("Degree Name");
             degreeName.setRequiredIndicatorVisible(true);
-            degreeName.setValue(studentData.getDegreeName());
+            if (studentData.getDegreeName() == null || studentData.getDegreeName().isBlank()) {
+                degreeName.setValue("");
+            } else {
+                degreeName.setValue(studentData.getDegreeName());
+            }
             degreeName.setReadOnly(true);
 
             TextField rollNo = new TextField("Roll No.");
             rollNo.setRequired(true);
-            rollNo.setValue(studentData.getRollNo());
+            if (studentData.getRollNo() == null || studentData.getRollNo().isBlank()) {
+                rollNo.setValue("");
+            } else {
+                rollNo.setValue(studentData.getRollNo());
+            }
 
             TextField regNo = new TextField("Registration Number");
             regNo.setValue(studentData.getRegistrationNumber());
@@ -209,7 +241,11 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
             regNo.setReadOnly(true);
 
             TextField libraryId = new TextField("Library ID");
-            libraryId.setValue(studentData.getLibraryId());
+            if (studentData.getLibraryId() == null || studentData.getLibraryId().isBlank()) {
+                libraryId.setValue("");
+            } else {
+                libraryId.setValue(studentData.getLibraryId());
+            }
             libraryId.setRequired(true);
 
             educationInfoSection.add(
@@ -222,27 +258,47 @@ public class StudentRegistrationView extends HorizontalLayout implements BeforeE
             EmailField emailAddress = new EmailField("Email");
             emailAddress.setRequired(true);
             emailAddress.setPlaceholder("Enter Email Address");
-            emailAddress.setValue(studentData.getPersonalEmail());
+            if (studentData.getPersonalEmail() == null || studentData.getPersonalEmail().isBlank()) {
+                emailAddress.setValue("");
+            } else {
+                emailAddress.setValue(studentData.getPersonalEmail());
+            }
 
             EmailField pieasEmailAddress = new EmailField("PIEAS Email Address");
             pieasEmailAddress.setRequired(true);
             pieasEmailAddress.setPlaceholder("Enter PIEAS Email Address");
-            pieasEmailAddress.setValue(studentData.getPieasEmail());
+            if (studentData.getPieasEmail() == null || studentData.getPieasEmail().isBlank()) {
+                pieasEmailAddress.setValue("");
+            } else {
+                pieasEmailAddress.setValue(studentData.getPieasEmail());
+            }
 
             NumberField phoneNumber = new NumberField("Phone Number");
             phoneNumber.setPlaceholder("+92--- -------");
             phoneNumber.setRequired(true);
-            phoneNumber.setValue(studentData.getContactNo());
+            if (studentData.getContactNo() == null || studentData.getContactNo().isNaN()) {
+                phoneNumber.setValue(0.0);
+            } else {
+                phoneNumber.setValue(studentData.getContactNo());
+            }
 
             NumberField emergencyPhoneNumber = new NumberField("Emergency Contact Number");
             emergencyPhoneNumber.setPlaceholder("+92--- -------");
             emergencyPhoneNumber.setRequired(true);
-            emergencyPhoneNumber.setValue(studentData.getEmergencyContact());
+            if (studentData.getEmergencyContact() == null || studentData.getEmergencyContact().isNaN()) {
+                emergencyPhoneNumber.setValue(0.0);
+            } else {
+                emergencyPhoneNumber.setValue(studentData.getEmergencyContact());
+            }
 
             TextArea address = new TextArea("Address");
             address.setRequired(true);
             address.setPlaceholder("Enter Address");
-            address.setValue(studentData.getAddress());
+            if (studentData.getAddress() == null || studentData.getAddress().isBlank()) {
+                address.setValue("");
+            } else {
+                address.setValue(studentData.getAddress());
+            }
             contactInfoSection.add(
                     emailAddress, pieasEmailAddress, phoneNumber, emergencyPhoneNumber, address);
 
